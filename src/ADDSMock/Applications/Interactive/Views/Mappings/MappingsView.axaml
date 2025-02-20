@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+             xmlns:controls="clr-namespace:ADDSMock.Applications.Interactive.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ADDSMock.Applications.Interactive.Views.Mappings.MappingsView"
+             x:ClassModifier="internal">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="EndpointTemplate">
+            <Grid RowDefinitions="Auto, Auto">
+                <TextBlock Text="{Binding EndpointName}" Foreground="{Binding TextBrush}" />
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Methods}" IsVisible="{Binding !IsErrorModel}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Method}" Foreground="{Binding TextBrush}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Border BorderThickness="0,0,0,1" BorderBrush="#424242">
+            <Grid RowDefinitions="Auto, *">
+
+                <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+                    <TextBlock Grid.Column="0" Text="ENDPOINTS" Margin="8,0,0,4" VerticalAlignment="Center"
+                               FontWeight="Light" Foreground="#c0c0c0" />
+
+                    <Button Width="28" Height="28" Grid.Column="2" Background="Transparent" ToolTip.Tip="Edit Mapping" IsEnabled="False" Margin="0,0,8,0">
+                        <controls:Icon Width="12" Height="12" IconName="Data-Edit" />
+                    </Button>
+                </Grid>
+                <Grid ColumnDefinitions="*, Auto, 2*" Margin="0,0,0,1" Grid.Row="1">
+
+                    <ListBox Grid.Column="0" ItemsSource="{Binding Endpoints}"
+                             SelectedItem="{Binding SelectedEndpoint}"
+                             ItemTemplate="{StaticResource EndpointTemplate}"
+                             Background="#181818" />
+
+                    <GridSplitter Grid.Column="1" ResizeDirection="Columns"
+                                  ResizeBehavior="PreviousAndNext"
+                                  Background="#181818" />
+
+                    <Border Grid.Column="2" BorderThickness="1,0,0,0" BorderBrush="#424242">
+                        <Grid RowDefinitions="2*, Auto, *">
+
+                            <avaloniaEdit:TextEditor Grid.Row="0" x:Name="_editor" ShowLineNumbers="True"
+                                                     Margin="8,0,0,0"
+                                                     Document="{Binding FragmentCode}"
+                                                     IsReadOnly="True"
+                                                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace" />
+
+                            <GridSplitter Grid.Row="1" ResizeDirection="Rows"
+                                          ResizeBehavior="PreviousAndNext"
+                                          Background="#181818" />
+
+                            <Grid RowDefinitions="Auto, *" Grid.Row="2">
+                                <Border Grid.Row="0" BorderThickness="0,1,0,1" BorderBrush="#424242">
+                                    <TextBlock Text="OUTPUT" Margin="8,4,0,4" VerticalAlignment="Center"
+                                               FontWeight="Light"
+                                               Foreground="#c0c0c0" />
+                                </Border>
+
+                                <avaloniaEdit:TextEditor Grid.Row="1" x:Name="_outputEditor" ShowLineNumbers="True"
+                                                         Margin="8,0,0,0"
+                                                         Document="{Binding OutputText}"
+                                                         IsReadOnly="True"
+                                                         FontFamily="Cascadia Code,Consolas,Menlo,Monospace" />
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+
+                </Grid>
+
+            </Grid>
+        </Border>
+        <Grid Background="#181818" IsVisible="{Binding ShowNoView}">
+            <TextBlock Text="No Mappings" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+    </Grid>
+
+</UserControl>

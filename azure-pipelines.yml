@@ -1,0 +1,150 @@
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd).$(BuildCounter)
+
+parameters:
+- name: SkipDependencyCheck
+  displayName: "Skip dependency check"
+  type: boolean
+  default: false
+- name: SkipUnitTests
+  displayName: "Skip unit tests"
+  type: boolean
+  default: false
+- name: SkipFunctionalTests
+  displayName: "Skip functional tests"
+  type: boolean
+  default: false
+
+trigger:
+- main
+
+pool: $(WindowPool)
+
+variables:
+- name: BuildConfiguration
+  value: "release"
+- name: BuildCounter
+  value: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
+- name: WindowPool
+  value: "NautilusBuild"
+- name: SdkVersion
+  value: "8.x"
+
+resources:
+  repositories:
+  - repository: UKHOTemplates
+    type: github
+    name: UKHO/devops-pipelinetemplates
+    endpoint: UKHO
+    ref: refs/heads/main
+
+stages:
+- stage: BuildTest
+  displayName: Build and test
+  dependsOn: []
+  jobs:
+  - job: MainBuildTest
+    displayName: Build and test
+    variables:
+    - name: AddsMockExePath
+      value: '$(Build.BinariesDirectory)\Mock\ADDSMock.exe'
+    workspace:
+      clean: all
+    steps:
+    - task: UseDotNet@2
+      displayName: Use .NET SDK $(SdkVersion)
+      inputs:
+        packageType: sdk
+        version: $(SdkVersion)
+            
+    - task: DotNetCoreCLI@2
+      displayName: .NET - NuGet restore
+      inputs:
+        command: restore
+        projects: |
+          **/ADDSMock.csproj
+          **/ADDSMock.Tests.csproj
+          **/ADDSMock.Functional.Tests.csproj
+        feedsToUse: config
+        noCache: true
+        nugetConfigPath: '$(Build.SourcesDirectory)\BuildNuget.config'
+        packagesDirectory: '$(Build.SourcesDirectory)\packages'
+
+    - ${{ if ne(parameters.SkipDependencyCheck, true) }}:
+      - template: dependency-checker/windows-dependency-checker.yaml@UKHOTemplates
+        parameters:
+          scanName: 'ADDS-Mocks - $(Build.SourceBranchName)'
+          scanPath: '$(Build.SourcesDirectory)\src'
+          suppressionPath: '$(Build.SourcesDirectory)\NVDSuppressions.xml'
+
+    - ${{ if ne(parameters.SkipUnitTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: Build - unit tests
+        inputs:
+          command: build
+          projects: |
+            **/ADDSMock.Tests.csproj
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\UnitTests --no-restore'
+
+      - task: DotNetCoreCLI@2
+        displayName: Run - unit tests
+        inputs:
+          command: test
+          projects: '$(Build.BinariesDirectory)\UnitTests\ADDSMock.Tests.dll'
+          publishTestResults: true
+          testRunTitle: UnitTests
+
+    - task: DotNetCoreCLI@2
+      displayName: Build - mock
+      inputs:
+        command: build
+        projects: |
+          **/ADDSMock.csproj
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\Mock --no-restore'
+
+    - task: PowerShell@2
+      displayName: Get a url for testing
+      name: getUrl
+      inputs:
+        targetType: filePath
+        filePath: '$(Build.SourcesDirectory)\Pipeline\GetLocalHostUrl.ps1'
+
+    - task: FileTransform@2
+      displayName: File transform - mock settings
+      inputs:
+        folderPath: '$(Build.BinariesDirectory)\Mock'
+        xmlTransformationRules: ''
+        enableXmlTransform: false
+        jsonTargetFiles: '**\mock-configuration.json'
+
+    # - task: PowerShell@2
+    #   displayName: View mock-configuration.json
+    #   condition: always()
+    #   inputs:
+    #     targetType: inline
+    #     script: |
+    #       Get-Content '$(Build.BinariesDirectory)\Mock\mock-configuration.json'
+
+    - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: Build - functional tests
+        inputs:
+          command: build
+          projects: |
+            **/ADDSMock.Functional.Tests.csproj
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\FunctionalTests --no-restore'
+
+      - task: FileTransform@2
+        displayName: File transform - functional test settings
+        inputs:
+          folderPath: '$(Build.BinariesDirectory)\FunctionalTests'
+          xmlTransformationRules: ''
+          enableXmlTransform: false
+          jsonTargetFiles: '**\appsettings.json'
+
+      - task: DotNetCoreCLI@2
+        displayName: Run - functional tests
+        inputs:
+          command: test
+          projects: '$(Build.BinariesDirectory)\FunctionalTests\ADDSMock.Functional.Tests.dll'
+          publishTestResults: true
+          testRunTitle: FunctionalTests

@@ -1,0 +1,36 @@
+﻿{
+  "Configurations": [
+    {
+      "Name": "Demo",
+      "Prefix": "demo"
+    },
+    {
+      "Name": "ERP Facade",
+      "Prefix": "erp"
+    },
+    {
+      "Name": "Enterprise Event Service",
+      "Prefix": "ees"
+    },
+    {
+      "Name": "Exchange Set Service",
+      "Prefix": "ess"
+    },
+    {
+      "Name": "File Share Service",
+      "Prefix": "fss"
+    },
+    {
+      "Name": "Sales Catalog Service",
+      "Prefix": "scs"
+    },
+    {
+      "Name": "Permit Generator Service",
+      "Prefix": "pgs"
+    },
+    {
+      "Name": "SAP",
+      "Prefix": "sap"      
+    }
+  ]
+}

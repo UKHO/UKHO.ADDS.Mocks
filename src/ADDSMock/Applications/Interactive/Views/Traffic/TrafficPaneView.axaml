@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:traffic="clr-namespace:ADDSMock.Applications.Interactive.Views.Traffic"
+             xmlns:models="clr-namespace:ADDSMock.Applications.Interactive.Views.Traffic.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ADDSMock.Applications.Interactive.Views.Traffic.TrafficPaneView"
+             x:ClassModifier="internal">
+
+    <Border BorderBrush="#424242" BorderThickness="1,0,0,0">
+        <Grid RowDefinitions="Auto, *">
+            <TextBlock Grid.Row="0" Text="TRAFFIC" Margin="8,4,0,4" VerticalAlignment="Center" FontWeight="Light"
+                       Foreground="#c0c0c0" />
+
+            <TreeView Grid.Row="1" ItemsSource="{Binding Models}">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem" x:DataType="models:AbstractTrafficModel">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Vertical" Grid.Column="0">
+                            <TextBlock Text="{Binding Name}" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding Description}" IsVisible="{Binding IsDescriptionVisible}" Foreground="Gray"/>
+                            <ItemsControl ItemsSource="{Binding Methods}" IsVisible="{Binding IsMethodsVisible}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Method}" Foreground="{Binding TextBrush}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </StackPanel>
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Grid>
+
+    </Border>
+
+</UserControl>

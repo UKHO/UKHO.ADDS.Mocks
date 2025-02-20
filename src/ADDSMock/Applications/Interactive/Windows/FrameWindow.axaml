@@ -1,0 +1,123 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+        xmlns:controls="clr-namespace:ADDSMock.Applications.Interactive.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ADDSMock.Applications.Interactive.Windows.FrameWindow"
+        x:ClassModifier="internal"
+        Title="FrameWindow"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        FontSize="12" Width="1600" Height="1024"
+        BorderBrush="#424242"
+        Background="#181818">
+
+    <Window.Styles>
+        <StyleInclude Source="/Applications/Interactive/Controls/SplitViewResizer.axaml" />
+    </Window.Styles>
+
+    <Window.Resources>
+        <DataTemplate x:Key="NavigationTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Width="3" VerticalAlignment="Stretch" Fill="{Binding MarkerBrush}" />
+
+                <Button Background="Transparent" Width="36" Height="36" ToolTip.Tip="{Binding Title}"
+                        Margin="6,8,0,8" Cursor="Hand"
+                        Command="{Binding Select}">
+                    <controls:Icon Width="26" Height="26" IconName="{Binding IconName}" State="{Binding IconState}" />
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Panel>
+
+        <!-- Title bar -->
+        <Grid RowDefinitions="Auto, *">
+            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#424242">
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <controls:Icon IconName="Development-WF" Width="16" Height="16" State="Selected"
+                                   Margin="8,2,8,6"
+                                   IsHitTestVisible="False" />
+
+                    <TextBlock IsHitTestVisible="False" Margin="6" Text="{Binding Title}" FontWeight="Light" Foreground="#c0c0c0" Grid.Column="1" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0, -4, 140, 0" Grid.Column="2">
+                        <Button x:Name="_topmostButton" Width="48" Height="36" Background="Transparent"
+                                Click="TopmostButtonClick">
+                            <controls:Icon x:Name="_topmostIcon" IconName="Pin-WF" Width="12" Height="12"
+                                           State="Normal" />
+                        </Button>
+                        <Button x:Name="_sideBarButton" Width="48" Height="36" Background="Transparent"
+                                Click="SideBarButtonClick">
+                            <controls:Icon x:Name="_sideBarIcon" IconName="Navigation-WF" Width="12" Height="12"
+                                           State="Normal" />
+                        </Button>
+                        <Button x:Name="_logButton" Width="48" Height="36" Background="Transparent"
+                                Click="LogButtonClick">
+                            <controls:Icon x:Name="_logIcon" IconName="Menu-02-WF" Width="12" Height="12"
+                                           State="Normal" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <SplitView x:Name="_splitView" Grid.Row="1" IsPaneOpen="True" DisplayMode="CompactInline"
+                       OpenPaneLength="500"
+                       PanePlacement="Left">
+                <SplitView.Pane>
+                    <Grid ColumnDefinitions="48, *, 4">
+                        <ItemsControl Grid.Column="0" ItemTemplate="{StaticResource NavigationTemplate}"
+                                      ItemsSource="{Binding NavigationModels}" />
+
+                        <ContentControl Grid.Column="1" Content="{Binding PaneControl}" />
+
+                        <controls:SplitViewResizer Grid.Column="2" Background="#181818" Width="4" />
+                    </Grid>
+                </SplitView.Pane>
+
+                <Border BorderThickness="1,0,0,0" BorderBrush="#424242">
+                    <Grid RowDefinitions="2*, Auto, *">
+
+                        <Grid x:Name="_contentGrid" Grid.Row="0">
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#424242" Padding="0,0,0,-2" >
+                                <ContentControl Content="{Binding ViewControl}"/>
+                            </Border>
+                        </Grid>
+
+                        <GridSplitter x:Name="_logSplitter" Grid.Row="1" ResizeDirection="Rows"
+                                      ResizeBehavior="PreviousAndNext"
+                                      Background="#181818" />
+
+                        <Grid Grid.Row="2" x:Name="_logGrid">
+
+                            <Grid RowDefinitions="Auto, *">
+                                <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#424242">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <TextBlock Grid.Column="0" Text="CONSOLE" Margin="8,0,0,4" VerticalAlignment="Center" FontWeight="Light" Foreground="#c0c0c0"/>
+
+                                        <Button Width="28" Height="28" Grid.Column="2" Background="Transparent" ToolTip.Tip="Clear log" Margin="0,0,8,0"
+                                                Command="{Binding ClearLog}">
+                                            <controls:Icon Width="12" Height="12" IconName="Close"></controls:Icon>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+
+                                <avaloniaEdit:TextEditor Grid.Row="1" x:Name="_logEditor" Margin="8,0,0,0"
+                                                         IsReadOnly="True" ShowLineNumbers="True"
+                                                         Document="{Binding Path=ConsoleLog.LogDocument}"
+                                                         FontFamily="Cascadia Code,Consolas,Menlo,Monospace" />
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+            </SplitView>
+
+        </Grid>
+
+    </Panel>
+
+</Window>

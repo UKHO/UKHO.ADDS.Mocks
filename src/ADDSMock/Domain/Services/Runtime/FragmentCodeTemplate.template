@@ -1,0 +1,4 @@
+﻿public void RegisterFragment(WireMockServer server, MockService mockService)
+{
+    $code$
+}
