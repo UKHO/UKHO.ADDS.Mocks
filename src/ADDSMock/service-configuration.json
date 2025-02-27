@@ -30,7 +30,11 @@
     },
     {
       "Name": "SAP",
-      "Prefix": "sap"      
+      "Prefix": "sap"
+    },
+    {
+      "Name": "Graph API",
+      "Prefix": "graphapi"
     }
   ]
 }
