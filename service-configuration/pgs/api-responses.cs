@@ -17,7 +17,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Name)
+                .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
     server
         .Given(

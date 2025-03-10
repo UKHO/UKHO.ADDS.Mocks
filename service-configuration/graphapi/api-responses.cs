@@ -9,7 +9,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*fields/Title eq '1'.*"))    //200 OK response with 5 UPNs
+                .WithParam("$filter", "fields/Title eq '1'")   //200 OK response with 5 UPNs
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -40,7 +40,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*fields/Title eq '2'.*"))    //500 internal server error response
+                .WithParam("$filter", "fields/Title eq '2'")    //500 internal server error response
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -50,7 +50,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*fields/Title eq '3'.*"))    //200 OK response with 0 UPNs
+                .WithParam("$filter", "fields/Title eq '3'")    //200 OK response with 0 UPNs
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -59,6 +59,26 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithBody($@"
                     {{
                         ""value"": []
+                    }}"
+                ));
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '4'")    //200 OK response with 0 UPNs and some metadata
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody($@"
+                    {{
+                        ""value"": [
+                            {{
+                                ""fields"": {{
+                                    ""@odata.etag"": ""975454d2-ead9-482e-8472-7c620847fae8""                                    
+                                }}
+                            }}
+                            ]                        
                     }}"
                 ));
 }
