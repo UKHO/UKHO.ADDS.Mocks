@@ -9,21 +9,20 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath("/v2/catalogues/s100/basic?If-Modified-Since=2022-01-01T00:00:00Z")
+                .WithUrl(new RegexMatcher(".*/v2/catalogues/s100/basic.*"))
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Name)
+                .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
 
     server
         .Given(
             Request.Create()
-                .WithPath("/v2/catalogues/s100/basic?If-Modified-Since=2025-01-01T00:00:00Z")
-                .WithUrl(new RegexMatcher(".*If-Modified-Since=2020-10-27T00:00:00Z.*"))
+                .WithParam("If-Modified-Since", "2020-10-27T00:00:00Z")
                 .UsingGet()
         )
         .RespondWith(
@@ -36,8 +35,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath("/v2/catalogues/s100/basic?If-Modified-Since=20221027")
-                .WithUrl(new RegexMatcher(".*If-Modified-Since=20221027.*"))
+                .WithParam("If-Modified-Since", "20221027")
                 .UsingGet()
         )
         .RespondWith(
@@ -50,8 +48,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath("/v2/catalogues/s100/basic?If-Modified-Since=3000-01-01T00:00:00Z")
-                .WithUrl(new RegexMatcher(".*If-Modified-Since=3000-01-01T00:00:00Z.*"))
+                .WithParam("If-Modified-Since", "3000-01-01T00:00:00Z")
                 .UsingGet()
         )
         .RespondWith(
