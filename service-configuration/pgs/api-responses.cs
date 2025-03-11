@@ -11,7 +11,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath("/v1/permits/s100")
                 .UsingPost()
-                .WithBody(new RegexMatcher(".*200OKResponse.*"))
         )
         .RespondWith(
             Response.Create()
