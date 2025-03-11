@@ -27,11 +27,13 @@ namespace ADDSMock.Domain.Configuration
         public static Result<MockConfiguration> ReadConfiguration(IFileSystem fileSystem, string path)
         {
             var configurationPath = fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-            var currentDiretory = Directory.GetCurrentDirectory(); 
-            var solutionfolder = Path.Combine(currentDiretory, @"..\..\");            ;
-            var configurationFolderPath = Path.GetFullPath(solutionfolder);
-            var servieConfigurationPath = Path.Combine(configurationFolderPath, "service-configuration");
-            var overrideConfigurationPath = Path.Combine(configurationFolderPath, "override-configuration");
+            var currentDirectoryPath = fileSystem.Directory.GetCurrentDirectory();
+
+            var solutionDirectoryPath = fileSystem.Path.Combine(currentDirectoryPath, @"..\..\");
+            var configurationDirectoryPath = fileSystem.Path.GetFullPath(solutionDirectoryPath);
+
+            var serviceConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "service-configuration");
+            var overrideConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "override-configuration");
 
             var configurationFilePath = fileSystem.Path.Combine(configurationPath, path);
 
@@ -44,7 +46,7 @@ namespace ADDSMock.Domain.Configuration
             {
                 var configurationJson = fileSystem.File.ReadAllText(configurationFilePath);
                 var configuration = JsonSerializer.Deserialize<MockConfiguration>(configurationJson)!;
-                configuration.ConfigurationPath = servieConfigurationPath;
+                configuration.ConfigurationPath = serviceConfigurationPath;
                 configuration.OverrideConfigurationPath = overrideConfigurationPath;
 
                 return configuration;
