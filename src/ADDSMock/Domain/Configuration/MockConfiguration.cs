@@ -1,6 +1,7 @@
 ﻿using System.IO.Abstractions;
 using System.Reflection;
 using System.Text.Json;
+using CSScripting;
 using LightResults;
 
 namespace ADDSMock.Domain.Configuration
@@ -16,8 +17,8 @@ namespace ADDSMock.Domain.Configuration
             UseHttp2 = useHttp2;
         }
 
-        public string ConfigurationPath { get; }
-        public string OverrideConfigurationPath { get; }
+        public string ConfigurationPath { get; set; }
+        public string OverrideConfigurationPath { get; set; }
 
         public int Port { get; }
         public bool UseSsl { get; }
@@ -26,6 +27,12 @@ namespace ADDSMock.Domain.Configuration
         public static Result<MockConfiguration> ReadConfiguration(IFileSystem fileSystem, string path)
         {
             var configurationPath = fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+            var currentDiretory = Directory.GetCurrentDirectory(); 
+            var solutionfolder = Path.Combine(currentDiretory, @"..\..\");            ;
+            var ConfigurationPath = Path.GetFullPath(solutionfolder);
+            var servieConfigurationPath = Path.Combine(ConfigurationPath, "service-configuration");
+            var OverrideConfigurationPath = Path.Combine(ConfigurationPath, "override-configuration");
+
             var configurationFilePath = fileSystem.Path.Combine(configurationPath, path);
 
             if (!fileSystem.Path.Exists(configurationFilePath))
@@ -37,6 +44,8 @@ namespace ADDSMock.Domain.Configuration
             {
                 var configurationJson = fileSystem.File.ReadAllText(configurationFilePath);
                 var configuration = JsonSerializer.Deserialize<MockConfiguration>(configurationJson)!;
+                configuration.ConfigurationPath = servieConfigurationPath;
+                configuration.OverrideConfigurationPath = OverrideConfigurationPath;
 
                 return configuration;
             }
