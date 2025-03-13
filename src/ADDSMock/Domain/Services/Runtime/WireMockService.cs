@@ -29,6 +29,7 @@ namespace ADDSMock.Domain.Services.Runtime
         public Result Start()
         {
             var configuration = _environmentService.Mock;
+            var scheme = configuration.UseSsl ? "https" : "http";
 
             var wireMockConfiguration = new WireMockServerSettings
             {
@@ -40,6 +41,7 @@ namespace ADDSMock.Domain.Services.Runtime
                 Logger = _loggingService,
                 WatchStaticMappings = false,
                 WatchStaticMappingsInSubdirectories = false,
+                Urls = new[] { $"{scheme}://{configuration.Url}:{configuration.Port}/" }
             };
 
             // TODO Implement file system so that we can store JSON mappings correctly
@@ -58,8 +60,7 @@ namespace ADDSMock.Domain.Services.Runtime
                             .WithHeader("Content-Type", "text/plain")
                             .WithBody("Healthy (override...)!"));
 
-                var scheme = configuration.UseSsl ? "https" : "http";
-                _baseUrl = $"{scheme}://localhost:{configuration.Port}/";
+                _baseUrl = $"{scheme}://{configuration.Url}:{configuration.Port}/";
 
                 foreach (var service in _environmentService.Services.Configurations)
                 {

@@ -8,13 +8,14 @@ namespace ADDSMock.Domain.Configuration
 {
     public class MockConfiguration
     {
-        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2)
+        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2, string url)
         {
             ConfigurationPath = configurationPath;
             OverrideConfigurationPath = overrideConfigurationPath;
             Port = port;
             UseSsl = useSsl;
             UseHttp2 = useHttp2;
+            Url = url;
         }
 
         public string ConfigurationPath { get; set; }
@@ -23,6 +24,7 @@ namespace ADDSMock.Domain.Configuration
         public int Port { get; }
         public bool UseSsl { get; }
         public bool UseHttp2 { get; }
+        public string Url { get; }
 
         public static Result<MockConfiguration> ReadConfiguration(IFileSystem fileSystem, string path)
         {
