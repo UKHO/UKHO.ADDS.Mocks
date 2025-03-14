@@ -101,6 +101,7 @@ namespace ADDSMock.Domain.Services.Runtime
                 var filesPath = _fileSystem.Path.Combine(servicePath, "files");
                 var overrideFilesPath = _fileSystem.Path.Combine(overrideServicePath, "files");
 
+                Console.WriteLine($"Service path: {servicePath}");
                 if (!_fileSystem.Path.Exists(servicePath))
                 {
                     return Result.Fail($"Service path not found at {servicePath}");

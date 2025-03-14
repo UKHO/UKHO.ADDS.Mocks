@@ -31,7 +31,6 @@ namespace ADDSMock.Domain.Configuration
             var configurationPath = fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var currentDirectoryPath = fileSystem.Directory.GetCurrentDirectory();
 
-            //var solutionDirectoryPath = fileSystem.Path.Combine(currentDirectoryPath, @"..\..\");
             var configurationDirectoryPath = fileSystem.Path.GetFullPath(currentDirectoryPath);
 
             var serviceConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "service-configuration");
