@@ -8,13 +8,14 @@ namespace ADDSMock.Domain.Configuration
 {
     public class MockConfiguration
     {
-        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2)
+        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2, string hostName)
         {
             ConfigurationPath = configurationPath;
             OverrideConfigurationPath = overrideConfigurationPath;
             Port = port;
             UseSsl = useSsl;
             UseHttp2 = useHttp2;
+            HostName = hostName;
         }
 
         public string ConfigurationPath { get; set; }
@@ -24,6 +25,8 @@ namespace ADDSMock.Domain.Configuration
         public bool UseSsl { get; }
         public bool UseHttp2 { get; }
 
+        public string HostName { get; set; }
+
         public static Result<MockConfiguration> ReadConfiguration(IFileSystem fileSystem, string path)
         {
             var configurationPath = fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -32,8 +35,8 @@ namespace ADDSMock.Domain.Configuration
             var solutionDirectoryPath = fileSystem.Path.Combine(currentDirectoryPath, @"..\..\");
             var configurationDirectoryPath = fileSystem.Path.GetFullPath(solutionDirectoryPath);
 
-            var serviceConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "service-configuration");
-            var overrideConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "override-configuration");
+            var serviceConfigurationPath = fileSystem.Path.Combine(configurationPath, "service-configuration");
+            var overrideConfigurationPath = fileSystem.Path.Combine(configurationPath, "override-configuration");
 
             var configurationFilePath = fileSystem.Path.Combine(configurationPath, path);
 
