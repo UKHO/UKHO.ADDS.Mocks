@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System.Diagnostics;
+using System.IO.Abstractions;
 using System.Reflection;
 using System.Text.Json;
 using CSScripting;
@@ -46,8 +47,13 @@ namespace ADDSMock.Domain.Configuration
             {
                 var configurationJson = fileSystem.File.ReadAllText(configurationFilePath);
                 var configuration = JsonSerializer.Deserialize<MockConfiguration>(configurationJson)!;
-                configuration.ConfigurationPath = serviceConfigurationPath;
-                configuration.OverrideConfigurationPath = overrideConfigurationPath;
+                // This code will only run in Debug mode
+#if DEBUG
+                
+                    configuration.ConfigurationPath = serviceConfigurationPath;
+                    configuration.OverrideConfigurationPath = overrideConfigurationPath;
+                
+#endif
 
                 return configuration;
             }

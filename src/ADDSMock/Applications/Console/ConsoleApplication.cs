@@ -1,4 +1,5 @@
 ﻿using ADDSMock.Domain.Services;
+using ADDSMock.Domain.Services.Runtime;
 using ADDSMock.Extensions;
 using Serilog;
 
@@ -6,49 +7,21 @@ namespace ADDSMock.Applications.Console
 {
     internal class ConsoleApplication
     {
-        public async Task RunAsync(string[] args)
+        public static void Run(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            CreateHostBuilder(args).Build().Run();
+        }
 
-            var consoleResult = builder.Services.AddConsole();
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args).UseSerilog(Log.Logger)
+                .ConfigureLogging(logging => logging.AddConsole()).ConfigureServices((host, services) => ConfigureServices(services, host.Configuration));
+        }
 
-            if (consoleResult.IsFailed)
-            {
-                Log.Fatal(consoleResult.Error.Message);
-                return;
-            }
-
-            builder.Host.UseSerilog(Log.Logger);
-            builder.Services.AddAuthorization();
-
-            var application = builder.Build();
-
-            application.UseHttpsRedirection();
-            application.UseAuthorization();
-
-            var wireMockService = application.Services.GetRequiredService<IWireMockService>();
-            var wireMockStartResult = wireMockService.Start();
-
-            if (wireMockStartResult.IsFailed)
-            {
-                Log.Fatal(wireMockStartResult.Error.Message);
-                return;
-            }
-
-            var mappingService = application.Services.GetRequiredService<IMappingService>();
-            var readMappingsResult = await mappingService.ReadMappingsAsync();
-
-            if (readMappingsResult.IsFailed)
-            {
-                Log.Fatal(readMappingsResult.Error.Message);
-                return;
-            }
-
-            await mappingService.ExecuteMappingsAsync(wireMockService);
-
-            await application.RunAsync();
-
-            wireMockService.Stop();
+        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IMappingService, MappingService>();
+            services.AddConsole();
         }
     }
 }

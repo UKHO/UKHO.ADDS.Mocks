@@ -15,7 +15,6 @@ namespace ADDSMock.Domain.Services.Runtime
         private readonly ILoggingService _loggingService;
         private string _baseUrl;
         private WireMockServer? _wireMockServer;
-
         public WireMockService(IEnvironmentService environmentService, ILoggingService loggingService)
         {
             _environmentService = environmentService;
@@ -29,6 +28,7 @@ namespace ADDSMock.Domain.Services.Runtime
         public Result Start()
         {
             var configuration = _environmentService.Mock;
+            
 
             var wireMockConfiguration = new WireMockServerSettings
             {
@@ -39,7 +39,7 @@ namespace ADDSMock.Domain.Services.Runtime
                 UseHttp2 = configuration.UseHttp2,
                 Logger = _loggingService,
                 WatchStaticMappings = false,
-                WatchStaticMappingsInSubdirectories = false,
+                WatchStaticMappingsInSubdirectories = false
             };
 
             // TODO Implement file system so that we can store JSON mappings correctly
@@ -58,12 +58,9 @@ namespace ADDSMock.Domain.Services.Runtime
                             .WithHeader("Content-Type", "text/plain")
                             .WithBody("Healthy (override...)!"));
 
-                var scheme = configuration.UseSsl ? "https" : "http";
-                _baseUrl = $"{scheme}://localhost:{configuration.Port}/";
-
                 foreach (var service in _environmentService.Services.Configurations)
                 {
-                    Log.Information($"{service.Name} [{service.Prefix}] started at [{_baseUrl}{service.Prefix}/]");
+                    Log.Information($"{service.Name} [{service.Prefix}] started at [{_wireMockServer.Url}/{service.Prefix}/]");
                 }
 
                 return Result.Ok();

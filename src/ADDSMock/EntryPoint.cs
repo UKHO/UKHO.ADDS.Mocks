@@ -12,7 +12,7 @@ namespace ADDSMock
 {
     internal class EntryPoint
     {
-        private static async Task<int> Main(string[] args)
+        private static void Main(string[] args)
         {
             var isInteractive = false;
 
@@ -29,7 +29,7 @@ namespace ADDSMock
                 var thread = new Thread(() =>
                 {
                     var builder = AppBuilder.Configure<InteractiveApplication>().UsePlatformDetect().WithInterFont().UseReactiveUI().LogToTrace();
-                    builder.StartWithClassicDesktopLifetime([]);
+                    builder.StartWithClassicDesktopLifetime(args);
                 });
 
                 thread.SetApartmentState(ApartmentState.STA);
@@ -39,11 +39,10 @@ namespace ADDSMock
             }
             else
             {
-                var consoleApplication = new ConsoleApplication();
-                await consoleApplication.RunAsync(args);
+                ConsoleApplication.Run(args);
             }
 
-            return ExitCodes.Success;
+            //return ExitCodes.Success;
         }
     }
 }

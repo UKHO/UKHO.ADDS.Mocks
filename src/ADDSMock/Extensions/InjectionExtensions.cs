@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using ADDSMock.Applications.Console;
 using ADDSMock.Applications.Interactive.Logging;
 using ADDSMock.Applications.Interactive.Services;
 using ADDSMock.Applications.Interactive.Services.Implementation;
@@ -31,6 +32,9 @@ namespace ADDSMock.Extensions
             }
 
             collection.AddSingleton<ILoggingService, LoggingService>();
+
+            collection.AddSingleton<IWireMockService, WireMockService>();
+            collection.AddHostedService<WireMockHostedService>();
 
             return Result.Ok();
         }
