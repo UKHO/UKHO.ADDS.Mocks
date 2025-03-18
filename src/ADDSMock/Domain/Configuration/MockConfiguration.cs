@@ -33,8 +33,8 @@ namespace ADDSMock.Domain.Configuration
             var solutionDirectoryPath = fileSystem.Path.Combine(currentDirectoryPath, @"..\..\");
             var configurationDirectoryPath = fileSystem.Path.GetFullPath(solutionDirectoryPath);
 
-            var serviceConfigurationPath = fileSystem.Path.Combine(configurationPath, "service-configuration");
-            var overrideConfigurationPath = fileSystem.Path.Combine(configurationPath, "override-configuration");
+            var serviceConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "service-configuration");
+            var overrideConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "override-configuration");
 
             var configurationFilePath = fileSystem.Path.Combine(configurationPath, path);
 
