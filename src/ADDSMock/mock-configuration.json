@@ -1,8 +1,8 @@
 ﻿{
   "ConfigurationPath": "service-configuration",
   "OverrideConfigurationPath": "override-configuration",
-  "Port": 5678,
+  "Port": 8080,
   "UseSsl": false,
   "UseHttp2": false,
-  "HostName": "addsmock20250317183500-b0f8heerg8hge9fx.centralindia-01.azurewebsites.net"
+  "HostName": ""
 }

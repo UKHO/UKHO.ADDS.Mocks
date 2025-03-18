@@ -15,7 +15,6 @@ namespace ADDSMock.Applications.Console
         {
             _wireMockService = wireMockService;
             _mappingService = mappingService;
-            _ = SetupMock();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -25,6 +24,7 @@ namespace ADDSMock.Applications.Console
             {
                 throw new Exception(result.Error.Message);
             }
+            _ = SetupMock();
             return Task.CompletedTask;
         }
 
