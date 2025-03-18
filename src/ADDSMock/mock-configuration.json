@@ -1,8 +1,7 @@
 ﻿{
-  "ConfigurationPath": "service-configuration",
-  "OverrideConfigurationPath": "override-configuration",
+  "ConfigurationPath": "C:\\a\\2\\s\\mock\\repo\\service-configuration",
+  "OverrideConfigurationPath": "C:\\Dev\\UKHO\\UKHO.Mocks.ADDS\\override-configuration",
   "Port": 8080,
   "UseSsl": false,
-  "UseHttp2": false,
-  "HostName": ""
+  "UseHttp2": false
 }

@@ -92,11 +92,8 @@ namespace ADDSMock.Domain.Services.Runtime
 
             foreach (var service in _services)
             {
-                // Get the wwwroot folder path
-                var configurationPath = _fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-
-                var servicePath = _fileSystem.Path.Combine(configurationPath, _environmentService.Mock.ConfigurationPath, service.ServicePrefix);
-                var overrideServicePath = _fileSystem.Path.Combine(configurationPath, _environmentService.Mock.OverrideConfigurationPath, service.ServicePrefix);
+                var servicePath = _fileSystem.Path.Combine(_environmentService.Mock.ConfigurationPath, service.ServicePrefix);
+                var overrideServicePath = _fileSystem.Path.Combine(_environmentService.Mock.OverrideConfigurationPath, service.ServicePrefix);
 
                 var serviceConfigPath = _fileSystem.Path.Combine(servicePath, "configuration.json");
                 var overrideServiceConfigPath = _fileSystem.Path.Combine(overrideServicePath, "configuration.json");

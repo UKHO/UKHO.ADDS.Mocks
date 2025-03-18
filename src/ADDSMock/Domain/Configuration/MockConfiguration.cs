@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System.Diagnostics;
+using System.IO.Abstractions;
 using System.Reflection;
 using System.Text.Json;
 using CSScripting;
@@ -8,14 +9,13 @@ namespace ADDSMock.Domain.Configuration
 {
     public class MockConfiguration
     {
-        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2, string hostName)
+        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2)
         {
             ConfigurationPath = configurationPath;
             OverrideConfigurationPath = overrideConfigurationPath;
             Port = port;
             UseSsl = useSsl;
             UseHttp2 = useHttp2;
-            HostName = hostName;
         }
 
         public string ConfigurationPath { get; set; }
@@ -24,8 +24,6 @@ namespace ADDSMock.Domain.Configuration
         public int Port { get; }
         public bool UseSsl { get; }
         public bool UseHttp2 { get; }
-
-        public string HostName { get; set; }
 
         public static Result<MockConfiguration> ReadConfiguration(IFileSystem fileSystem, string path)
         {
@@ -49,8 +47,13 @@ namespace ADDSMock.Domain.Configuration
             {
                 var configurationJson = fileSystem.File.ReadAllText(configurationFilePath);
                 var configuration = JsonSerializer.Deserialize<MockConfiguration>(configurationJson)!;
-                configuration.ConfigurationPath = serviceConfigurationPath;
-                configuration.OverrideConfigurationPath = overrideConfigurationPath;
+                // This code will only run in Debug mode
+#if DEBUG
+                
+                    configuration.ConfigurationPath = serviceConfigurationPath;
+                    configuration.OverrideConfigurationPath = overrideConfigurationPath;
+                
+#endif
 
                 return configuration;
             }

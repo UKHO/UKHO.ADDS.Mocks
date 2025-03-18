@@ -1,6 +1,7 @@
 ﻿using ADDSMock.Domain.Services;
 using ADDSMock.Domain.Services.Runtime;
 using ADDSMock.Extensions;
+using Serilog;
 
 namespace ADDSMock.Applications.Console
 {
@@ -13,7 +14,7 @@ namespace ADDSMock.Applications.Console
 
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return Host.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder(args).UseSerilog(Log.Logger)
                 .ConfigureLogging(logging => logging.AddConsole()).ConfigureServices((host, services) => ConfigureServices(services, host.Configuration));
         }
 
