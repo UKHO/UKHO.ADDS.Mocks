@@ -33,7 +33,7 @@ namespace ADDSMock.Domain.Services.Runtime
 
             var wireMockConfiguration = new WireMockServerSettings
             {
-                //Port = configuration.Port,
+                Port = configuration.Port,
                 UseSSL = configuration.UseSsl,
                 AllowPartialMapping = true,
                 StartAdminInterface = true,
