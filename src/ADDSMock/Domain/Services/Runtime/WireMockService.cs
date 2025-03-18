@@ -29,13 +29,12 @@ namespace ADDSMock.Domain.Services.Runtime
         public Result Start()
         {
             var configuration = _environmentService.Mock;
-            var scheme = configuration.UseSsl ? "https" : "http";
-            _baseUrl = $"{scheme}://{configuration.HostName}/";
+            
 
             var wireMockConfiguration = new WireMockServerSettings
             {
                 //Port = configuration.Port,
-                //UseSSL = configuration.UseSsl,
+                UseSSL = configuration.UseSsl,
                 AllowPartialMapping = true,
                 StartAdminInterface = true,
                 UseHttp2 = configuration.UseHttp2,
@@ -61,12 +60,12 @@ namespace ADDSMock.Domain.Services.Runtime
                             .WithHeader("Content-Type", "text/plain")
                             .WithBody("Healthy (override...)!"));
 
-                //var scheme = configuration.UseSsl ? "https" : "http";
-                //_baseUrl = $"{scheme}://{configuration.HostName}:{_wireMockServer.Port}/";
+                var scheme = configuration.UseSsl ? "https" : "http";
+                _baseUrl = $"{_wireMockServer.Url}/";
 
                 foreach (var service in _environmentService.Services.Configurations)
                 {
-                    Log.Information($"{service.Name} [{service.Prefix}] started at [{_baseUrl}{service.Prefix}/]");
+                    Log.Information($"{service.Name} [{service.Prefix}] started at [{_wireMockServer.Url}/{service.Prefix}/]");
                 }
 
                 return Result.Ok();
