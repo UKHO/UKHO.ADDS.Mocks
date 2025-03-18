@@ -63,8 +63,5 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy /E /I &quot;$(ProjectDir)override-configuration&quot; &quot;$(OutDir)override-configuration&quot;&#xD;&#xA;xcopy /E /I &quot;$(ProjectDir)service-configuration&quot; &quot;$(OutDir)service-configuration&quot;" />
-  </Target>
 
 </Project>
