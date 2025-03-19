@@ -50,7 +50,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithParam("$filter", "fields/Title eq '3'")    //200 OK response with 0 UPNs
+                .WithParam("$filter", "fields/Title eq '3'")    //200 OK response with 0 UPNs to generate 404 response in Shop Facade
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -64,7 +64,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithParam("$filter", "fields/Title eq '4'")    //200 OK response with 0 UPNs and some metadata
+                .WithParam("$filter", "fields/Title eq '4'")    //200 OK response with 0 UPNs and some metadata to generate 204 response in Shop Facade
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -79,6 +79,118 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                                 }}
                             }}
                             ]                        
+                    }}"
+                ));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '5'")    //401 Authorized response
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(401)
+                .WithHeader("Content-Type", "application/json"));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '6'")    //403 Forbidden response
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(403)
+                .WithHeader("Content-Type", "application/json"));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '7'")   //200 OK response with keyword "400BadRequestResponse" in UPN to generate 400 response from PGS
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody($@"
+                   {{
+                    ""value"": [
+                        {{
+                            ""fields"": {{
+                                ""Title"": ""1"",
+                                ""ECDIS_UPN1_Title"": ""Master"",
+                                ""ECDIS_UPN_1"": ""400BadRequestResponseB66ED98281599B3A231859868A"",
+                            }}
+                        }}
+                        ]
+                    }}"
+                ));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '8'")   //200 OK response with keyword "500InternalServerErrorResponse" in UPN to generate 400 response from PGS
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody($@"
+                   {{
+                    ""value"": [
+                        {{
+                            ""fields"": {{
+                                ""Title"": ""1"",
+                                ""ECDIS_UPN1_Title"": ""Master"",
+                                ""ECDIS_UPN_1"": ""500InternalServerErrorResponse1599B3A231859868A"",
+                            }}
+                        }}
+                        ]
+                    }}"
+                ));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '9'")   //200 OK response with keyword "401UnauthorizedResponse" in UPN to generate 400 response from PGS
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody($@"
+                   {{
+                    ""value"": [
+                        {{
+                            ""fields"": {{
+                                ""Title"": ""1"",
+                                ""ECDIS_UPN1_Title"": ""Master"",
+                                ""ECDIS_UPN_1"": ""401UnauthorizedResponse6ED98281599B3C7B1859868B"",
+                            }}
+                        }}
+                        ]
+                    }}"
+                ));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '10'")   //200 OK response with keyword "403ForbiddenResponse" in UPN to generate 400 response from PGS
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody($@"
+                   {{
+                    ""value"": [
+                        {{
+                            ""fields"": {{
+                                ""Title"": ""1"",
+                                ""ECDIS_UPN1_Title"": ""Master"",
+                                ""ECDIS_UPN_1"": ""403ForbiddenResponse5B66ED98281599B3A231859868A"",
+                            }}
+                        }}
+                        ]
                     }}"
                 ));
 }
