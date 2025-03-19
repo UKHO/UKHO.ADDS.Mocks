@@ -70,4 +70,18 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("Content-Type", "application/json")
                 .WithBody("Forbidden.")
         );
+
+    server
+        .Given(
+            Request.Create()
+                .WithPath("/v1/permits/s100")
+                .UsingPost()
+                .WithBody(new RegexMatcher(".*404NotFoundResponse.*"))
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(404)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Not found.")
+        );
 }

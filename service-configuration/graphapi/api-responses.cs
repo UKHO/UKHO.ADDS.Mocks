@@ -128,7 +128,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithParam("$filter", "fields/Title eq '8'")   //200 OK response with keyword "500InternalServerErrorResponse" in UPN to generate 400 response from PGS
+                .WithParam("$filter", "fields/Title eq '8'")   //200 OK response with keyword "500InternalServerErrorResponse" in UPN to generate 500 response from PGS
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -151,7 +151,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithParam("$filter", "fields/Title eq '9'")   //200 OK response with keyword "401UnauthorizedResponse" in UPN to generate 400 response from PGS
+                .WithParam("$filter", "fields/Title eq '9'")   //200 OK response with keyword "401UnauthorizedResponse" in UPN to generate 401 response from PGS
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -174,7 +174,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithParam("$filter", "fields/Title eq '10'")   //200 OK response with keyword "403ForbiddenResponse" in UPN to generate 400 response from PGS
+                .WithParam("$filter", "fields/Title eq '10'")   //200 OK response with keyword "403ForbiddenResponse" in UPN to generate 403 response from PGS
                 .UsingGet())
         .RespondWith(
             Response.Create()
@@ -188,6 +188,29 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                                 ""Title"": ""1"",
                                 ""ECDIS_UPN1_Title"": ""Master"",
                                 ""ECDIS_UPN_1"": ""403ForbiddenResponse5B66ED98281599B3A231859868A"",
+                            }}
+                        }}
+                        ]
+                    }}"
+                ));
+
+    server
+        .Given(
+            Request.Create()
+                .WithParam("$filter", "fields/Title eq '11'")   //200 OK response with keyword "404NotFoundResponse" in UPN to generate 404 response from PGS
+                .UsingGet())
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody($@"
+                   {{
+                    ""value"": [
+                        {{
+                            ""fields"": {{
+                                ""Title"": ""1"",
+                                ""ECDIS_UPN1_Title"": ""Master"",
+                                ""ECDIS_UPN_1"": ""404NotFoundResponse35B66ED98281599B3A231859868A"",
                             }}
                         }}
                         ]
