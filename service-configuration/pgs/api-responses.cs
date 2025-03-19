@@ -44,4 +44,44 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("Content-Type", "application/json")
                 .WithBody("Internal server error.")
         );
+    server
+        .Given(
+            Request.Create()
+                .WithPath("/v1/permits/s100")
+                .UsingPost()
+                .WithBody(new RegexMatcher(".*401UnauthorizedResponse.*"))
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(401)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Unauthorized.")
+        );
+    server
+        .Given(
+            Request.Create()
+                .WithPath("/v1/permits/s100")
+                .UsingPost()
+                .WithBody(new RegexMatcher(".*403ForbiddenResponse.*"))
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(403)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Forbidden.")
+        );
+
+    server
+        .Given(
+            Request.Create()
+                .WithPath("/v1/permits/s100")
+                .UsingPost()
+                .WithBody(new RegexMatcher(".*404NotFoundResponse.*"))
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(404)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Not found.")
+        );
 }
