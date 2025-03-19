@@ -118,7 +118,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             ""fields"": {{
                                 ""Title"": ""1"",
                                 ""ECDIS_UPN1_Title"": ""Master"",
-                                ""ECDIS_UPN_1"": ""400BadRequestResponseB66ED98281599B3A231859868A"",
+                                ""ECDIS_UPN_1"": ""400BadRequestResponseB66ED98281599B3A231859868A""
                             }}
                         }}
                         ]
@@ -141,7 +141,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             ""fields"": {{
                                 ""Title"": ""1"",
                                 ""ECDIS_UPN1_Title"": ""Master"",
-                                ""ECDIS_UPN_1"": ""500InternalServerErrorResponse1599B3A231859868A"",
+                                ""ECDIS_UPN_1"": ""500InternalServerErrorResponse1599B3A231859868A""
                             }}
                         }}
                         ]
@@ -164,7 +164,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             ""fields"": {{
                                 ""Title"": ""1"",
                                 ""ECDIS_UPN1_Title"": ""Master"",
-                                ""ECDIS_UPN_1"": ""401UnauthorizedResponse6ED98281599B3C7B1859868B"",
+                                ""ECDIS_UPN_1"": ""401UnauthorizedResponse6ED98281599B3C7B1859868B""
                             }}
                         }}
                         ]
@@ -187,7 +187,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             ""fields"": {{
                                 ""Title"": ""1"",
                                 ""ECDIS_UPN1_Title"": ""Master"",
-                                ""ECDIS_UPN_1"": ""403ForbiddenResponse5B66ED98281599B3A231859868A"",
+                                ""ECDIS_UPN_1"": ""403ForbiddenResponse5B66ED98281599B3A231859868A""
                             }}
                         }}
                         ]
@@ -210,7 +210,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             ""fields"": {{
                                 ""Title"": ""1"",
                                 ""ECDIS_UPN1_Title"": ""Master"",
-                                ""ECDIS_UPN_1"": ""404NotFoundResponse35B66ED98281599B3A231859868A"",
+                                ""ECDIS_UPN_1"": ""404NotFoundResponse35B66ED98281599B3A231859868A""
                             }}
                         }}
                         ]
