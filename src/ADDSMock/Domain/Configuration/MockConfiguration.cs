@@ -9,16 +9,14 @@ namespace ADDSMock.Domain.Configuration
 {
     public class MockConfiguration
     {
-        public MockConfiguration(string configurationPath, string overrideConfigurationPath, int port, bool useSsl, bool useHttp2)
+        public MockConfiguration(string overrideConfigurationPath, int port, bool useSsl, bool useHttp2)
         {
-            ConfigurationPath = configurationPath;
             OverrideConfigurationPath = overrideConfigurationPath;
             Port = port;
             UseSsl = useSsl;
             UseHttp2 = useHttp2;
         }
 
-        public string ConfigurationPath { get; set; }
         public string OverrideConfigurationPath { get; set; }
 
         public int Port { get; }
@@ -33,7 +31,6 @@ namespace ADDSMock.Domain.Configuration
             var solutionDirectoryPath = fileSystem.Path.Combine(currentDirectoryPath, @"..\..\");
             var configurationDirectoryPath = fileSystem.Path.GetFullPath(solutionDirectoryPath);
 
-            var serviceConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "service-configuration");
             var overrideConfigurationPath = fileSystem.Path.Combine(configurationDirectoryPath, "override-configuration");
 
             var configurationFilePath = fileSystem.Path.Combine(configurationPath, path);
@@ -50,7 +47,6 @@ namespace ADDSMock.Domain.Configuration
                 // This code will only run in Debug mode
 #if DEBUG
                 
-                    configuration.ConfigurationPath = serviceConfigurationPath;
                     configuration.OverrideConfigurationPath = overrideConfigurationPath;
                 
 #endif
