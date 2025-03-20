@@ -7,6 +7,7 @@ using ADDSMock.Domain.Events;
 using ADDSMock.Domain.Mappings;
 using CSScriptLib;
 using LightResults;
+using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Serilog;
 using WireMock.Matchers.Request;
@@ -90,9 +91,12 @@ namespace ADDSMock.Domain.Services.Runtime
         {
             _services = _environmentService.Services.Configurations.Select(x => new MockService(x.Prefix, x.Name)).ToList();
 
+            var configurationPathRoot = _fileSystem.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+            var configurationPath = _fileSystem.Path.Combine(configurationPathRoot, "service-configuration");
+
             foreach (var service in _services)
             {
-                var servicePath = _fileSystem.Path.Combine(_environmentService.Mock.ConfigurationPath, service.ServicePrefix);
+                var servicePath = _fileSystem.Path.Combine(configurationPath, service.ServicePrefix);
                 var overrideServicePath = _fileSystem.Path.Combine(_environmentService.Mock.OverrideConfigurationPath, service.ServicePrefix);
 
                 var serviceConfigPath = _fileSystem.Path.Combine(servicePath, "configuration.json");
@@ -201,11 +205,6 @@ namespace ADDSMock.Domain.Services.Runtime
             {
                 foreach (var fragment in service.Fragments)
                 {
-                    if (service.ServicePrefix == "scs")
-                    {
-                        var zz = 42;
-                    }
-
                     var beforeConfigurationIds = wireMockService.WireMockServer!.MappingModels.Select(x => x.Guid).ToList();
 
                     try

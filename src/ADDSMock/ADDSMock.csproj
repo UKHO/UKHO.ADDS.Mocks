@@ -20,11 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Traffic\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="mock-configuration.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -34,6 +29,10 @@
     <Content Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)service-configuration\**" CopyToOutputDirectory="Always" LinkBase="service-configuration"/>
   </ItemGroup>
 
   <!--Console/Web and Interactive Mode-->
