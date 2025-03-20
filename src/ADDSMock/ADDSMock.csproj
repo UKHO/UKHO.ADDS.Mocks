@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)service-configuration\**" CopyToOutputDirectory="Always" LinkBase="service-configuration"/>
+    <None Include="..\..\service-configuration\**" CopyToOutputDirectory="Always" LinkBase="service-configuration"/>
   </ItemGroup>
 
   <!--Console/Web and Interactive Mode-->
