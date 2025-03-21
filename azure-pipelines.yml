@@ -1,10 +1,6 @@
 name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd).$(BuildCounter)
 
 parameters:
-- name: SkipDependencyCheck
-  displayName: "Skip dependency check"
-  type: boolean
-  default: false
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
@@ -28,14 +24,6 @@ variables:
   value: "NautilusBuild"
 - name: SdkVersion
   value: "8.x"
-
-resources:
-  repositories:
-  - repository: UKHOTemplates
-    type: github
-    name: UKHO/devops-pipelinetemplates
-    endpoint: UKHO
-    ref: refs/heads/main
 
 stages:
 - stage: BuildTest
@@ -68,13 +56,6 @@ stages:
         noCache: true
         nugetConfigPath: '$(Build.SourcesDirectory)\BuildNuget.config'
         packagesDirectory: '$(Build.SourcesDirectory)\packages'
-
-    - ${{ if ne(parameters.SkipDependencyCheck, true) }}:
-      - template: dependency-checker/windows-dependency-checker.yaml@UKHOTemplates
-        parameters:
-          scanName: 'ADDS-Mocks - $(Build.SourceBranchName)'
-          scanPath: '$(Build.SourcesDirectory)\src'
-          suppressionPath: '$(Build.SourcesDirectory)\NVDSuppressions.xml'
 
     - ${{ if ne(parameters.SkipUnitTests, true) }}:
       - task: DotNetCoreCLI@2
