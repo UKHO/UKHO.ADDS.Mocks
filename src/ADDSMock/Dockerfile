@@ -12,4 +12,4 @@ COPY --from=build /app/build .
  
  
 ENTRYPOINT ["dotnet", "ADDSMock.dll"]
-EXPOSE 8080 
+EXPOSE 5678 
