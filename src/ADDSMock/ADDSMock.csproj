@@ -40,7 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\service-configuration\**" CopyToOutputDirectory="Always" LinkBase="service-configuration" />
+    <Compile Remove="service-configuration\**"/>
+    <None Include="service-configuration\**" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <!--Console/Web and Interactive Mode-->
