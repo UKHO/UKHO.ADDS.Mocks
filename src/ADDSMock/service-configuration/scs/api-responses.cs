@@ -6,10 +6,12 @@ using WireMock.ResponseBuilders;
 
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
+    var urlPattern = ".*/v2/catalogues/s100/basic.*";
+
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*/v2/catalogues/s100/basic.*"))
+                .WithUrl(new RegexMatcher(urlPattern))
                 .UsingGet()
         )
         .RespondWith(
@@ -22,7 +24,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*/v2/catalogues/s100/basic.*"))
+                .WithUrl(new RegexMatcher(urlPattern))
                 .WithHeader("If-Modified-Since", "2025-01-01T00:00:00Z")
                 .UsingGet()
         )
@@ -34,7 +36,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*/v2/catalogues/s100/basic.*"))
+                .WithUrl(new RegexMatcher(urlPattern))
                 .WithHeader("If-Modified-Since", "20221027")
                 .UsingGet()
         )
@@ -48,7 +50,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithUrl(new RegexMatcher(".*/v2/catalogues/s100/basic.*"))
+                .WithUrl(new RegexMatcher(urlPattern))
                 .WithHeader("If-Modified-Since", "3000-01-01T00:00:00Z")
                 .UsingGet()
         )
