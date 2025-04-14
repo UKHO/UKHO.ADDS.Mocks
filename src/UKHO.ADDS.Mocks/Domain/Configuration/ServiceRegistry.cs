@@ -1,13 +1,11 @@
 ﻿using UKHO.ADDS.Mocks.Domain.Configuration;
 
+// ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks.Configuration
 {
     public static class ServiceRegistry
     {
-        private static readonly List<ServiceDefinition> _definitions =
-        [
-            new("sample", "Sample Service", new [] {"really-get-file"})
-        ];
+        private static readonly List<ServiceDefinition> _definitions = [];
 
         public static IEnumerable<ServiceDefinition> Definitions => _definitions;
 

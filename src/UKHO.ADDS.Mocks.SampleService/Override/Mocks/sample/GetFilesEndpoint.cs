@@ -18,7 +18,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
                         // ADDS Mock will have the 'default' state unless we have told it otherwise
                         return Results.Ok("This is a result");
 
-                    case "really-get-file":
+                    case "get-file":
 
                         var pathResult = endpoint.GetFile("readme.txt");
 
@@ -29,7 +29,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
                         return Results.NotFound("Could not find the path in the /files GET method");
 
-                    case "really-get-jpeg":
+                    case "get-jpeg":
 
                         var jpegPathResult = endpoint.GetFile("messier-78.jpg");
 

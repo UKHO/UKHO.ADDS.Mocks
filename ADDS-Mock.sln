@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@local", "@local", "{FD089B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.LocalHost", "src\UKHO.ADDS.Mocks.LocalHost\UKHO.ADDS.Mocks.LocalHost.csproj", "{2FD384B3-15AD-4D42-9876-6022C9647E1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.Client", "src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj", "{FF2A4219-2D7C-43B5-93F2-11804064C2BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestExamples", "src\UnitTestExamples\UnitTestExamples.csproj", "{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF2A4219-2D7C-43B5-93F2-11804064C2BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2A4219-2D7C-43B5-93F2-11804064C2BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2A4219-2D7C-43B5-93F2-11804064C2BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2A4219-2D7C-43B5-93F2-11804064C2BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

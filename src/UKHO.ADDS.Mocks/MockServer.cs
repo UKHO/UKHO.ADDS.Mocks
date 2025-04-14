@@ -16,6 +16,8 @@ namespace UKHO.ADDS.Mocks
     {
         public static async Task RunAsync(string[] args)
         {
+            MockServices.AddServices();
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Host.UseSerilog((context, services, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));

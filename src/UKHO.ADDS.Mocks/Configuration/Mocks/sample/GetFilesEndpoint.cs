@@ -18,7 +18,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
                         // ADDS Mock will have the 'default' state unless we have told it otherwise
                         return Results.Ok("This is a result");
 
-                    case "really-get-file":
+                    case "get-file":
 
                         var pathResult = endpoint.GetFile("readme.txt");
 
