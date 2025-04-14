@@ -1,16 +1,32 @@
-﻿using UKHO.ADDS.Mocks.Domain.Configuration;
+﻿using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
+using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
+using UKHO.ADDS.Mocks.Domain.Mocks;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks
 {
     public static class MetadataExtensions
     {
+        private static RouteHandlerBuilder WithRequiredHeader(this RouteHandlerBuilder builder, IEndpointMock mockBuilder, string name, string description)
+        {
+            if (mockBuilder is EndpointMockBuilder endpointBuilder)
+            {
+                var states = endpointBuilder.Fragment.Definition.States;
+
+                builder.Add(x => { x.Metadata.Add(new OpenApiHeaderParameter { Name = name, Description = description, Required = false, ExpectedValues = states }); });
+            }
+
+            return builder;
+        }
+
         public static RouteHandlerBuilder WithEndpointMetadata(
             this RouteHandlerBuilder builder,
-            IServiceMockBuilder mockBuilder,
+            IEndpointMock mockBuilder,
             Action<IServiceMarkdownBuilder> descriptionBuilder)
         {
-            var fragment = ((ServiceMockBuilder)mockBuilder).Fragment;
+            builder = builder.WithRequiredHeader(mockBuilder, ServiceEndpointMock.HeaderKey, "Set the ADDS Mock state for this request");
+
+            var fragment = ((EndpointMockBuilder)mockBuilder).Fragment;
 
             builder.Add(endpointBuilder =>
             {
@@ -32,23 +48,20 @@ namespace UKHO.ADDS.Mocks
 
             descriptionBuilder.Invoke(markdownBuilder);
 
-            markdownBuilder.AppendLine();
-            markdownBuilder.AppendLine();
+            markdownBuilder.AppendNewLine();
 
             var (project, typePath) = ParseFullTypeName(fragment.Type.FullName!);
 
             if (fragment.IsOverride)
             {
-                markdownBuilder.AppendLine("[OVERRIDE]");
-                markdownBuilder.AppendLine();
+                markdownBuilder.Append("[OVERRIDE]");
+                markdownBuilder.AppendNewLine();
             }
 
-            markdownBuilder.AppendLine($"Project  : {project}");
-            markdownBuilder.AppendLine();
-            markdownBuilder.AppendLine($"Endpoint : {typePath}");
-            markdownBuilder.AppendLine();
-
-
+            markdownBuilder.Append($"Project    : {project}");
+            markdownBuilder.AppendNewLine();
+            markdownBuilder.Append($"Definition : {typePath}");
+            
             builder = builder.WithDescription(markdownBuilder.ToString());
 
             return builder;

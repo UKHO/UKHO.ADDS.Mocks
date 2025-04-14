@@ -1,4 +1,4 @@
-﻿namespace UKHO.ADDS.Mocks.Domain.Configuration
+﻿namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
     internal class ServiceFile : IServiceFile
     {

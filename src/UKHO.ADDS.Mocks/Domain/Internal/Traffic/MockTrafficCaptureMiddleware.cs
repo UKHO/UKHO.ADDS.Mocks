@@ -1,6 +1,6 @@
-﻿namespace UKHO.ADDS.Mocks.Domain.Traffic
+﻿namespace UKHO.ADDS.Mocks.Domain.Internal.Traffic
 {
-    public class MockTrafficCaptureMiddleware
+    internal class MockTrafficCaptureMiddleware
     {
         // You can inject an interface here later for storing the result
         internal static readonly List<(MockRequest, MockResponse)> CapturedTraffic = new();

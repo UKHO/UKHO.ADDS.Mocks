@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Properties\launchSettings.json" />
+    <None Include="Configuration\Files\**" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using System.IO.Abstractions;
 using System.Reflection;
-using UKHO.ADDS.Mocks.Domain.Configuration;
+using UKHO.ADDS.Mocks.Configuration;
 using UKHO.ADDS.Mocks.Domain.Mocks;
 
-namespace UKHO.ADDS.Mocks.Domain.Services
+namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 {
     internal class MappingService
     {

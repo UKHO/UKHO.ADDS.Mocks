@@ -1,32 +1,33 @@
 ﻿using System.Text;
 
-namespace UKHO.ADDS.Mocks.Domain.Configuration
+namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
     internal class ServiceMarkdownBuilder : IServiceMarkdownBuilder
     {
         private readonly StringBuilder _sb = new();
 
-        public IServiceMarkdownBuilder Append(string text)
+        public IServiceMarkdownBuilder Append(string text = "")
         {
-            _sb.Append(text);
+            _sb.AppendLine(text);
             return this;
         }
 
-        public IServiceMarkdownBuilder AppendLine(string text = "")
+        public IServiceMarkdownBuilder AppendNewLine()
         {
-            _sb.AppendLine(text);
+            _sb.Append("  "); // Markdown soft line break
+            _sb.AppendLine();
             return this;
         }
 
         public IServiceMarkdownBuilder Heading(int level, string text)
         {
             level = Math.Clamp(level, 1, 6);
-            return AppendLine($"{new string('#', level)} {text}");
+            return Append($"{new string('#', level)} {text}");
         }
 
         public IServiceMarkdownBuilder Paragraph(string text)
         {
-            return AppendLine(text).AppendLine();
+            return Append(text).AppendNewLine();
         }
 
         public IServiceMarkdownBuilder Italic(string text)
@@ -43,36 +44,36 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
         {
             foreach (var item in items)
             {
-                AppendLine($"- {item}");
+                Append($"- {item}");
             }
             return this;
         }
 
         public IServiceMarkdownBuilder NumberedList(params string[] items)
         {
-            for (int i = 0; i < items.Length; i++)
+            for (var i = 0; i < items.Length; i++)
             {
-                AppendLine($"{i + 1}. {items[i]}");
+                Append($"{i + 1}. {items[i]}");
             }
             return this;
         }
 
         public IServiceMarkdownBuilder CodeBlock(string code, string language = "")
         {
-            AppendLine($"```{language}");
-            AppendLine(code);
-            AppendLine("```");
+            Append($"```{language}");
+            Append(code);
+            Append("```");
             return this;
         }
 
         public IServiceMarkdownBuilder Quote(string text)
         {
-            return AppendLine($"> {text}");
+            return Append($"> {text}");
         }
 
         public IServiceMarkdownBuilder HorizontalRule()
         {
-            return AppendLine("---");
+            return Append("---");
         }
 
         public IServiceMarkdownBuilder Link(string label, string url)

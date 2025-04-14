@@ -1,10 +1,14 @@
-﻿using System.IO.Abstractions;
+﻿using System.ComponentModel;
+using System.IO.Abstractions;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using MudBlazor.Services;
 using Scalar.AspNetCore;
 using Serilog;
 using UKHO.ADDS.Mocks.Dashboard;
-using UKHO.ADDS.Mocks.Domain.Services;
-using UKHO.ADDS.Mocks.Domain.Traffic;
+using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
+using UKHO.ADDS.Mocks.Domain.Internal.Services;
+using UKHO.ADDS.Mocks.Domain.Internal.Traffic;
 
 namespace UKHO.ADDS.Mocks
 {
@@ -24,6 +28,7 @@ namespace UKHO.ADDS.Mocks
 
             builder.Logging.AddFilter("Microsoft", LogLevel.Critical);
 
+            ConfigureOpenApi(builder);
             ConfigureApplication(builder);
 
             var app = builder.Build();
@@ -42,12 +47,24 @@ namespace UKHO.ADDS.Mocks
 
             app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
+            ConfigureCaching(app);
             await StartApplication(app);
 
             app.MapOpenApi();
             app.MapScalarApiReference(o => o.Servers = []);
 
             await app.RunAsync();
+        }
+
+        private static void ConfigureCaching(WebApplication app)
+        {
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.CacheControl = "no-store, no-cache, must-revalidate";
+                context.Response.Headers.Pragma = "no-cache";
+                context.Response.Headers.Expires = "0";
+                await next();
+            });
         }
 
         private static async Task StartApplication(WebApplication app)
@@ -66,6 +83,41 @@ namespace UKHO.ADDS.Mocks
             builder.Services.AddSingleton(x => new EnvironmentService(builder.Environment));
 
             builder.Services.AddSingleton<MappingService>();
+        }
+
+        private static void ConfigureOpenApi(WebApplicationBuilder builder)
+        {
+            builder.Services.AddOpenApi(options =>
+            {
+                options.AddOperationTransformer((operation, context, cancellationToken) =>
+                {
+                    var headers = context.Description.ActionDescriptor.EndpointMetadata
+                        .OfType<OpenApiHeaderParameter>();
+
+                    foreach (var header in headers)
+                    {
+                        operation.Parameters ??= new List<OpenApiParameter>();
+
+                        operation.Parameters.Add(new OpenApiParameter
+                        {
+                            Name = header.Name,
+                            In = ParameterLocation.Header,
+                            Required = header.Required,
+                            Description = header.Description,
+                            Schema = new OpenApiSchema
+                            {
+                                Type = "string",
+                                Enum = header.ExpectedValues?
+                                    .Select(v => new OpenApiString(v))
+                                    .Cast<IOpenApiAny>()
+                                    .ToList()
+                            }
+                        });
+                    }
+
+                    return Task.CompletedTask;
+                });
+            });
         }
     }
 }

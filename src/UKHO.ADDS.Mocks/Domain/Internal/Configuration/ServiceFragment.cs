@@ -1,6 +1,7 @@
 ﻿using UKHO.ADDS.Infrastructure.Results;
+using UKHO.ADDS.Mocks.Domain.Configuration;
 
-namespace UKHO.ADDS.Mocks.Domain.Configuration
+namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
     internal class ServiceFragment
     {
@@ -27,6 +28,8 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         public string ServiceName => _definition.Name;
 
+        internal ServiceDefinition Definition => _definition;
+
         public IResult<IServiceFile> GetFilePath(string fileName)
         {
             var file = _definition.ServiceFiles.SingleOrDefault(f => f.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
@@ -39,6 +42,6 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             return Result.Success<IServiceFile>(file);
         }
 
-        public IServiceMockBuilder CreateBuilder(RouteGroupBuilder groupBuilder) => new ServiceMockBuilder(groupBuilder, this);
+        public IEndpointMock CreateBuilder(RouteGroupBuilder groupBuilder) => new EndpointMockBuilder(groupBuilder, this);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace UKHO.ADDS.Mocks.Domain.Services
+﻿namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 {
     internal class EnvironmentService
     {

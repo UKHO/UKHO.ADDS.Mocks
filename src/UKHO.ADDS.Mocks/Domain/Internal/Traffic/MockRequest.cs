@@ -1,4 +1,4 @@
-﻿namespace UKHO.ADDS.Mocks.Domain.Traffic
+﻿namespace UKHO.ADDS.Mocks.Domain.Internal.Traffic
 {
     internal class MockRequest
     {

@@ -1,13 +1,15 @@
-﻿namespace UKHO.ADDS.Mocks.Domain.Configuration
+﻿using UKHO.ADDS.Infrastructure.Results;
+
+namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
-    internal class ServiceMockBuilder : IServiceMockBuilder
+    internal class EndpointMockBuilder : IEndpointMock
     {
         private readonly RouteGroupBuilder _group;
 
         private readonly string _tagName;
         private bool _hasCreatedMapping;
 
-        internal ServiceMockBuilder(RouteGroupBuilder group, ServiceFragment fragment)
+        internal EndpointMockBuilder(RouteGroupBuilder group, ServiceFragment fragment)
         {
             _group = group;
             Fragment = fragment;
@@ -46,7 +48,7 @@
         public RouteHandlerBuilder MapDelete(string pattern, Delegate handler)
         {
             EnsureNoMappingAndSet();
-            return _group.MapGet(pattern, handler).WithTags(_tagName);
+            return _group.MapDelete(pattern, handler).WithTags(_tagName);
         }
 
         public RouteHandlerBuilder MapMethods(string pattern, IEnumerable<string> httpMethods, Delegate handler)
@@ -54,6 +56,8 @@
             EnsureNoMappingAndSet();
             return _group.MapMethods(pattern, httpMethods, handler).WithTags(_tagName);
         }
+
+        public IResult<IServiceFile> GetFile(string fileName) => Fragment.GetFilePath(fileName);
 
         private void EnsureNoMappingAndSet()
         {

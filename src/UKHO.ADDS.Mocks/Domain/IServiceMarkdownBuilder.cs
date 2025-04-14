@@ -2,9 +2,9 @@
 {
     public interface IServiceMarkdownBuilder
     {
-        IServiceMarkdownBuilder Append(string text);
+        IServiceMarkdownBuilder Append(string text = "");
 
-        IServiceMarkdownBuilder AppendLine(string text = "");
+        IServiceMarkdownBuilder AppendNewLine();
 
         IServiceMarkdownBuilder Heading(int level, string text);
 
