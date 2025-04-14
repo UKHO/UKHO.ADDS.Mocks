@@ -25,7 +25,7 @@ namespace UKHO.ADDS.Mocks.Domain.Services
                     {
                         var serviceMock = (ServiceEndpointMock)Activator.CreateInstance(serviceFragment.Type)!;
 
-                        serviceMock.RegisterEndpoint(serviceFragment.CreateBuilder(group));
+                        serviceMock.RegisterSingleEndpoint(serviceFragment.CreateBuilder(group));
                     }
                 }
                 catch (Exception ex)

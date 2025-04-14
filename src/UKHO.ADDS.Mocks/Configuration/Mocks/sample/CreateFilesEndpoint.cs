@@ -4,7 +4,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 {
     public class CreateFilesEndpoint : ServiceEndpointMock
     {
-        public override void RegisterEndpoint(IServiceMockBuilder builder)
+        public override void RegisterSingleEndpoint(IServiceMockBuilder builder)
         {
 
         }

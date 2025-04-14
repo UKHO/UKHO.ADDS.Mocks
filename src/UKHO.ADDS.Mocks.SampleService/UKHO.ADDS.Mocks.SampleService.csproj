@@ -14,4 +14,8 @@
     <ProjectReference Include="..\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Override\Mocks\sample\Models\" />
+  </ItemGroup>
+
 </Project>

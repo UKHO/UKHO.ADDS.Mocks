@@ -2,6 +2,6 @@
 {
     public abstract class ServiceEndpointMock
     {
-        public abstract void RegisterEndpoint(IServiceMockBuilder builder);
+        public abstract void RegisterSingleEndpoint(IServiceMockBuilder builder);
     }
 }

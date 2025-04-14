@@ -1,13 +1,23 @@
-﻿using UKHO.ADDS.Mocks.Domain.Mocks;
+﻿using Microsoft.AspNetCore.Mvc;
+using UKHO.ADDS.Mocks.Domain.Mocks;
+using UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample.Models;
 
 namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 {
     public class BasicEndpoints : ServiceEndpointMock
     {
-        public override void RegisterEndpoint(IServiceMockBuilder builder)
+        public override void RegisterSingleEndpoint(IServiceMockBuilder builder)
         {
-            builder.MapGet("/hello",
-                    () => Results.Ok("This is a result from the OVERRIDE"))
+            builder.MapPost("/hello",
+                    (HttpRequest request, SomeThing x) =>
+                    {
+                        if (x.AProperty == "bad")
+                        {
+                            return Results.NotFound();
+                        }
+
+                        return Results.Ok("This is a result from the OVERRIDE");
+                    })
                 .Produces<string>()
                 .WithEndpointMetadata(builder, d =>
                 {

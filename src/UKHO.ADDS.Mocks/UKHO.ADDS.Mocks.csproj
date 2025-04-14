@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Properties\launchSettings.json" />
     <None Include="wwwroot\app.css" />
     <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
@@ -24,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests"  />
+    <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests" />
   </ItemGroup>
 
 </Project>
