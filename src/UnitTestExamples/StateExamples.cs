@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using UKHO.ADDS.Mocks.Client;
+using UKHO.ADDS.Mocks.States;
 using Xunit;
 
 namespace UnitTestExamples
@@ -35,7 +36,23 @@ namespace UnitTestExamples
             var request = new HttpRequestMessage(HttpMethod.Get, MockUri);
 
             // Set the mock state for this call only
-            _factory.SetState("unauthorised");
+            _factory.SetState(WellKnownState.Unauthorized);
+
+            var response = await client.SendAsync(request);
+
+            _factory.ResetState();
+
+            Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
+        }
+
+        [Fact]
+        public async Task SetMockToCustomState()
+        {
+            var client = _factory.CreateClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, MockUri);
+
+            // Set the mock state for this call only
+            _factory.SetState("get-jpeg");
 
             var response = await client.SendAsync(request);
 
