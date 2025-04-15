@@ -1,5 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Domain.Mocks;
-using UKHO.ADDS.Mocks.Mime;
+﻿using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample

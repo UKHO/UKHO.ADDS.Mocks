@@ -1,6 +1,5 @@
 ﻿using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
-using UKHO.ADDS.Mocks.Domain.Mocks;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks

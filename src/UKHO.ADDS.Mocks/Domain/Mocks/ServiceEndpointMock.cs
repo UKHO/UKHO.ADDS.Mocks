@@ -1,6 +1,7 @@
 ﻿using UKHO.ADDS.Mocks.States;
 
-namespace UKHO.ADDS.Mocks.Domain.Mocks
+// ReSharper disable once CheckNamespace
+namespace UKHO.ADDS.Mocks
 {
     public abstract class ServiceEndpointMock
     {

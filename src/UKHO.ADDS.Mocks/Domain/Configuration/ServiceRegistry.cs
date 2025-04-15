@@ -11,7 +11,12 @@ namespace UKHO.ADDS.Mocks.Configuration
 
         public static void AddDefinition(ServiceDefinition definition)
         {
-            _definitions.Add(definition);
+            var existing = _definitions.SingleOrDefault(d => d.Prefix.Equals(definition.Prefix, StringComparison.OrdinalIgnoreCase));
+
+            if (existing == null)
+            {
+                _definitions.Add(definition);
+            }
         }
 
         public static void AddDefinitionState(string definitionPrefix, string state)

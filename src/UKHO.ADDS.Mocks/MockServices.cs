@@ -3,7 +3,7 @@ using UKHO.ADDS.Mocks.Domain.Configuration;
 
 namespace UKHO.ADDS.Mocks
 {
-    internal static class MockServices
+    public static class MockServices
     {
         public static void AddServices()
         {

@@ -6,6 +6,7 @@ namespace UKHO.ADDS.Mocks.SampleService
     {
         public static async Task Main(string[] args)
         {
+            MockServices.AddServices();
             ServiceRegistry.AddDefinitionState("sample", "get-jpeg");
 
             await MockServer.RunAsync(args);

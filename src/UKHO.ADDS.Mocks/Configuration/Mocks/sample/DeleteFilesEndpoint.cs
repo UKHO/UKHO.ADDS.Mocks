@@ -1,5 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Domain.Mocks;
-using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 {

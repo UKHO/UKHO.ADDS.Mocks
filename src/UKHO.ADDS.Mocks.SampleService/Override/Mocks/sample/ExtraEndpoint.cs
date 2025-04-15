@@ -1,5 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Domain.Mocks;
-using UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample.Models;
+﻿using UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample.Models;
 
 namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 {
