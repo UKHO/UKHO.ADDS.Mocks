@@ -15,7 +15,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
                 {
                     case WellKnownState.Default:
                         // ADDS Mock will have the 'default' state unless we have told it otherwise
-                        return Results.Ok("This is a result");
+                        return Results.Ok("This is a result, just needed this text with the 200 response");
 
                     case "get-file":
 
@@ -45,7 +45,6 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
                         return DefaultStateHandler.HandleDefaultState(state);
                 }
             })
-            .Produces<string>()
             .WithEndpointMetadata(endpoint, d =>
             {
                 d.Bold("Gets a file, with some extra states")
