@@ -8,6 +8,7 @@ namespace UKHO.ADDS.Mocks
         public static void AddServices()
         {
             ServiceRegistry.AddDefinition(new ServiceDefinition("sample", "Sample Service", ["get-file"]));
+            ServiceRegistry.AddDefinition(new ServiceDefinition("fss", "FileShare Service", []));
         }
     }
 }
