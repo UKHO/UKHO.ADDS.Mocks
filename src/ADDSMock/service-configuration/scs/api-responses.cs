@@ -18,6 +18,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")
                 .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
 
@@ -31,6 +32,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .RespondWith(
             Response.Create()
                 .WithStatusCode(304)
+                .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")
         );
 
     server
@@ -51,7 +53,21 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "500-internalserver-guid")
+                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-scs")
+                .UsingGet()
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(400)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Bad request.")
+        );
+
+    server
+        .Given(
+            Request.Create()
+                .WithUrl(new RegexMatcher(urlPattern))
+                .WithHeader("_X-Correlation-ID", "500-internalserver-guid-scs")
                 .UsingGet()
         )
         .RespondWith(
@@ -65,7 +81,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid")
+                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-scs")
                 .UsingGet()
         )
         .RespondWith(
@@ -79,7 +95,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid")
+                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-scs")
                 .UsingGet()
         )
         .RespondWith(
@@ -93,7 +109,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "404-notfound-guid")
+                .WithHeader("_X-Correlation-ID", "404-notfound-guid-scs")
                 .UsingGet()
         )
         .RespondWith(
@@ -107,7 +123,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
        .Given(
            Request.Create()
                .WithUrl(new RegexMatcher(urlPattern))
-               .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid")
+               .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid-scs")
                .UsingGet()
        )
        .RespondWith(
