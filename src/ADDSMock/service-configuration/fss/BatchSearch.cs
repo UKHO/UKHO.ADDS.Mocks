@@ -23,8 +23,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         Response.Create()
             .WithCallback(request =>
             {
-                var filter = request.Query["$filter"].FirstOrDefault();
-                return SearchFilterProvider.ProvideSearchFilterResponse(request);
+                return FSSResponseProvider.ProvideSearchFilterResponse(request);
             })
     );
 }

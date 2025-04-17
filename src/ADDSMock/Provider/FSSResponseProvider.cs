@@ -1,10 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using WireMock.Types;
+using ADDSMock.Models;
 
 namespace ADDSMock.Provider
 {
-    public static class SearchFilterProvider
+    public static class FSSResponseProvider
     {
         private static readonly string _templatePath = @"..\ADDSMock\service-configuration\fss\files\searchProduct.json";
 
@@ -14,7 +15,7 @@ namespace ADDSMock.Provider
 
             if (string.IsNullOrEmpty(filter))
             {
-                return CreateErrorResponse(400, "Filter query is missing.");
+                return CreateErrorResponse(400, "Missing or invalid $filter parameter");
             }
 
             var filterDetails = ParseFilterQuery(filter);
@@ -22,28 +23,27 @@ namespace ADDSMock.Provider
 
             UpdateResponseTemplate(jsonTemplate, filterDetails);
 
-            return CreateSuccessResponse(jsonTemplate);
+            return CreateResponse(200,jsonTemplate);
         }
 
-        private static WireMock.ResponseMessage CreateErrorResponse(int statusCode, string message)
+        private static WireMock.ResponseMessage CreateErrorResponse(int statusCode,string message)
+        {
+            var response = new JObject
+            {
+                ["correlationId"] = Guid.NewGuid(),
+                ["errors"] = new JArray
+                {
+                    new JObject { ["source"] = "$filter", ["message"] = message }
+                }
+            };
+            return CreateResponse(statusCode, response);            
+        }
+
+        private static WireMock.ResponseMessage CreateResponse(int statusCode,JObject jsonTemplate)
         {
             return new WireMock.ResponseMessage
             {
                 StatusCode = statusCode,
-                Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "text/plain" } },
-                BodyData = new WireMock.Util.BodyData
-                {
-                    BodyAsString = message,
-                    DetectedBodyType = BodyType.String
-                }
-            };
-        }
-
-        private static WireMock.ResponseMessage CreateSuccessResponse(JObject jsonTemplate)
-        {
-            return new WireMock.ResponseMessage
-            {
-                StatusCode = 200,
                 Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "application/json" } },
                 BodyData = new WireMock.Util.BodyData
                 {
@@ -60,7 +60,7 @@ namespace ADDSMock.Provider
                         .ToList();
         }
 
-        private static void ParseFilterPart(string part, SearchFilterDetails batchSearchDetails, Product product)
+        private static void ParseFilterPart(string part, FSSSearchFilterDetails batchSearchDetails, Product product)
         {
             if (part.Contains("BusinessUnit"))
             {
@@ -87,9 +87,9 @@ namespace ADDSMock.Provider
             }
         }
 
-        private static SearchFilterDetails ParseFilterQuery(string filterQuery)
+        private static FSSSearchFilterDetails ParseFilterQuery(string filterQuery)
         {
-            var batchSearchDetails = new SearchFilterDetails { Products = new List<Product>() };
+            var fssSearchFilterDetails = new FSSSearchFilterDetails { Products = new List<Product>() };
             var conditions = filterQuery.Split(")))", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var condition in conditions)
@@ -97,12 +97,12 @@ namespace ADDSMock.Provider
                 var product = new Product();
                 foreach (var part in condition.Split("and", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
                 {
-                    ParseFilterPart(part, batchSearchDetails, product);
+                    ParseFilterPart(part, fssSearchFilterDetails, product);
                 }
-                batchSearchDetails.Products.Add(product);
+                fssSearchFilterDetails.Products.Add(product);
             }
 
-            return batchSearchDetails;
+            return fssSearchFilterDetails;
         }
 
         private static string ExtractValue(string part)
@@ -117,15 +117,15 @@ namespace ADDSMock.Provider
                        .ToList();
         }
 
-        private static void UpdateResponseTemplate(JObject jsonTemplate, SearchFilterDetails batchSearch)
+        private static void UpdateResponseTemplate(JObject jsonTemplate, FSSSearchFilterDetails fssSearchFilterDetails)
         {
             var entries = new JArray();
 
-            foreach (var product in batchSearch.Products)
+            foreach (var product in fssSearchFilterDetails.Products)
             {
                 foreach (var updateNo in product.UpdateNumbers)
                 {
-                    entries.Add(CreateEntry(batchSearch, product, updateNo));
+                    entries.Add(CreateEntry(fssSearchFilterDetails, product, updateNo));
                 }
             }
 
@@ -135,24 +135,24 @@ namespace ADDSMock.Provider
             jsonTemplate["_links"] = CreateLinkObject();
         }
 
-        private static JObject CreateEntry(SearchFilterDetails batchSearch, Product product, int updateNo)
+        private static JObject CreateEntry(FSSSearchFilterDetails fssSearchFilterDetails, Product product, int updateNo)
         {
             var batchId = Guid.NewGuid();
             return new JObject
             {
                 ["batchId"] = batchId,
                 ["status"] = "Committed",
-                ["allFilesZipSize"] = 0,
+                ["allFilesZipSize"] = null,
                 ["attributes"] = new JArray
                     {
                         CreateAttribute("CellName", product.ProductName),
                         CreateAttribute("EditionNumber", product.EditionNumber),
                         CreateAttribute("UpdateNumber", updateNo),
-                        CreateAttribute("ProductCode", batchSearch.ProductCode)
+                        CreateAttribute("ProductCode", fssSearchFilterDetails.ProductCode)
                     },
-                ["businessUnit"] = batchSearch.BusinessUnit,
-                ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2),
-                ["expiryDate"] = DateTime.UtcNow.AddMonths(2),
+                ["businessUnit"] = fssSearchFilterDetails.BusinessUnit,
+                ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                ["expiryDate"] = DateTime.UtcNow.AddMonths(2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                 ["isAllFilesZipAvailable"] = true,
                 ["files"] = CreateFilesArray(product, batchId)
             };
@@ -197,6 +197,8 @@ namespace ADDSMock.Provider
             {
                 ["self"] = link,
                 ["first"] = link,
+                ["previous"] = link,
+                ["next"] = link,
                 ["last"] = link
             };
         }

@@ -48,12 +48,6 @@
     <Content Remove="service-configuration\fss\files\searchProduct.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Models\Product.cs" />
-    <None Include="Models\SearchFilterDetails.cs" />
-    <None Include="Provider\SearchFilterProvider.cs" />
-  </ItemGroup>
-
   <!--Console/Web and Interactive Mode-->
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
