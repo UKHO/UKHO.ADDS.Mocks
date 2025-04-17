@@ -6,14 +6,14 @@ using WireMock.ResponseBuilders;
 
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
-    var urlPattern = ".*/batch/{batchId}/files/{fileName}.*";
+    var urlPattern = ".*/batch/(.*)/files/(.*)";
 
     server
         .Given(
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
-                .UsingGet()
                 .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}/files/"))
+                .UsingGet()
         )
         .RespondWith(
             Response.Create()
@@ -25,7 +25,8 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(new RegexMatcher(@"^(?!/fss/batch/[a-fA-F0-9-]{36}/files/).*"))
+                .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}/files/"))
+                .WithHeader("_X-Correlation-ID", "400-invalidbatchid-guid-fss")
                 .UsingGet()
         )
         .RespondWith(
