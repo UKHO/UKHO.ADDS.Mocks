@@ -3,6 +3,12 @@ using System.Net;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
+using System.Text.RegularExpressions;
+using WireMock.Http;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using WireMock.Types;
+using System;
 
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
@@ -17,9 +23,27 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         )
         .RespondWith(
             Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "application/octet-stream")
-                .WithBodyFromFile(mockService.Files.Where(x => x.Name == "MockFile.txt").Select(x => x.Path).FirstOrDefault())
+                .WithCallback(request =>
+                {
+                    var pathSegments = request.PathSegments;
+                    var fileName = pathSegments.ElementAtOrDefault(4);
+                    var fileResponse = System.IO.File.ReadAllBytes(mockService.Files.Where(x => x.Name == "MockFile.txt").Select(x => x.Path).FirstOrDefault());
+
+                    return new WireMock.ResponseMessage
+                    {
+                        StatusCode = 200,
+                        Headers = new Dictionary<string, WireMockList<string>>
+                        {
+                            { "Content-Type", "application/octet-stream" },
+                            { "Content-Disposition", $"attachment; filename=\"{fileName}\""}
+                        },
+                        BodyData = new WireMock.Util.BodyData
+                        {
+                            BodyAsBytes = fileResponse,
+                            DetectedBodyType = BodyType.Bytes
+                        }
+                    };
+                })
         );
 
     server
