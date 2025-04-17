@@ -1,16 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
-using WireMock;
-using WireMock.ResponseBuilders;
-using WireMock.ResponseProviders;
-using WireMock.Settings;
 using WireMock.Types;
 
 namespace ADDSMock.Provider
 {
     public static class SearchFilterProvider
     {
-        private static string _templatePath = @"..\ADDSMock\service-configuration\fss\files\searchProduct.json";
+        private static readonly string _templatePath = @"..\ADDSMock\service-configuration\fss\files\searchProduct.json";
 
         public static async Task<WireMock.ResponseMessage> ProvideSearchFilterResponse(WireMock.IRequestMessage requestMessage)
         {
@@ -18,24 +14,33 @@ namespace ADDSMock.Provider
 
             if (string.IsNullOrEmpty(filter))
             {
-                
-                return new WireMock.ResponseMessage
-                {
-                    StatusCode = 400,
-                    Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "text/plain" } },
-                    BodyData = new WireMock.Util.BodyData
-                    {
-                        BodyAsString = "Filter query is missing.",
-                        DetectedBodyType = WireMock.Types.BodyType.String
-                    }
-                };
+                return CreateErrorResponse(400, "Filter query is missing.");
             }
-            
+
             var filterDetails = ParseFilterQuery(filter);
             var jsonTemplate = JObject.Parse(await File.ReadAllTextAsync(_templatePath));
 
             UpdateResponseTemplate(jsonTemplate, filterDetails);
-            
+
+            return CreateSuccessResponse(jsonTemplate);
+        }
+
+        private static WireMock.ResponseMessage CreateErrorResponse(int statusCode, string message)
+        {
+            return new WireMock.ResponseMessage
+            {
+                StatusCode = statusCode,
+                Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "text/plain" } },
+                BodyData = new WireMock.Util.BodyData
+                {
+                    BodyAsString = message,
+                    DetectedBodyType = BodyType.String
+                }
+            };
+        }
+
+        private static WireMock.ResponseMessage CreateSuccessResponse(JObject jsonTemplate)
+        {
             return new WireMock.ResponseMessage
             {
                 StatusCode = 200,
@@ -43,17 +48,16 @@ namespace ADDSMock.Provider
                 BodyData = new WireMock.Util.BodyData
                 {
                     BodyAsJson = jsonTemplate,
-                    DetectedBodyType = WireMock.Types.BodyType.Json
+                    DetectedBodyType = BodyType.Json
                 }
             };
         }
 
         private static List<int> ExtractIntegerValues(string part)
         {
-            var segments = part.Split("eq", StringSplitOptions.TrimEntries);
-            return segments.Length > 1
-                ? Regex.Matches(segments[1], @"\d+").Select(match => int.Parse(match.Value)).ToList()
-                : new List<int>();
+            return Regex.Matches(part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1) ?? string.Empty, @"\d+")
+                        .Select(match => int.Parse(match.Value))
+                        .ToList();
         }
 
         private static void ParseFilterPart(string part, SearchFilterDetails batchSearchDetails, Product product)
@@ -85,22 +89,16 @@ namespace ADDSMock.Provider
 
         private static SearchFilterDetails ParseFilterQuery(string filterQuery)
         {
-            var batchSearchDetails = new SearchFilterDetails
-            {
-                Products = new List<Product>()
-            };
+            var batchSearchDetails = new SearchFilterDetails { Products = new List<Product>() };
             var conditions = filterQuery.Split(")))", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var condition in conditions)
             {
                 var product = new Product();
-                var parts = condition.Split("and", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var part in parts)
+                foreach (var part in condition.Split("and", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
                 {
                     ParseFilterPart(part, batchSearchDetails, product);
                 }
-
                 batchSearchDetails.Products.Add(product);
             }
 
@@ -109,8 +107,7 @@ namespace ADDSMock.Provider
 
         private static string ExtractValue(string part)
         {
-            var segments = part.Split("eq", StringSplitOptions.TrimEntries);
-            return segments.Length > 1 ? segments[1].Replace("'", "") : string.Empty;
+            return part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1)?.Replace("'", "") ?? string.Empty;
         }
 
         private static List<string> ExtractValues(string part, string delimiter)
@@ -148,10 +145,10 @@ namespace ADDSMock.Provider
                 ["allFilesZipSize"] = 0,
                 ["attributes"] = new JArray
                     {
-                        new JObject { ["key"] = "CellName", ["value"] = product.ProductName },
-                        new JObject { ["key"] = "EditionNumber", ["value"] = product.EditionNumber },
-                        new JObject { ["key"] = "UpdateNumber", ["value"] = updateNo },
-                        new JObject { ["key"] = "ProductCode", ["value"] = batchSearch.ProductCode }
+                        CreateAttribute("CellName", product.ProductName),
+                        CreateAttribute("EditionNumber", product.EditionNumber),
+                        CreateAttribute("UpdateNumber", updateNo),
+                        CreateAttribute("ProductCode", batchSearch.ProductCode)
                     },
                 ["businessUnit"] = batchSearch.BusinessUnit,
                 ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2),
@@ -159,6 +156,11 @@ namespace ADDSMock.Provider
                 ["isAllFilesZipAvailable"] = true,
                 ["files"] = CreateFilesArray(product, batchId)
             };
+        }
+
+        private static JObject CreateAttribute(string key, object value)
+        {
+            return new JObject { ["key"] = JToken.FromObject(key), ["value"] = JToken.FromObject(value) };
         }
 
         private static JArray CreateFilesArray(Product product, Guid batchId)
@@ -190,23 +192,15 @@ namespace ADDSMock.Provider
 
         private static JObject CreateLinkObject()
         {
-            var link = new JObject
-            {
-                ["href"] = "/batches?limit=10&start=0&$filter=..."
-            };
+            var link = new JObject { ["href"] = "/batches?limit=10&start=0&$filter=..." };
             return new JObject
             {
                 ["self"] = link,
                 ["first"] = link,
-                ["last"] = link,
-
+                ["last"] = link
             };
         }
-
-
-
     }
-
 
 }
 
