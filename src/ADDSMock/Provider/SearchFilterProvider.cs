@@ -18,10 +18,16 @@ namespace ADDSMock.Provider
 
             if (string.IsNullOrEmpty(filter))
             {
+                
                 return new WireMock.ResponseMessage
                 {
                     StatusCode = 400,
-                    Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "text/plain" } }
+                    Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "text/plain" } },
+                    BodyData = new WireMock.Util.BodyData
+                    {
+                        BodyAsString = "Filter query is missing.",
+                        DetectedBodyType = WireMock.Types.BodyType.String
+                    }
                 };
             }
             
@@ -33,7 +39,12 @@ namespace ADDSMock.Provider
             return new WireMock.ResponseMessage
             {
                 StatusCode = 200,
-                Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "application/json" } }
+                Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "application/json" } },
+                BodyData = new WireMock.Util.BodyData
+                {
+                    BodyAsJson = jsonTemplate,
+                    DetectedBodyType = WireMock.Types.BodyType.Json
+                }
             };
         }
 
