@@ -36,6 +36,19 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         );
 
     server
+    .Given(
+        Request.Create()
+            .WithUrl(new RegexMatcher(urlPattern))
+            .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs")
+            .UsingGet()
+    )
+    .RespondWith(
+        Response.Create()
+            .WithStatusCode(304)            
+            .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")            
+    );
+
+    server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
@@ -47,7 +60,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
                 .WithBody("Bad request.")
-        );
+        );   
 
     server
         .Given(
