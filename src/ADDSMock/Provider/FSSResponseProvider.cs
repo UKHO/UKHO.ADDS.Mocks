@@ -23,25 +23,21 @@ namespace ADDSMock.Provider
 
             UpdateResponseTemplate(jsonTemplate, filterDetails);
 
-            return CreateResponse(200,jsonTemplate);
+            return CreateResponse(200, jsonTemplate);
         }
 
-        private static WireMock.ResponseMessage CreateErrorResponse(int statusCode,string message)
-        {
-            var response = new JObject
+        private static WireMock.ResponseMessage CreateErrorResponse(int statusCode, string message) =>
+            CreateResponse(statusCode, new JObject
             {
                 ["correlationId"] = Guid.NewGuid(),
                 ["errors"] = new JArray
                 {
-                    new JObject { ["source"] = "$filter", ["message"] = message }
+                        new JObject { ["source"] = "Search Product", ["message"] = message }
                 }
-            };
-            return CreateResponse(statusCode, response);            
-        }
+            });
 
-        private static WireMock.ResponseMessage CreateResponse(int statusCode,JObject jsonTemplate)
-        {
-            return new WireMock.ResponseMessage
+        private static WireMock.ResponseMessage CreateResponse(int statusCode, JObject jsonTemplate) =>
+            new WireMock.ResponseMessage
             {
                 StatusCode = statusCode,
                 Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "application/json" } },
@@ -51,39 +47,34 @@ namespace ADDSMock.Provider
                     DetectedBodyType = BodyType.Json
                 }
             };
-        }
 
-        private static List<int> ExtractIntegerValues(string part)
-        {
-            return Regex.Matches(part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1) ?? string.Empty, @"\d+")
-                        .Select(match => int.Parse(match.Value))
-                        .ToList();
-        }
+        private static List<int> ExtractIntegerValues(string part) =>
+            Regex.Matches(part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1) ?? string.Empty, @"\d+")
+                .Select(match => int.Parse(match.Value))
+                .ToList();
 
         private static void ParseFilterPart(string part, FSSSearchFilterDetails batchSearchDetails, Product product)
         {
-            if (part.Contains("BusinessUnit"))
+            switch (part)
             {
-                batchSearchDetails.BusinessUnit = ExtractValue(part);
-            }
-            else if (part.Contains("$batch(ProductCode)"))
-            {
-                batchSearchDetails.ProductCode = ExtractValue(part);
-            }
-            else if (part.Contains("$batch(CellName)"))
-            {
-                product.ProductName = ExtractValue(part);
-            }
-            else if (part.Contains("$batch(UpdateNumber)"))
-            {
-                product.UpdateNumbers ??= new List<int>();
-                product.UpdateNumbers.AddRange(part.Contains("or")
-                    ? ExtractValues(part, "or").Select(int.Parse)
-                    : ExtractIntegerValues(part));
-            }
-            else if (part.Contains("$batch(EditionNumber)"))
-            {
-                product.EditionNumber = int.Parse(ExtractValue(part));
+                case var _ when part.Contains("BusinessUnit"):
+                    batchSearchDetails.BusinessUnit = ExtractValue(part);
+                    break;
+                case var _ when part.Contains("$batch(ProductCode)"):
+                    batchSearchDetails.ProductCode = ExtractValue(part);
+                    break;
+                case var _ when part.Contains("$batch(CellName)"):
+                    product.ProductName = ExtractValue(part);
+                    break;
+                case var _ when part.Contains("$batch(UpdateNumber)"):
+                    product.UpdateNumbers ??= [];
+                    product.UpdateNumbers.AddRange(part.Contains("or")
+                        ? ExtractValues(part, "or").Select(int.Parse)
+                        : ExtractIntegerValues(part));
+                    break;
+                case var _ when part.Contains("$batch(EditionNumber)"):
+                    product.EditionNumber = int.Parse(ExtractValue(part));
+                    break;
             }
         }
 
@@ -105,17 +96,13 @@ namespace ADDSMock.Provider
             return fssSearchFilterDetails;
         }
 
-        private static string ExtractValue(string part)
-        {
-            return part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1)?.Replace("'", "") ?? string.Empty;
-        }
+        private static string ExtractValue(string part) =>
+            part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1)?.Replace("'", "") ?? string.Empty;
 
-        private static List<string> ExtractValues(string part, string delimiter)
-        {
-            return part.Split(delimiter, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                       .Select(ExtractValue)
-                       .ToList();
-        }
+        private static List<string> ExtractValues(string part, string delimiter) =>
+            part.Split(delimiter, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                .Select(ExtractValue)
+                .ToList();
 
         private static void UpdateResponseTemplate(JObject jsonTemplate, FSSSearchFilterDetails fssSearchFilterDetails)
         {
@@ -123,58 +110,53 @@ namespace ADDSMock.Provider
 
             foreach (var product in fssSearchFilterDetails.Products)
             {
-                foreach (var updateNo in product.UpdateNumbers)
+                if (product.UpdateNumbers != null)
                 {
-                    entries.Add(CreateEntry(fssSearchFilterDetails, product, updateNo));
+                    foreach (var updateNo in product.UpdateNumbers)
+                    {
+                        entries.Add(CreateEntry(fssSearchFilterDetails, product, updateNo));
+                    }
                 }
             }
 
             jsonTemplate["count"] = entries.Count;
             jsonTemplate["total"] = entries.Count;
             jsonTemplate["entries"] = entries;
-            jsonTemplate["_links"] = CreateLinkObject();
+            jsonTemplate["_links"] = CreateLinkObject(fssSearchFilterDetails.ProductCode, fssSearchFilterDetails.Products.FirstOrDefault());
         }
 
-        private static JObject CreateEntry(FSSSearchFilterDetails fssSearchFilterDetails, Product product, int updateNo)
-        {
-            var batchId = Guid.NewGuid();
-            return new JObject
+        private static JObject CreateEntry(FSSSearchFilterDetails fssSearchFilterDetails, Product product, int updateNo) =>
+            new()
             {
-                ["batchId"] = batchId,
+                ["batchId"] = Guid.NewGuid(),
                 ["status"] = "Committed",
                 ["allFilesZipSize"] = null,
                 ["attributes"] = new JArray
-                    {
+                {
                         CreateAttribute("CellName", product.ProductName),
                         CreateAttribute("EditionNumber", product.EditionNumber),
                         CreateAttribute("UpdateNumber", updateNo),
                         CreateAttribute("ProductCode", fssSearchFilterDetails.ProductCode)
-                    },
+                },
                 ["businessUnit"] = fssSearchFilterDetails.BusinessUnit,
                 ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                 ["expiryDate"] = DateTime.UtcNow.AddMonths(2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                 ["isAllFilesZipAvailable"] = true,
-                ["files"] = CreateFilesArray(product, batchId)
+                ["files"] = CreateFilesArray(product, Guid.NewGuid())
             };
-        }
 
-        private static JObject CreateAttribute(string key, object value)
-        {
-            return new JObject { ["key"] = JToken.FromObject(key), ["value"] = JToken.FromObject(value) };
-        }
+        private static JObject CreateAttribute(string key, object value) =>
+            new()
+            { ["key"] = JToken.FromObject(key), ["value"] = JToken.FromObject(value) };
 
-        private static JArray CreateFilesArray(Product product, Guid batchId)
-        {
-            return new JArray
-                {
+        private static JArray CreateFilesArray(Product product, Guid batchId) =>
+            [
                     CreateFileObject(product.ProductName, batchId, ".000", 874),
                     CreateFileObject(product.ProductName, batchId, ".TXT", 1192)
-                };
-        }
+            ];
 
-        private static JObject CreateFileObject(string productName, Guid batchId, string extension, int fileSize)
-        {
-            return new JObject
+        private static JObject CreateFileObject(string productName, Guid batchId, string extension, int fileSize) =>
+            new()
             {
                 ["filename"] = $"{productName}{extension}",
                 ["fileSize"] = fileSize,
@@ -184,25 +166,30 @@ namespace ADDSMock.Provider
                 {
                     ["get"] = new JObject
                     {
-                        ["href"] = $"/batches/{batchId}/files/{productName}{extension}"
+                        ["href"] = $"/batch/{batchId}/files/{productName}{extension}"
                     }
                 }
             };
-        }
 
-        private static JObject CreateLinkObject()
+        private static JObject CreateLinkObject(string productCode, Product product)
         {
-            var link = new JObject { ["href"] = "/batches?limit=10&start=0&$filter=..." };
+            var filterValue = !string.IsNullOrEmpty(product?.ProductName)
+                ? $"$batch(ProductCode) eq '{productCode}' and $batch(CellName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
+                : $"$batch(ProductCode) eq '{productCode}'";
+
+            var encodedFilterUrl = $"/batch?limit=10&start=0&$filter={Uri.EscapeDataString(filterValue)}";
+
             return new JObject
             {
-                ["self"] = link,
-                ["first"] = link,
-                ["previous"] = link,
-                ["next"] = link,
-                ["last"] = link
+                ["self"] = encodedFilterUrl,
+                ["first"] = encodedFilterUrl,
+                ["previous"] = encodedFilterUrl,
+                ["next"] = encodedFilterUrl,
+                ["last"] = encodedFilterUrl
             };
         }
     }
-
 }
+
+
 
