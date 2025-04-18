@@ -26,6 +26,65 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 return FSSResponseProvider.ProvideSearchFilterResponse(request);
             })
     );
+
+    server
+         .Given(
+             Request.Create()
+                 .WithPath(new RegexMatcher(urlPattern))
+                 .WithHeader("_X-Correlation-ID", "400-badrequest-fss-batch-search")
+                 .UsingGet()
+         )
+         .RespondWith(
+             Response.Create()
+                 .WithStatusCode(400)
+                 .WithHeader("Content-Type", "application/json")
+                 .WithBody("Bad Request")
+         );
+
+    server
+         .Given(
+             Request.Create()
+                .WithPath(new RegexMatcher(urlPattern))
+                .WithHeader("_X-Correlation-ID", "401-unauthorized-batch-search")
+                .UsingGet()
+         )
+
+         .RespondWith(
+             Response.Create()
+                .WithStatusCode(401)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Unauthorized")
+         );
+
+    server
+         .Given(
+             Request.Create()
+                .WithPath(new RegexMatcher(urlPattern))
+                .WithHeader("_X-Correlation-ID", "403-forbidden-fss-batch-search")
+                .UsingGet()
+         )
+         .RespondWith(
+             Response.Create()
+                .WithStatusCode(403)
+                .WithHeader("Content-Type", "application/json")
+                .WithBody("Forbidden")
+         );
+
+    server
+         .Given(
+            Request.Create()
+                .WithPath(urlPattern)
+                .UsingGet()
+                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-batch-search")
+         )
+
+         .RespondWith(
+             Response.Create()
+                .WithStatusCode(429)
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("Retry-After", "10")
+                .WithBody("Too Many Requests")
+         );
 }
 
 
