@@ -4,7 +4,8 @@ using WireMock.ResponseBuilders;
 using System.Text.RegularExpressions;
 using WireMock.Http;
 using System.Linq;
-using ADDSMock.Provider;
+using ADDSMock.ResponseGenerator;
+using System;
 
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
@@ -21,32 +22,17 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithCallback(request =>
                 {
-                    return FSSResponseProvider.ProvideSearchFilterResponse(request);
+                    return FSSResponseGenerator.ProvideSearchFilterResponse(request);
                 })
         );
 
     server
          .Given(
              Request.Create()
-                 .WithPath(new RegexMatcher(urlPattern))
-                 .WithHeader("_X-Correlation-ID", "400-badrequest-fss-batch-search")
-                 .UsingGet()
-         )
-         .RespondWith(
-             Response.Create()
-                 .WithStatusCode(400)
-                 .WithHeader("Content-Type", "application/json")
-                 .WithBody("Bad Request")
-         );
-
-    server
-         .Given(
-             Request.Create()
-                .WithPath(new RegexMatcher(urlPattern))
+                .WithPath(urlPattern)
                 .WithHeader("_X-Correlation-ID", "401-unauthorized-batch-search")
                 .UsingGet()
          )
-
          .RespondWith(
              Response.Create()
                 .WithStatusCode(401)
@@ -57,7 +43,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
          .Given(
              Request.Create()
-                .WithPath(new RegexMatcher(urlPattern))
+                .WithPath(urlPattern)
                 .WithHeader("_X-Correlation-ID", "403-forbidden-fss-batch-search")
                 .UsingGet()
          )
@@ -75,7 +61,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .UsingGet()
                 .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-batch-search")
          )
-
          .RespondWith(
              Response.Create()
                 .WithStatusCode(429)
@@ -83,8 +68,25 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("Retry-After", "10")
                 .WithBody("Too Many Requests")
          );
+
+    server
+         .Given(
+            Request.Create()
+                .WithPath(urlPattern)
+                .UsingGet()
+                .WithHeader("_X-Correlation-ID", "400-badrequests-guid-fss-batch-search")
+         )
+         .RespondWith(
+             Response.Create()
+                .WithStatusCode(400)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyAsJson(new
+                {
+                    correlationId = Guid.NewGuid(),
+                    errors = new[]
+                    {
+                        new { source = "Search Product", description = "Bad Request" }
+                    }
+                })
+         );
 }
-
-
-
-
