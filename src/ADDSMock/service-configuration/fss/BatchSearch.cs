@@ -17,15 +17,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithParam("start", new RegexMatcher(".*"))
                 .WithParam("$filter", "*")
                 .UsingGet()
-        )
-
-    .RespondWith(
-        Response.Create()
-            .WithCallback(request =>
-            {
-                return FSSResponseProvider.ProvideSearchFilterResponse(request);
-            })
-    );
+        ).RespondWith(
+            Response.Create()
+                .WithCallback(request =>
+                {
+                    return FSSResponseProvider.ProvideSearchFilterResponse(request);
+                })
+        );
 
     server
          .Given(
