@@ -1,0 +1,9 @@
+{
+  "correlationId": "400-badrequest-fss-add-file",
+  "errors": [
+    {
+      "source": "BatchID",
+      "description": "Batch ID is missing in the URI."
+    }
+  ]
+}

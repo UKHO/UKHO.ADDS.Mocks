@@ -40,7 +40,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
              Response.Create()
                  .WithStatusCode(400)
                  .WithHeader("Content-Type", "application/json")
-                 .WithBody("Bad Request")
+                 .WithBodyFromFile(mockService.Files.Where(x => x.Name == "BadResponse.json").Select(x => x.Path).FirstOrDefault())
          );
 
     server
