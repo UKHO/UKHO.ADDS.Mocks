@@ -18,22 +18,22 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
-                .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")
+                .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
                 .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
 
-    server
-        .Given(
-            Request.Create()
-                .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("If-Modified-Since", "2025-01-01T00:00:00Z")
-                .UsingGet()
-        )
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(304)
-                .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")
-        );
+    //server
+    //    .Given(
+    //        Request.Create()
+    //            .WithUrl(new RegexMatcher(urlPattern))
+    //            .WithHeader("If-Modified-Since", "2025-01-01T00:00:00Z")
+    //            .UsingGet()
+    //    )
+    //    .RespondWith(
+    //        Response.Create()
+    //            .WithStatusCode(304)
+    //            .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")
+    //    );
 
     server
     .Given(
@@ -44,15 +44,15 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     )
     .RespondWith(
         Response.Create()
-            .WithStatusCode(304)            
-            .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")            
+            .WithStatusCode(304)
+            .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
     );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("If-Modified-Since", "20221027")
+                //.WithHeader("If-Modified-Since", "20221027")
                 .UsingGet()
         )
         .RespondWith(
