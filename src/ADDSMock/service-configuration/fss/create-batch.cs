@@ -34,6 +34,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(201)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "201-created-guid-fss-create-batch")
                 .WithBodyAsJson(new
                 {
                     batchId = Guid.NewGuid().ToString()
@@ -51,6 +52,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
          Response.Create()
              .WithStatusCode(400)
              .WithHeader("Content-Type", "application/json")
+             .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
              .WithBody("Invalid Expiry Date Format.")
      );
 
@@ -65,6 +67,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
                 .WithBody("Bad request.")
         );
 
@@ -79,6 +82,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-create-batch")
                 .WithBody("Unauthorised.")
         );
 
@@ -93,6 +97,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(403)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-create-batch")
                 .WithBody("Forbidden.")
         );
 
@@ -107,6 +112,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(429)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-create-batch")
                 .WithHeader("Retry-After", "10")
                 .WithBody("Too Many Requests.")
         );
