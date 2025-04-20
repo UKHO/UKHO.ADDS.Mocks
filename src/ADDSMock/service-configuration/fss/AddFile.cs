@@ -32,7 +32,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
          .Given(
              Request.Create()
-                 .WithPath(new RegexMatcher(urlPattern))
+                 .WithPath(urlPattern)
                  .WithHeader("_X-Correlation-ID", "400-badrequest-fss-add-file")
                  .UsingPost()
          )
@@ -46,7 +46,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(new RegexMatcher(urlPattern))
+                .WithPath(urlPattern)
                 .WithHeader("_X-Correlation-ID", "401-unauthorized-add-file")
                 .UsingPost()
         )
@@ -56,11 +56,11 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("Content-Type", "application/json")
                 .WithBody("Unauthorized")
         );
-
+        
     server
          .Given(
              Request.Create()
-                 .WithPath(new RegexMatcher(urlPattern))
+                 .WithPath(urlPattern)
                  .WithHeader("_X-Correlation-ID", "403-forbidden-fss-add-file")
                  .UsingPost()
          )
