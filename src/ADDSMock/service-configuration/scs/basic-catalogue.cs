@@ -19,21 +19,9 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
+                .WithHeader("_X-Correlation-ID", "200-ok-guid-scs")
                 .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
-
-    //server
-    //    .Given(
-    //        Request.Create()
-    //            .WithUrl(new RegexMatcher(urlPattern))
-    //            .WithHeader("If-Modified-Since", "2025-01-01T00:00:00Z")
-    //            .UsingGet()
-    //    )
-    //    .RespondWith(
-    //        Response.Create()
-    //            .WithStatusCode(304)
-    //            .WithHeader("Last-Modified", "2025-01-01T00:00:00Z")
-    //    );
 
     server
     .Given(
@@ -46,21 +34,8 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         Response.Create()
             .WithStatusCode(304)
             .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
+            .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs")
     );
-
-    server
-        .Given(
-            Request.Create()
-                .WithUrl(new RegexMatcher(urlPattern))
-                //.WithHeader("If-Modified-Since", "20221027")
-                .UsingGet()
-        )
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(400)
-                .WithHeader("Content-Type", "application/json")
-                .WithBody("Bad request.")
-        );   
 
     server
         .Given(
@@ -73,6 +48,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-scs")
                 .WithBody("Bad request.")
         );
 
@@ -87,6 +63,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(500)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "500-internalserver-guid-scs")
                 .WithBody("Internal server error.")
         );
 
@@ -101,6 +78,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-scs")
                 .WithBody("Unauthorised.")
         );
 
@@ -115,6 +93,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(403)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-scs")
                 .WithBody("Forbidden.")
         );
 
@@ -129,6 +108,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(404)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "404-notfound-guid-scs")
                 .WithBody("Not found.")
         );
 
@@ -143,6 +123,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
            Response.Create()
                .WithStatusCode(415)
                .WithHeader("Content-Type", "application/json")
+               .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid-scs")
                .WithBody("Unsupported Media Type.")
        );
 }
