@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="service-configuration\fss\files\searchProduct.json" />
+    <Content Remove="service-configuration\fss\files\search-product.json" />
   </ItemGroup>
 
   <!--Console/Web and Interactive Mode-->

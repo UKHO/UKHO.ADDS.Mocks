@@ -9,29 +9,32 @@ namespace ADDSMock.ResponseGenerator
 {
     public static class FSSResponseGenerator
     {
-        private static readonly string _templatePath = @"..\ADDSMock\service-configuration\fss\files\searchProduct.json";
+        private static readonly string _templatePath = @"..\ADDSMock\service-configuration\fss\files\search-product.json";
 
-        public static async Task<ResponseMessage> ProvideSearchFilterResponse(WireMock.IRequestMessage requestMessage)
+        public static async Task<ResponseMessage> ProvideSearchFilterResponse(IRequestMessage requestMessage)
         {
             var jsonTemplate = JObject.Parse(await File.ReadAllTextAsync(_templatePath));
             var filter = requestMessage.Query["$filter"].FirstOrDefault();
             var filterDetails = ParseFilterQuery(filter);
             UpdateResponseTemplate(jsonTemplate, filterDetails);
             return CreateResponse(200, jsonTemplate);
-        }      
+        }
 
         private static ResponseMessage CreateResponse(int statusCode, JObject jsonTemplate) =>
             new()
             {
                 StatusCode = statusCode,
-                Headers = new Dictionary<string, WireMockList<string>> { { "Content-Type", "application/json" } },
+                Headers = new Dictionary<string, WireMockList<string>> {
+                    { "Content-Type", "application/json" },
+                    { "_X-Correlation-ID", "200-ok-guid-fss-batch-search" }
+                },
                 BodyData = new BodyData
                 {
                     BodyAsJson = jsonTemplate,
                     DetectedBodyType = BodyType.Json
                 }
             };
-
+        
         private static FSSSearchFilterDetails ParseFilterQuery(string filterQuery)
         {
             var filterDetails = new FSSSearchFilterDetails { Products = [] };
@@ -116,8 +119,8 @@ namespace ADDSMock.ResponseGenerator
             jsonTemplate["_links"] = CreateLinkObject(filterDetails.ProductCode, filterDetails.Products.FirstOrDefault());
         }
 
-        private static JObject CreateAttribute(string key, object value) =>
-            new JObject { ["key"] = key, ["value"] = JToken.FromObject(value) };
+        private static JObject CreateAttribute(string attr, object value) =>
+            new JObject { ["key"] = attr, ["value"] = JToken.FromObject(value) };
 
         private static JArray CreateFilesArray(string productName, string batchId) =>
             new JArray(
