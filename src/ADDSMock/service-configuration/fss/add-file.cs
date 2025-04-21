@@ -42,7 +42,18 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                  .WithStatusCode(400)
                  .WithHeader("Content-Type", "application/json")
                  .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-add-file")
-                 .WithBodyFromFile(mockService.Files.Where(x => x.Name == "add-file-badresponse.json").Select(x => x.Path).FirstOrDefault())
+                 .WithBodyAsJson(new
+                 {
+                     correlationId = "400-badrequest-guid-fss-add-file",
+                     errors = new[]
+                             {
+                                 new
+                                 {
+                                     source = "BatchID",
+                                     description = "Batch ID is missing in the URI."
+                                 }
+                             }
+                 })
          );
 
     server
@@ -56,7 +67,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
-                 .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-add-file")
+                .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-add-file")
                 .WithBody("Unauthorized")
         );
 
