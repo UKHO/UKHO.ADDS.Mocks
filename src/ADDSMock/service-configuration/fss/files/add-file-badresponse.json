@@ -1,5 +1,5 @@
 {
-  "correlationId": "400-badrequest-fss-add-file",
+  "correlationId": "400-badrequest-guid-fss-add-file",
   "errors": [
     {
       "source": "BatchID",

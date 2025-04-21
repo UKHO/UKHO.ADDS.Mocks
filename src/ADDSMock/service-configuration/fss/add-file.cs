@@ -27,6 +27,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(201)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "201-created-guid-fss-add-file")
         );
 
     server
@@ -41,7 +42,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                  .WithStatusCode(400)
                  .WithHeader("Content-Type", "application/json")
                  .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-add-file")
-                 .WithBodyFromFile(mockService.Files.Where(x => x.Name == "BadResponse.json").Select(x => x.Path).FirstOrDefault())
+                 .WithBodyFromFile(mockService.Files.Where(x => x.Name == "add-file-badresponse.json").Select(x => x.Path).FirstOrDefault())
          );
 
     server
@@ -58,7 +59,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                  .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-add-file")
                 .WithBody("Unauthorized")
         );
-        
+
     server
          .Given(
              Request.Create()
