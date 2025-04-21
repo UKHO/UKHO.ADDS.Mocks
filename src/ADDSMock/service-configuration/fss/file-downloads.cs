@@ -27,7 +27,9 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 {
                     var pathSegments = request.PathSegments;
                     var fileName = pathSegments.ElementAtOrDefault(4);
-                    var fileResponse = System.IO.File.ReadAllBytes(mockService.Files.Where(x => x.Name == "MockFile.txt").Select(x => x.Path).FirstOrDefault());
+                    Console.WriteLine(fileName);
+                    
+                    var fileResponse = System.IO.File.ReadAllBytes(mockService.Files.Where(x => x.Name == "mock-file.txt").Select(x => x.Path).FirstOrDefault());
 
                     return new WireMock.ResponseMessage
                     {
@@ -57,6 +59,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "400-invalidbatchid-guid-fss-file-downloads")
                 .WithBody("{\"error\": \"Invalid batchId.\"}")
         );
 
@@ -71,6 +74,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "401-unauthorized-fss-file-downloads")
                 .WithBody("Unauthorized")
         );
 
@@ -85,6 +89,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
              Response.Create()
                 .WithStatusCode(403)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "403-forbidden-fss-file-downloads")
                 .WithBody("Forbidden")
         );
 
@@ -99,6 +104,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
               Response.Create()
                 .WithStatusCode(404)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "404-filenotfound-fss-file-downloads")
                 .WithBody("File Not Found")
         );
 
@@ -113,6 +119,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
              Response.Create()
                 .WithStatusCode(410)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("_X-Correlation-ID", "410-gone-fss-file-downloads")
                 .WithBody("Gone")
         );
 
@@ -127,6 +134,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
              Response.Create()
                 .WithStatusCode(416)
                 .WithHeader("Content-Type", "application/json")
+                .WithHeader("Range", "416-rangenotsatifiable-fss-file-downloads")
                 .WithBody("Range Not Satisfiable")
         );
 
@@ -142,6 +150,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(429)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("Retry-After", "10")
+                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-file-downloads")
                 .WithBody("Too Many Requests")
         );
 
@@ -157,6 +166,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                  .WithStatusCode(307)
                  .WithHeader("Content-Type", "application/json")
                  .WithHeader("Redirect-Location", "https://example.com/redirect")
+                 .WithHeader("_X-Correlation-ID", "307-temporaryredirect-fss-file-downloads")
                  .WithBody("Temporary Redirect")
           );
 }
