@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using ADDSMock.Models;
+﻿using ADDSMock.Models;
 using Newtonsoft.Json.Linq;
 using WireMock;
 using WireMock.Types;
@@ -22,8 +21,8 @@ namespace ADDSMock.ResponseGenerator
                     return CreateErrorResponse(400, "Missing or invalid $filter parameter", "400-badrequests-guid-fss-batch-search");
 
                 }
-                var filterDetails = ParseFilterQuery(filter);
-                UpdateResponseTemplate(jsonTemplate, filterDetails);
+                var batchDetails = BatchQueryParser.ParseBatchQuery("$filter=" + filter);
+                UpdateResponseTemplate(jsonTemplate, batchDetails);
                 return CreateResponse(200, jsonTemplate, "200-ok-guid-fss-batch-search");
             }
             catch (Exception)
@@ -35,7 +34,7 @@ namespace ADDSMock.ResponseGenerator
         }
 
         private static ResponseMessage CreateErrorResponse(int statusCode, string message, string correlationId) =>
-            CreateResponse(400, new JObject
+            CreateResponse(statusCode, new JObject
             {
                 ["correlationId"] = correlationId,
                 ["errors"] = new JArray
@@ -58,54 +57,7 @@ namespace ADDSMock.ResponseGenerator
                     DetectedBodyType = BodyType.Json
                 }
             };
-        private static FSSSearchFilterDetails ParseFilterQuery(string filterQuery)
-        {
-            var filterDetails = new FSSSearchFilterDetails { Products = [] };
-            var conditions = filterQuery.Split(")))", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var condition in conditions)
-            {
-                var product = new Product();
-                condition.Split("and", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                         .ToList()
-                         .ForEach(property => ParseFilterProductProperties(property, filterDetails, product));
-
-                filterDetails.Products.Add(product);
-            }
-
-            return filterDetails;
-        }
-
-        private static void ParseFilterProductProperties(string property, FSSSearchFilterDetails filterDetails, Product product)
-        {
-            switch (property)
-            {
-                case var _ when property.Contains("BusinessUnit"):
-                    filterDetails.BusinessUnit = ExtractValue(property);
-                    break;
-                case var _ when property.Contains("$batch(ProductCode)"):
-                    filterDetails.ProductCode = ExtractValue(property);
-
-                    break;
-                case var _ when property.Contains("$batch(CellName)"):
-                    product.ProductName = ExtractValue(property);
-                    break;
-                case var _ when property.Contains("$batch(UpdateNumber)"):
-                    product.UpdateNumbers = ExtractNumericValues(property);
-                    break;
-                case var _ when property.Contains("$batch(EditionNumber)"):
-                    product.EditionNumber = int.Parse(ExtractValue(property));
-                    break;
-            }
-        }
-
-        private static string ExtractValue(string property) =>
-            property.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1)?.Trim('\'') ?? string.Empty;
-
-        private static List<int> ExtractNumericValues(string property) =>
-            Regex.Matches(property, @"\d+")
-                 .Select(match => int.Parse(match.Value))
-                 .ToList();
 
         private static void UpdateResponseTemplate(JObject jsonTemplate, FSSSearchFilterDetails filterDetails)
         {
@@ -144,16 +96,17 @@ namespace ADDSMock.ResponseGenerator
         }
 
         private static JObject CreateAttribute(string attr, object value) =>
-            new JObject { ["key"] = attr, ["value"] = JToken.FromObject(value) };
+            new()
+            { ["key"] = attr, ["value"] = JToken.FromObject(value) };
 
         private static JArray CreateFilesArray(string productName, string batchId) =>
-            new JArray(
+            new(
                 CreateFileObject(productName, ".000", 874, batchId),
                 CreateFileObject(productName, ".TXT", 1192, batchId)
             );
 
         private static JObject CreateFileObject(string productName, string extension, int fileSize, string batchId) =>
-            new JObject
+            new()
             {
                 ["filename"] = $"{productName}{extension}",
                 ["fileSize"] = fileSize,
