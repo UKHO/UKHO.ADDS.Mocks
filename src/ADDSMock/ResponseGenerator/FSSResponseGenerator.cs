@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
-using Newtonsoft.Json.Linq;
-using WireMock.Types;
 using ADDSMock.Models;
-using WireMock.Util;
+using Newtonsoft.Json.Linq;
 using WireMock;
+using WireMock.Types;
+using WireMock.Util;
 
 namespace ADDSMock.ResponseGenerator
 {
@@ -13,20 +13,44 @@ namespace ADDSMock.ResponseGenerator
 
         public static async Task<ResponseMessage> ProvideSearchFilterResponse(IRequestMessage requestMessage)
         {
-            var jsonTemplate = JObject.Parse(await File.ReadAllTextAsync(_templatePath));
-            var filter = requestMessage.Query["$filter"].FirstOrDefault();
-            var filterDetails = ParseFilterQuery(filter);
-            UpdateResponseTemplate(jsonTemplate, filterDetails);
-            return CreateResponse(200, jsonTemplate);
+            try
+            {
+                var jsonTemplate = JObject.Parse(await File.ReadAllTextAsync(_templatePath));
+                var filter = requestMessage.Query["$filter"].FirstOrDefault();
+                if (string.IsNullOrEmpty(filter))
+                {
+                    return CreateErrorResponse(400, "Missing or invalid $filter parameter", "400-badrequests-guid-fss-batch-search");
+
+                }
+                var filterDetails = ParseFilterQuery(filter);
+                UpdateResponseTemplate(jsonTemplate, filterDetails);
+                return CreateResponse(200, jsonTemplate, "200-ok-guid-fss-batch-search");
+            }
+            catch (Exception)
+            {
+                return CreateErrorResponse(500,
+                    "Error occurred while processing Batch Search request",
+                    "500-internalservererror-guid-fss-batch-search");
+            }
         }
 
-        private static ResponseMessage CreateResponse(int statusCode, JObject jsonTemplate) =>
+        private static ResponseMessage CreateErrorResponse(int statusCode, string message, string correlationId) =>
+            CreateResponse(400, new JObject
+            {
+                ["correlationId"] = correlationId,
+                ["errors"] = new JArray
+                {
+                    new JObject { ["source"] = "Search Product", ["message"] = message }
+                }
+            }, correlationId);
+
+        private static ResponseMessage CreateResponse(int statusCode, JObject jsonTemplate, string correlationId) =>
             new()
             {
                 StatusCode = statusCode,
                 Headers = new Dictionary<string, WireMockList<string>> {
-                    { "Content-Type", "application/json" },
-                    { "_X-Correlation-ID", "200-ok-guid-fss-batch-search" }
+                            { "Content-Type", "application/json" },
+                            { "_X-Correlation-ID", correlationId }
                 },
                 BodyData = new BodyData
                 {
@@ -34,7 +58,6 @@ namespace ADDSMock.ResponseGenerator
                     DetectedBodyType = BodyType.Json
                 }
             };
-        
         private static FSSSearchFilterDetails ParseFilterQuery(string filterQuery)
         {
             var filterDetails = new FSSSearchFilterDetails { Products = [] };
@@ -45,7 +68,7 @@ namespace ADDSMock.ResponseGenerator
                 var product = new Product();
                 condition.Split("and", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                          .ToList()
-                         .ForEach(part => ParseFilterPart(part, filterDetails, product));
+                         .ForEach(property => ParseFilterProductProperties(property, filterDetails, product));
 
                 filterDetails.Products.Add(product);
             }
@@ -53,33 +76,34 @@ namespace ADDSMock.ResponseGenerator
             return filterDetails;
         }
 
-        private static void ParseFilterPart(string part, FSSSearchFilterDetails filterDetails, Product product)
+        private static void ParseFilterProductProperties(string property, FSSSearchFilterDetails filterDetails, Product product)
         {
-            switch (part)
+            switch (property)
             {
-                case var _ when part.Contains("BusinessUnit"):
-                    filterDetails.BusinessUnit = ExtractValue(part);
+                case var _ when property.Contains("BusinessUnit"):
+                    filterDetails.BusinessUnit = ExtractValue(property);
                     break;
-                case var _ when part.Contains("$batch(ProductCode)"):
-                    filterDetails.ProductCode = ExtractValue(part);
+                case var _ when property.Contains("$batch(ProductCode)"):
+                    filterDetails.ProductCode = ExtractValue(property);
+
                     break;
-                case var _ when part.Contains("$batch(CellName)"):
-                    product.ProductName = ExtractValue(part);
+                case var _ when property.Contains("$batch(CellName)"):
+                    product.ProductName = ExtractValue(property);
                     break;
-                case var _ when part.Contains("$batch(UpdateNumber)"):
-                    product.UpdateNumbers = ExtractNumericValues(part);
+                case var _ when property.Contains("$batch(UpdateNumber)"):
+                    product.UpdateNumbers = ExtractNumericValues(property);
                     break;
-                case var _ when part.Contains("$batch(EditionNumber)"):
-                    product.EditionNumber = int.Parse(ExtractValue(part));
+                case var _ when property.Contains("$batch(EditionNumber)"):
+                    product.EditionNumber = int.Parse(ExtractValue(property));
                     break;
             }
         }
 
-        private static string ExtractValue(string part) =>
-            part.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1)?.Trim('\'') ?? string.Empty;
+        private static string ExtractValue(string property) =>
+            property.Split("eq", StringSplitOptions.TrimEntries).ElementAtOrDefault(1)?.Trim('\'') ?? string.Empty;
 
-        private static List<int> ExtractNumericValues(string part) =>
-            Regex.Matches(part, @"\d+")
+        private static List<int> ExtractNumericValues(string property) =>
+            Regex.Matches(property, @"\d+")
                  .Select(match => int.Parse(match.Value))
                  .ToList();
 
@@ -99,10 +123,10 @@ namespace ADDSMock.ResponseGenerator
                         ["allFilesZipSize"] = null,
                         ["attributes"] = new JArray
                         {
-                            CreateAttribute("CellName", product.ProductName),
-                            CreateAttribute("EditionNumber", product.EditionNumber),
-                            CreateAttribute("UpdateNumber", updateNumber),
-                            CreateAttribute("ProductCode", filterDetails.ProductCode)
+                                    CreateAttribute("CellName", product.ProductName),
+                                    CreateAttribute("EditionNumber", product.EditionNumber),
+                                    CreateAttribute("UpdateNumber", updateNumber),
+                                    CreateAttribute("ProductCode", filterDetails.ProductCode)
                         },
                         ["businessUnit"] = filterDetails.BusinessUnit,
                         ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
