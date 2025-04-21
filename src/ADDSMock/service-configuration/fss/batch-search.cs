@@ -77,13 +77,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingGet()
-                .WithHeader("_X-Correlation-ID", "400-badrequests-guid-fss-batch-search")
+                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-batch-search")
          )
          .RespondWith(
              Response.Create()
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "400-badrequests-guid-fss-batch-search")
+                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-batch-search")
                 .WithBodyAsJson(new
                 {
                     correlationId = Guid.NewGuid(),
