@@ -33,13 +33,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
          .Given(
              Request.Create()
                  .WithPath(urlPattern)
-                 .WithHeader("_X-Correlation-ID", "400-badrequest-fss-add-file")
+                 .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-add-file")
                  .UsingPost()
          )
          .RespondWith(
              Response.Create()
                  .WithStatusCode(400)
                  .WithHeader("Content-Type", "application/json")
+                 .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-add-file")
                  .WithBodyFromFile(mockService.Files.Where(x => x.Name == "BadResponse.json").Select(x => x.Path).FirstOrDefault())
          );
 
@@ -47,13 +48,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .WithHeader("_X-Correlation-ID", "401-unauthorized-add-file")
+                .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-add-file")
                 .UsingPost()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
+                 .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-add-file")
                 .WithBody("Unauthorized")
         );
         
@@ -61,13 +63,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
          .Given(
              Request.Create()
                  .WithPath(urlPattern)
-                 .WithHeader("_X-Correlation-ID", "403-forbidden-fss-add-file")
+                 .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-add-file")
                  .UsingPost()
          )
          .RespondWith(
              Response.Create()
                  .WithStatusCode(403)
                  .WithHeader("Content-Type", "application/json")
+                 .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-add-file")
                  .WithBody("Forbidden")
          );
 
@@ -82,6 +85,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
              Response.Create()
                  .WithStatusCode(429)
                  .WithHeader("Content-Type", "application/json")
+                 .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-add-file")
                  .WithHeader("Retry-After", "10")
                  .WithBody("Too Many Requests")
          );
