@@ -27,8 +27,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 {
                     var pathSegments = request.PathSegments;
                     var fileName = pathSegments.ElementAtOrDefault(4);
-                    Console.WriteLine(fileName);
-                    
                     var fileResponse = System.IO.File.ReadAllBytes(mockService.Files.Where(x => x.Name == "mock-file.txt").Select(x => x.Path).FirstOrDefault());
 
                     return new WireMock.ResponseMessage
