@@ -8,6 +8,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch";
 
+    // 201 Created Response
     server
         .Given(
             Request.Create()
@@ -41,26 +42,12 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 })
         );
 
-    server
-     .Given(
-         Request.Create()
-             .WithPath(urlPattern)
-             .UsingPost()
-             .WithBody(new RegexMatcher(@"""expiryDate"":\s*(null|""(?!\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z).*"")"))
-     )
-     .RespondWith(
-         Response.Create()
-             .WithStatusCode(400)
-             .WithHeader("Content-Type", "application/json")
-             .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
-             .WithBody("Invalid Expiry Date Format.")
-     );
-
+    // 400 Bad Request Response
     server
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .UsingPost()               
+                .UsingPost()
                 .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
         )
         .RespondWith(
@@ -68,14 +55,26 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
-                .WithBody("Bad request.")
+                .WithBodyAsJson(new
+                {
+                    correlationId = "400-badrequest-guid-fss-create-batch",
+                    errors = new[]
+                    {
+                        new
+                        {
+                            source = "ExpiryDate",
+                            description = "Invalid Expiry Date Format."
+                        }
+                    }
+                })
         );
 
+    // 401 Unauthorized Response
     server
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .UsingPost()                
+                .UsingPost()
                 .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-create-batch")
         )
         .RespondWith(
@@ -86,11 +85,12 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithBody("Unauthorised.")
         );
 
+    // 403 Forbidden Response
     server
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .UsingPost()                
+                .UsingPost()
                 .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-create-batch")
         )
         .RespondWith(
@@ -101,11 +101,12 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithBody("Forbidden.")
         );
 
+    // 429 Too Many Requests Response
     server
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .UsingPost()                
+                .UsingPost()
                 .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-create-batch")
         )
         .RespondWith(
