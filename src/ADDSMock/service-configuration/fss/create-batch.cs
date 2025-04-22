@@ -82,7 +82,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-create-batch")
-                .WithBody("Unauthorised.")
         );
 
     // 403 Forbidden Response
@@ -98,7 +97,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(403)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-create-batch")
-                .WithBody("Forbidden.")
         );
 
     // 429 Too Many Requests Response
@@ -115,6 +113,5 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-create-batch")
                 .WithHeader("Retry-After", "10")
-                .WithBody("Too Many Requests.")
         );
 }
