@@ -25,9 +25,9 @@ namespace ADDSMock.ResponseGenerator
 
         private static void ParseFilterExpression(string filter, FSSSearchFilterDetails filterDetails)
         {
-            var biusinessUnitPattern = @"BusinessUnit\s+eq\s+'([^']*)'";
+            var businessUnitPattern = @"BusinessUnit\s+eq\s+'([^']*)'";
 
-            var businessUnitMatch = Regex.Match(filter, biusinessUnitPattern);
+            var businessUnitMatch = Regex.Match(filter, businessUnitPattern);
             filterDetails.BusinessUnit = businessUnitMatch.Success ? businessUnitMatch.Groups[1].Value : string.Empty;
 
             var productCodePattern = @"\$batch\(ProductCode\) eq '(?<Value>[^']*)'";
