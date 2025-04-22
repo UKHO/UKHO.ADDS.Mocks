@@ -86,7 +86,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-batch-search")
                 .WithBodyAsJson(new
                 {
-                    correlationId = Guid.NewGuid(),
+                    correlationId = "400-badrequest-guid-fss-batch-search",
                     errors = new[]
                     {
                         new { source = "Search Product", description = "Bad Request" }
