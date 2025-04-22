@@ -49,7 +49,18 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "400-badrequest-guid-scs-basic-catalogue")
-                .WithBody("Bad request.")
+                .WithBodyAsJson(new
+                {
+                    correlationId = "400-badrequest-guid-scs-basic-catalogue",
+                    errors = new[]
+                    {
+                        new
+                        {
+                            source = "Basic Catalogue",
+                            description = "Provided date format is not valid."
+                        }
+                    }
+                })
         );
 
     server
