@@ -65,7 +65,7 @@ namespace ADDSMock.ResponseGenerator
 
                 switch (property)
                 {
-                    case "CellName":
+                    case "ProductName":
                         product.ProductName = value;
                         break;
                     case "EditionNumber" when int.TryParse(value, out var editionNumber):

@@ -75,7 +75,7 @@ namespace ADDSMock.ResponseGenerator
                         ["allFilesZipSize"] = null,
                         ["attributes"] = new JArray
                         {
-                                    CreateAttribute("CellName", product.ProductName),
+                                    CreateAttribute("ProductName", product.ProductName),
                                     CreateAttribute("EditionNumber", product.EditionNumber),
                                     CreateAttribute("UpdateNumber", updateNumber),
                                     CreateAttribute("ProductCode", filterDetails.ProductCode)
@@ -84,7 +84,7 @@ namespace ADDSMock.ResponseGenerator
                         ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                         ["expiryDate"] = DateTime.UtcNow.AddMonths(2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                         ["isAllFilesZipAvailable"] = true,
-                        ["files"] = CreateFilesArray(product.ProductName, batchId)
+                        ["files"] = CreateFilesArray(product.ProductName, batchId, updateNumber)
                     });
                 });
             }
@@ -99,9 +99,9 @@ namespace ADDSMock.ResponseGenerator
             new()
             { ["key"] = attr, ["value"] = JToken.FromObject(value) };
 
-        private static JArray CreateFilesArray(string productName, string batchId) =>
-            new(
-                CreateFileObject(productName, ".000", 874, batchId),
+        private static JArray CreateFilesArray(string productName, string batchId,int updateNo) =>
+        new(
+                CreateFileObject(productName, $".{updateNo:D3}", 874, batchId),
                 CreateFileObject(productName, ".TXT", 1192, batchId)
             );
 
@@ -121,7 +121,7 @@ namespace ADDSMock.ResponseGenerator
         private static JObject CreateLinkObject(string productCode, Product product)
         {
             var filterValue = !string.IsNullOrEmpty(product?.ProductName)
-                ? $"$batch(ProductCode) eq '{productCode}' and $batch(CellName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
+                ? $"$batch(ProductCode) eq '{productCode}' and $batch(ProductName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
                 : $"$batch(ProductCode) eq '{productCode}'";
 
             var encodedFilterUrl = $"/batch?limit=10&start=0&$filter={Uri.EscapeDataString(filterValue)}";
