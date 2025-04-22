@@ -8,6 +8,7 @@ namespace ADDSMock.ResponseGenerator
         private static readonly Regex BusinessUnitRegex = new Regex(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
         private static readonly Regex ProductCodeRegex = new Regex(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
         private const string BatchPattern = @"\$batch\((?<Property>\w+)\) eq '(?<Value>[^']*)'";
+
         public static FSSSearchFilterDetails ParseBatchQuery(string odataQuery)
         {
             var filterDetails = new FSSSearchFilterDetails
@@ -82,5 +83,4 @@ namespace ADDSMock.ResponseGenerator
                 : product;
         }
     }
-
 }
