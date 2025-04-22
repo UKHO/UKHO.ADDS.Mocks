@@ -52,7 +52,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(403)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-batch-search")
-                
          );
 
     server
@@ -68,7 +67,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("Retry-After", "10")
                 .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-batch-search")
-                
          );
 
     server
