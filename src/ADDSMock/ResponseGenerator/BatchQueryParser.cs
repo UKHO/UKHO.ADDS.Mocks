@@ -5,13 +5,16 @@ namespace ADDSMock.ResponseGenerator
 {
     public class BatchQueryParser
     {
+        private static readonly Regex BusinessUnitRegex = new Regex(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
+        private static readonly Regex ProductCodeRegex = new Regex(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
+        private const string BatchPattern = @"\$batch\((?<Property>\w+)\) eq '(?<Value>[^']*)'";
         public static FSSSearchFilterDetails ParseBatchQuery(string odataQuery)
         {
             var filterDetails = new FSSSearchFilterDetails
             {
                 Products = []
             };
-            var filterMatch = Regex.Match(odataQuery, @"\$filter=(.*)");
+            var filterMatch = Regex.Match(odataQuery, @"\$filter=(.*)");        
             if (!filterMatch.Success)
             {
                 return filterDetails;
@@ -25,13 +28,10 @@ namespace ADDSMock.ResponseGenerator
 
         private static void ParseFilterExpression(string filter, FSSSearchFilterDetails filterDetails)
         {
-            var businessUnitPattern = @"BusinessUnit\s+eq\s+'([^']*)'";
-
-            var businessUnitMatch = Regex.Match(filter, businessUnitPattern);
+            var businessUnitMatch = BusinessUnitRegex.Match(filter);
             filterDetails.BusinessUnit = businessUnitMatch.Success ? businessUnitMatch.Groups[1].Value : string.Empty;
 
-            var productCodePattern = @"\$batch\(ProductCode\) eq '(?<Value>[^']*)'";
-            var productCodeMatch = Regex.Match(filter, productCodePattern);
+            var productCodeMatch = ProductCodeRegex.Match(filter);
             filterDetails.ProductCode = productCodeMatch.Success ? productCodeMatch.Groups[1].Value : string.Empty;
 
             var conditions = filter.Split(")))", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -47,8 +47,7 @@ namespace ADDSMock.ResponseGenerator
 
         private static Product ParseFilterProductProperties(string filter)
         {
-            const string batchPattern = @"\$batch\((?<Property>\w+)\) eq '(?<Value>[^']*)'";
-            var matches = Regex.Matches(filter, batchPattern);
+            var matches = Regex.Matches(filter, BatchPattern);
 
             if (matches.Count == 0) return null;
 

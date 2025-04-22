@@ -18,7 +18,7 @@ namespace ADDSMock.ResponseGenerator
                 var filter = requestMessage.Query["$filter"].FirstOrDefault();
                 if (string.IsNullOrEmpty(filter))
                 {
-                    return CreateErrorResponse(400, "Missing or invalid $filter parameter", "400-badrequests-guid-fss-batch-search");
+                    return CreateErrorResponse(400, "Missing or invalid $filter parameter.", "400-badrequest-guid-fss-batch-search");
 
                 }
                 var batchDetails = BatchQueryParser.ParseBatchQuery("$filter=" + filter);
