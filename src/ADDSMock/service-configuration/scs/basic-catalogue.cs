@@ -24,18 +24,18 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         );
 
     server
-    .Given(
-        Request.Create()
-            .WithUrl(new RegexMatcher(urlPattern))
-            .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs-basic-catalogue")
-            .UsingGet()
-    )
-    .RespondWith(
-        Response.Create()
-            .WithStatusCode(304)
-            .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-            .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs-basic-catalogue")
-    );
+        .Given(
+            Request.Create()
+                .WithUrl(new RegexMatcher(urlPattern))
+                .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs-basic-catalogue")
+                .UsingGet()
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(304)
+                .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
+                .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs-basic-catalogue")
+        );
 
     server
         .Given(
