@@ -75,7 +75,11 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(500)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "500-internalserver-guid-scs-basic-catalogue")
-                .WithBody("Internal server error.")
+                .WithBodyAsJson(new
+                {
+                    correlationId = "500-internalserver-guid-scs-basic-catalogue",
+                    details = "Internal Server Error"
+                })
         );
 
     server
@@ -90,7 +94,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(401)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-scs-basic-catalogue")
-                .WithBody("Unauthorised.")
         );
 
     server
@@ -105,7 +108,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(403)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "403-forbidden-guid-scs-basic-catalogue")
-                .WithBody("Forbidden.")
         );
 
     server
@@ -120,21 +122,30 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(404)
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("_X-Correlation-ID", "404-notfound-guid-scs-basic-catalogue")
-                .WithBody("Not found.")
+                .WithBodyAsJson(new
+                {
+                    correlationId = "404-notfound-guid-scs-basic-catalogue",
+                    details = "Not Found"
+                })
         );
 
     server
-       .Given(
-           Request.Create()
-               .WithUrl(new RegexMatcher(urlPattern))
-               .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid-scs-basic-catalogue")
-               .UsingGet()
-       )
-       .RespondWith(
-           Response.Create()
-               .WithStatusCode(415)
-               .WithHeader("Content-Type", "application/json")
-               .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid-scs-basic-catalogue")
-               .WithBody("Unsupported Media Type.")
-       );
+        .Given(
+            Request.Create()
+                .WithUrl(new RegexMatcher(urlPattern))
+                .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid-scs-basic-catalogue")
+                .UsingGet()
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(415)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyAsJson(new
+                {
+                    type = "https://example.com",
+                    title = "Unsupported Media Type",
+                    status = 415,
+                    traceId = "00-012-0123-01"
+                })
+        );
 }
