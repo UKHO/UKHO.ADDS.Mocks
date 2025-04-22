@@ -51,7 +51,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                     {
                         new
                         {
-                            source = "BatchID",
+                            source = "Add File",
                             description = "Batch ID is missing in the URI."
                         }
                     }
