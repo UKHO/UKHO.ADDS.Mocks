@@ -40,8 +40,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="service-configuration\**"/>
+    <Compile Remove="service-configuration\**" />
     <None Include="service-configuration\**" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="service-configuration\fss\files\search-product.json" />
   </ItemGroup>
 
   <!--Console/Web and Interactive Mode-->
