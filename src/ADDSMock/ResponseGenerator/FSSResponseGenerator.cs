@@ -1,5 +1,6 @@
-﻿using ADDSMock.Models;
-using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using ADDSMock.Models;
 using WireMock;
 using WireMock.Types;
 using WireMock.Util;
@@ -14,13 +15,14 @@ namespace ADDSMock.ResponseGenerator
         {
             try
             {
-                var jsonTemplate = JObject.Parse(await File.ReadAllTextAsync(_templatePath));
+                var jsonTemplate = JsonNode.Parse(await File.ReadAllTextAsync(_templatePath))?.AsObject();                
+
                 var filter = requestMessage.Query["$filter"].FirstOrDefault();
                 if (string.IsNullOrEmpty(filter))
                 {
                     return CreateErrorResponse(400, "Missing or invalid $filter parameter.", "400-badrequest-guid-fss-batch-search");
-
                 }
+
                 var batchDetails = BatchQueryParser.ParseBatchQuery("$filter=" + filter);
                 UpdateResponseTemplate(jsonTemplate, batchDetails);
                 return CreateResponse(200, jsonTemplate, "200-ok-guid-fss-batch-search");
@@ -34,51 +36,55 @@ namespace ADDSMock.ResponseGenerator
         }
 
         private static ResponseMessage CreateErrorResponse(int statusCode, string message, string correlationId) =>
-            CreateResponse(statusCode, new JObject
+            CreateResponse(statusCode, new JsonObject
             {
                 ["correlationId"] = correlationId,
-                ["errors"] = new JArray
+                ["errors"] = new JsonArray
                 {
-                    new JObject { ["source"] = "Search Product", ["message"] = message }
+                    new JsonObject
+                    {
+                        ["source"] = "Search Product",
+                        ["message"] = message
+                    }
                 }
             }, correlationId);
 
-        private static ResponseMessage CreateResponse(int statusCode, JObject jsonTemplate, string correlationId) =>
+        private static ResponseMessage CreateResponse(int statusCode, JsonObject jsonTemplate, string correlationId) =>
             new()
             {
                 StatusCode = statusCode,
-                Headers = new Dictionary<string, WireMockList<string>> {
-                            { "Content-Type", "application/json" },
-                            { "_X-Correlation-ID", correlationId }
+                Headers = new Dictionary<string, WireMockList<string>>
+                {
+                    { "Content-Type", "application/json" },
+                    { "_X-Correlation-ID", correlationId }
                 },
                 BodyData = new BodyData
                 {
-                    BodyAsJson = jsonTemplate,
-                    DetectedBodyType = BodyType.Json
+                    BodyAsString = JsonSerializer.Serialize(jsonTemplate, new JsonSerializerOptions { WriteIndented = true }),
+                    DetectedBodyType = BodyType.String
                 }
             };
 
-
-        private static void UpdateResponseTemplate(JObject jsonTemplate, FSSSearchFilterDetails filterDetails)
+        private static void UpdateResponseTemplate(JsonObject jsonTemplate, FSSSearchFilterDetails filterDetails)
         {
-            var entries = new JArray();
+            var entries = new JsonArray();
 
             foreach (var product in filterDetails.Products)
             {
                 product.UpdateNumbers?.ForEach(updateNumber =>
                 {
                     var batchId = Guid.NewGuid().ToString();
-                    entries.Add(new JObject
+                    entries.Add(new JsonObject
                     {
                         ["batchId"] = batchId,
                         ["status"] = "Committed",
                         ["allFilesZipSize"] = null,
-                        ["attributes"] = new JArray
+                        ["attributes"] = new JsonArray
                         {
-                                    CreateAttribute("ProductName", product.ProductName),
-                                    CreateAttribute("EditionNumber", product.EditionNumber),
-                                    CreateAttribute("UpdateNumber", updateNumber),
-                                    CreateAttribute("ProductCode", filterDetails.ProductCode)
+                            CreateAttribute("ProductName", product.ProductName),
+                            CreateAttribute("EditionNumber", product.EditionNumber),
+                            CreateAttribute("UpdateNumber", updateNumber),
+                            CreateAttribute("ProductCode", filterDetails.ProductCode)
                         },
                         ["businessUnit"] = filterDetails.BusinessUnit,
                         ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
@@ -95,30 +101,34 @@ namespace ADDSMock.ResponseGenerator
             jsonTemplate["_links"] = CreateLinkObject(filterDetails.ProductCode, filterDetails.Products.FirstOrDefault());
         }
 
-        private static JObject CreateAttribute(string attr, object value) =>
+        private static JsonObject CreateAttribute(string attr, object value) =>
             new()
-            { ["key"] = attr, ["value"] = JToken.FromObject(value) };
+            {
+                ["key"] = attr,
+                ["value"] = JsonValue.Create(value)
+            };
 
-        private static JArray CreateFilesArray(string productName, string batchId,int updateNo) =>
-        new(
+        private static JsonArray CreateFilesArray(string productName, string batchId, int updateNo) =>
+            new()
+            {
                 CreateFileObject(productName, $".{updateNo:D3}", 874, batchId),
                 CreateFileObject(productName, ".TXT", 1192, batchId)
-            );
+            };
 
-        private static JObject CreateFileObject(string productName, string extension, int fileSize, string batchId) =>
+        private static JsonObject CreateFileObject(string productName, string extension, int fileSize, string batchId) =>
             new()
             {
                 ["filename"] = $"{productName}{extension}",
                 ["fileSize"] = fileSize,
                 ["mimeType"] = "text/plain",
                 ["hash"] = string.Empty,
-                ["links"] = new JObject
+                ["links"] = new JsonObject
                 {
-                    ["get"] = new JObject { ["href"] = $"/batch/{batchId}/files/{productName}{extension}" }
+                    ["get"] = new JsonObject { ["href"] = $"/batch/{batchId}/files/{productName}{extension}" }
                 }
             };
 
-        private static JObject CreateLinkObject(string productCode, Product product)
+        private static JsonObject CreateLinkObject(string productCode, Product product)
         {
             var filterValue = !string.IsNullOrEmpty(product?.ProductName)
                 ? $"$batch(ProductCode) eq '{productCode}' and $batch(ProductName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
@@ -126,7 +136,7 @@ namespace ADDSMock.ResponseGenerator
 
             var encodedFilterUrl = $"/batch?limit=10&start=0&$filter={Uri.EscapeDataString(filterValue)}";
 
-            return new JObject
+            return new JsonObject
             {
                 ["self"] = encodedFilterUrl,
                 ["first"] = encodedFilterUrl,
