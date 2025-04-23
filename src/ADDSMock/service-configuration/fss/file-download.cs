@@ -6,7 +6,6 @@ using WireMock.ResponseBuilders;
 using System.Text.RegularExpressions;
 using WireMock.Http;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using WireMock.Types;
 using System;
 
