@@ -1,4 +1,5 @@
 ﻿using ADDSMock.Domain.Mappings;
+using ADDSMock.Constants;
 using System.Net;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
@@ -12,6 +13,7 @@ using System;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)/files/(.*)";
+    var EndPoint = "fss-file-download";
 
     // 200 OK Response with File Download
     server
@@ -38,8 +40,8 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                         StatusCode = 200,
                         Headers = new Dictionary<string, WireMockList<string>>
                         {
-                            { "Content-Type", "application/octet-stream" },
-                            { "Content-Disposition", $"attachment; filename=\"{fileName}\""}
+                                { MockConstants.ContentTypeHeader, "application/octet-stream" },
+                                { "Content-Disposition", $"attachment; filename=\"{fileName}\""}
                         },
                         BodyData = new WireMock.Util.BodyData
                         {
@@ -55,24 +57,24 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}/files/"))
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-file-download")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = "400-badrequest-guid-fss-file-download",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{EndPoint}",
                     errors = new[]
                     {
-                        new
-                        {
-                            source = "File Download",
-                            description = "Invalid batchId."
-                        }
+                            new
+                            {
+                                source = "File Download",
+                                description = "Invalid batchId."
+                            }
                     }
                 })
         );
@@ -82,14 +84,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "401-unauthorized-guid-fss-file-download")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
         );
 
     // 403 Forbidden Response
@@ -97,14 +99,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(403)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-file-download")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
         );
 
     // 404 File Not Found Response
@@ -113,13 +115,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
                 .UsingGet()
-                .WithHeader("_X-Correlation-ID", "404-filenotfound-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{EndPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(404)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "404-filenotfound-guid-fss-file-download")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{EndPoint}")
         );
 
     // 410 Gone Response
@@ -128,13 +130,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
                 .UsingGet()
-                .WithHeader("_X-Correlation-ID", "410-gone-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.GoneCorrelationId}{EndPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(410)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "410-gone-guid-fss-file-download")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.GoneCorrelationId}{EndPoint}")
         );
 
     // 416 Range Not Satisfiable Response
@@ -142,14 +144,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "416-rangenotsatifiable-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.RangeNotSatisfiableCorrelationId}{EndPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(416)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "416-rangenotsatifiable-guid-fss-file-download")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.RangeNotSatisfiableCorrelationId}{EndPoint}")
         );
 
     // 429 Too Many Requests Response
@@ -158,14 +160,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
                 .UsingGet()
-                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{EndPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(429)
-                .WithHeader("Content-Type", "application/json")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader("Retry-After", "10")
-                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{EndPoint}")
         );
 
     // 307 Temporary Redirect Response
@@ -174,13 +176,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(new RegexMatcher(urlPattern))
                 .UsingGet()
-                .WithHeader("_X-Correlation-ID", "307-temporaryredirect-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TemporaryRedirectCorrelationId}{EndPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(307)
-                .WithHeader("Content-Type", "application/json")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader("Redirect-Location", "https://example.com/redirect")
-                .WithHeader("_X-Correlation-ID", "307-temporaryredirect-guid-fss-file-download")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TemporaryRedirectCorrelationId}{EndPoint}")
         );
 }
