@@ -22,7 +22,11 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithCallback(request =>
                 {
-                    return FSSResponseGenerator.ProvideSearchFilterResponse(request);
+                    var templatePath = mockService.Files
+                        .Where(x => x.Name == "search-product.json")
+                        .Select(x => x.Path)
+                        .FirstOrDefault();
+                    return FSSResponseGenerator.ProvideSearchFilterResponse(request, templatePath);
                 })
         );
 

@@ -9,13 +9,11 @@ namespace ADDSMock.ResponseGenerator
 {
     public static class FSSResponseGenerator
     {
-        private static readonly string _templatePath = @"..\ADDSMock\service-configuration\fss\files\search-product.json";
-
-        public static async Task<ResponseMessage> ProvideSearchFilterResponse(IRequestMessage requestMessage)
+        public static async Task<ResponseMessage> ProvideSearchFilterResponse(IRequestMessage requestMessage, string templatePath)
         {
             try
             {
-                var jsonTemplate = JsonNode.Parse(await File.ReadAllTextAsync(_templatePath))?.AsObject();                
+                var jsonTemplate = JsonNode.Parse(await File.ReadAllTextAsync(templatePath))?.AsObject();
 
                 var filter = requestMessage.Query["$filter"].FirstOrDefault();
                 if (string.IsNullOrEmpty(filter))
@@ -138,11 +136,9 @@ namespace ADDSMock.ResponseGenerator
 
             return new JsonObject
             {
-                ["self"] = encodedFilterUrl,
-                ["first"] = encodedFilterUrl,
-                ["previous"] = encodedFilterUrl,
-                ["next"] = encodedFilterUrl,
-                ["last"] = encodedFilterUrl
+                ["self"] = new JsonObject { ["href"] = encodedFilterUrl },
+                ["first"] = new JsonObject { ["href"] = encodedFilterUrl },
+                ["last"] = new JsonObject { ["href"] = encodedFilterUrl }
             };
         }
     }
