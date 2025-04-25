@@ -4,7 +4,7 @@
     public class MockConstants
     {
         // Headers
-        public const string CorrelationIdHeader = "_X-Correlation-ID";
+        public const string CorrelationIdHeader = "X-Correlation-ID";
         public const string ContentTypeHeader = "Content-Type";
         public const string ApplicationJson = "application/json";
 
