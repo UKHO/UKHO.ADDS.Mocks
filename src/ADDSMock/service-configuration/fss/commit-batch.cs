@@ -13,7 +13,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)";
 
-    // 200 OK Response with Commit Batch
+    // 202 Accepted Response with Commit Batch
     server
         .Given(
             Request.Create()
@@ -23,7 +23,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         )
         .RespondWith(
             Response.Create()
-            .WithHeader("X-Correlation-ID", "202-created-guid-fss-commit-batch")
+            .WithHeader("X-Correlation-ID", "202-Accepted-guid-fss-commit-batch")
                 .WithCallback(request =>
                 {
                     var batchId = request.PathSegments.ElementAtOrDefault(2); 
