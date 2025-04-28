@@ -13,6 +13,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)";
 
+    // 200 OK Response with Commit Batch
     server
         .Given(
             Request.Create()
@@ -22,6 +23,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         )
         .RespondWith(
             Response.Create()
+            .WithHeader("X-Correlation-ID", "202-created-guid-fss-commit-batch")
                 .WithCallback(request =>
                 {
                     var batchId = request.PathSegments.ElementAtOrDefault(2); 
@@ -44,6 +46,33 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             DetectedBodyType = BodyType.Json 
                         }
                     };
+                })
+        );
+
+    // 400 Bad Request Response
+    server
+        .Given(
+            Request.Create()
+                .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}"))
+                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-commit-batch")
+                .UsingGet()
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(400)
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-commit-batch")
+                .WithBodyAsJson(new
+                {
+                    correlationId = "400-badrequest-guid-fss-commit-batch",
+                    errors = new[]
+                    {
+                        new
+                        {
+                            source = "Commit Batch",
+                            description = "Invalid batchId."
+                        }
+                    }
                 })
         );
 }
