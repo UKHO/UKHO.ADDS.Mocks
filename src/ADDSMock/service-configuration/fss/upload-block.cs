@@ -21,6 +21,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .RespondWith(
             Response.Create()
                 .WithStatusCode(201)
+                .WithHeader("_X-Correlation-ID", "201-created-guid-fss-upload-block")
         );
 
     // 400 Bad Request Response
