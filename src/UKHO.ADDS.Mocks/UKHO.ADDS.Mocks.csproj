@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <Content Remove="Configuration\Files\scs\s100-catalogue.json" />
+    <Content Remove="configuration\files\fss\annualfiles.json" />
+    <Content Remove="configuration\files\fss\attributes.json" />
   </ItemGroup>
 
   <ItemGroup>
