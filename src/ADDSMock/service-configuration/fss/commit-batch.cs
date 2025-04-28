@@ -75,4 +75,65 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                     }
                 })
         );
+
+    // 401 Unauthorized Response
+    server
+        .Given(
+            Request.Create()
+                .WithPath(urlPattern)
+                .WithHeader("X-Correlation-ID", "401-unauthorized-guid-fss-commit-batch")
+                .UsingPut()
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(401)
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("X-Correlation-ID", "401-unauthorized-guid-fss-commit-batch")
+        );
+
+    // 403 Forbidden Response
+    server
+        .Given(
+            Request.Create()
+                .WithPath(urlPattern)
+                .WithHeader("X-Correlation-ID", "403-forbidden-guid-fss-commit-batch")
+                .UsingPut()
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(403)
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("X-Correlation-ID", "403-forbidden-guid-fss-commit-batch")
+        );
+
+    // 409 Conflict Response
+    server
+        .Given(
+            Request.Create()
+                .WithPath(urlPattern)
+                .UsingPut()
+                .WithHeader("X-Correlation-ID", "409-conflict-guid-fss-commit-batch")
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(409)
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("X-Correlation-ID", "409-conflict-guid-fss-commit-batch")
+        );
+
+    // 429 Too Many Requests Response
+    server
+        .Given(
+            Request.Create()
+                .WithPath(urlPattern)
+                .UsingPut()
+                .WithHeader("X-Correlation-ID", "429-toomanyrequests-guid-fss-commit-batch")
+        )
+        .RespondWith(
+            Response.Create()
+                .WithStatusCode(429)
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("X-Correlation-ID", "429-toomanyrequests-guid-fss-commit-batch")
+                .WithHeader("Retry-After", "10")
+        );
 }
