@@ -8,21 +8,6 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)/expiry";
 
-    // 410 Gone Response
-    server
-        .Given(
-            Request.Create()
-                .WithPath(new RegexMatcher(urlPattern))
-                .UsingPut()
-                .WithHeader("_X-Correlation-ID", "410-gone-guid-fss-batch-expiry")
-        )
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(410)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "410-gone-guid-fss-batch-expiry")
-        );
-
     // 204 No Content Response
     server
         .Given(
@@ -36,7 +21,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(204)
                 .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "204-nocontent-guid-fss-batch-expiry")
+                .WithHeader("X-Correlation-ID", "204-nocontent-guid-fss-batch-expiry")
         );
 
     // 400 Bad Request Response
@@ -45,13 +30,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPut()
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-batch-expiry")
+                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-batch-expiry")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-batch-expiry")
+                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-batch-expiry")
                 .WithBodyAsJson(new
                 {
                     correlationId = "400-badrequest-guid-fss-batch-expiry",
@@ -64,51 +49,5 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                         }
                     }
                 })
-        );
-
-    // 401 Unauthorized Response
-    server
-        .Given(
-            Request.Create()
-                .WithPath(urlPattern)
-                .UsingPut()
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-batch-expiry")
-        )
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(401)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-batch-expiry")
-        );
-
-    // 403 Forbidden Response
-    server
-        .Given(
-            Request.Create()
-                .WithPath(urlPattern)
-                .UsingPut()
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-batch-expiry")
-        )
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(403)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-batch-expiry")
-        );
-
-    // 429 Too Many Requests Response
-    server
-        .Given(
-            Request.Create()
-                .WithPath(urlPattern)
-                .UsingPut()
-                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-batch-expiry")
-        )
-        .RespondWith(
-            Response.Create()
-                .WithStatusCode(429)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-batch-expiry")
-                .WithHeader("Retry-After", "10")
         );
 }
