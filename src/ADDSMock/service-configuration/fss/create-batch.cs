@@ -62,11 +62,11 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                     correlationId = $"{MockConstants.BadRequestCorrelationId}{EndPoint}",
                     errors = new[]
                     {
-                            new
-                            {
-                                source = "Create Batch",
-                                description = "Invalid Expiry Date Format."
-                            }
+                        new
+                        {
+                            source = "Create Batch",
+                            description = "Invalid Expiry Date Format."
+                        }
                     }
                 })
         );
