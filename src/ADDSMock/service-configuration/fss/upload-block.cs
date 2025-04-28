@@ -21,7 +21,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .RespondWith(
             Response.Create()
                 .WithStatusCode(201)
-                .WithHeader("_X-Correlation-ID", "201-created-guid-fss-upload-block")
+                .WithHeader("X-Correlation-ID", "201-created-guid-fss-upload-block")
         );
 
     // 400 Bad Request Response
@@ -29,14 +29,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-upload-block")
+                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-upload-block")
                 .UsingPut()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-upload-block")
+                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-upload-block")
                 .WithBodyAsJson(new
                 {
                     correlationId = "400-badrequest-guid-fss-upload-block",
