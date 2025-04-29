@@ -123,7 +123,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ConflictCorrelationId}{endPoint}")
         );
 
-    /*// 429 Too Many Requests Response
+    // 429 Too Many Requests Response
     server
         .Given(
             Request.Create()
@@ -137,5 +137,5 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
                 .WithHeader("Retry-After", "10")
-        );*/
+        );
 }
