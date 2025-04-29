@@ -19,7 +19,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}"))
+                .WithPath(new RegexMatcher(urlPattern))
                 .UsingPut()
                 .WithBody("[{\"filename\":\"string\",\"hash\":\"string\"}]")
         )
@@ -55,7 +55,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}"))
+                .WithPath(new RegexMatcher(urlPattern))
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .UsingGet()
         )
@@ -123,7 +123,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ConflictCorrelationId}{endPoint}")
         );
 
-    // 429 Too Many Requests Response
+    /*// 429 Too Many Requests Response
     server
         .Given(
             Request.Create()
@@ -137,5 +137,5 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
                 .WithHeader("Retry-After", "10")
-        );
+        );*/
 }
