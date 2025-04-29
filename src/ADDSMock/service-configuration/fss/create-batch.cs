@@ -1,4 +1,5 @@
 ﻿using ADDSMock.Domain.Mappings;
+using ADDSMock.Constants;
 using System.Net;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
@@ -7,6 +8,7 @@ using WireMock.ResponseBuilders;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch";
+    var endPoint = "fss-create-batch";
 
     // 201 Created Response
     server
@@ -15,27 +17,27 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithPath(urlPattern)
                 .UsingPost()
                 .WithBody(new JsonMatcher(@"
-                {
-                  ""businessUnit"": ""string"",
-                  ""acl"": {
-                    ""readUsers"": [""string""],
-                    ""readGroups"": [""public""]
-                  },
-                  ""attributes"": [
                     {
-                      ""key"": ""string"",
-                      ""value"": ""string""
-                    }
-                  ],
-                  ""expiryDate"": ""2025-02-10T11:25:04.982Z""
-                }"))
+                      ""businessUnit"": ""string"",
+                      ""acl"": {
+                        ""readUsers"": [""string""],
+                        ""readGroups"": [""public""]
+                      },
+                      ""attributes"": [
+                        {
+                          ""key"": ""string"",
+                          ""value"": ""string""
+                        }
+                      ],
+                      ""expiryDate"": ""2025-02-10T11:25:04.982Z""
+                    }"))
                 .WithBody(new RegexMatcher(@".*"))
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(201)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "201-created-guid-fss-create-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.CreatedCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
                     batchId = Guid.NewGuid().ToString()
@@ -48,16 +50,16 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-fss-create-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = "400-badrequest-guid-fss-create-batch",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{endPoint}",
                     errors = new[]
                     {
                         new
@@ -75,13 +77,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-create-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-fss-create-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         );
 
     // 403 Forbidden Response
@@ -90,13 +92,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-create-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(403)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-fss-create-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         );
 
     // 429 Too Many Requests Response
@@ -105,13 +107,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-create-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(429)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "429-toomanyrequests-guid-fss-create-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
                 .WithHeader("Retry-After", "10")
         );
 }
