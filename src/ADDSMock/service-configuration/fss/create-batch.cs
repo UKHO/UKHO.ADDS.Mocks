@@ -8,7 +8,7 @@ using WireMock.ResponseBuilders;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch";
-    var EndPoint = "fss-create-batch";
+    var endPoint = "fss-create-batch";
 
     // 201 Created Response
     server
@@ -37,7 +37,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Response.Create()
                 .WithStatusCode(201)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.CreatedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.CreatedCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
                     batchId = Guid.NewGuid().ToString()
@@ -50,16 +50,16 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = $"{MockConstants.BadRequestCorrelationId}{EndPoint}",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{endPoint}",
                     errors = new[]
                     {
                         new
@@ -77,13 +77,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         );
 
     // 403 Forbidden Response
@@ -92,13 +92,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(403)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         );
 
     // 429 Too Many Requests Response
@@ -107,13 +107,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPost()
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(429)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
                 .WithHeader("Retry-After", "10")
         );
 }

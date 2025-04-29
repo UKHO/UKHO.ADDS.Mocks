@@ -11,7 +11,7 @@ using System;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch.*";
-    var EndPoint = "fss-batch-search";
+    var endPoint = "fss-batch-search";
 
     server
         .Given(
@@ -37,28 +37,28 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
          .Given(
              Request.Create()
                 .WithPath(urlPattern)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
                 .UsingGet()
          )
          .RespondWith(
              Response.Create()
                 .WithStatusCode(401)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
          );
 
     server
          .Given(
              Request.Create()
                 .WithPath(urlPattern)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
                 .UsingGet()
          )
          .RespondWith(
              Response.Create()
                 .WithStatusCode(403)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
          );
 
     server
@@ -66,14 +66,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingGet()
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
          )
          .RespondWith(
              Response.Create()
                 .WithStatusCode(429)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader("Retry-After", "10")
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
          );
 
     server
@@ -81,16 +81,16 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingGet()
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
          )
          .RespondWith(
              Response.Create()
                 .WithStatusCode(400)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = $"{MockConstants.BadRequestCorrelationId}{EndPoint}",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{endPoint}",
                     errors = new[]
                     {
                             new { source = "Search Product", description = "Bad Request" }
