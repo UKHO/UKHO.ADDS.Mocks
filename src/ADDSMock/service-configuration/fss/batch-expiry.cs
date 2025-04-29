@@ -8,14 +8,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)/expiry";
 
-    // 204 No Content Response
+    // 204 No Content Response 
     server
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPut()
-                .WithBody(new JsonMatcher(@"
-                     {""expiryDate"": ""2025-04-09T14:45:33.366Z""}"))
+                .WithBody(new RegexMatcher(@"""expiryDate"":\s*""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z""")) // Validate ISO 8601 format with milliseconds and UTC
         )
         .RespondWith(
             Response.Create()
