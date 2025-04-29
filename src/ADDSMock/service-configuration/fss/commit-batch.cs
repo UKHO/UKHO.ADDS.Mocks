@@ -1,4 +1,5 @@
 ﻿using ADDSMock.Domain.Mappings;
+using ADDSMock.Constants;
 using System.Net;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
@@ -12,27 +13,28 @@ using System;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)";
+    var endPoint = "fss-commit-batch";
 
     // 202 Accepted Response with Commit Batch
     server
         .Given(
             Request.Create()
-                .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}")) 
-                .UsingPut() 
-                .WithBody("[{\"filename\":\"string\",\"hash\":\"string\"}]") 
+                .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}"))
+                .UsingPut()
+                .WithBody("[{\"filename\":\"string\",\"hash\":\"string\"}]")
         )
         .RespondWith(
             Response.Create()
-            .WithHeader("X-Correlation-ID", "202-Accepted-guid-fss-commit-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.AcceptedCorrelationId}{endPoint}")
                 .WithCallback(request =>
                 {
-                    var batchId = request.PathSegments.ElementAtOrDefault(2); 
+                    var batchId = request.PathSegments.ElementAtOrDefault(2);
                     return new WireMock.ResponseMessage
                     {
-                        StatusCode = 202, 
+                        StatusCode = 202,
                         Headers = new Dictionary<string, WireMockList<string>>
                         {
-                            { "Content-Type", new WireMockList<string>("application/json") }
+                            { MockConstants.ContentTypeHeader, new WireMockList<string>(MockConstants.ApplicationJson) }
                         },
                         BodyData = new WireMock.Util.BodyData
                         {
@@ -40,10 +42,10 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                             {
                                 status = new
                                 {
-                                    uri = $"/batch/{batchId}/status" 
+                                    uri = $"/batch/{batchId}/status"
                                 }
                             },
-                            DetectedBodyType = BodyType.Json 
+                            DetectedBodyType = BodyType.Json
                         }
                     };
                 })
@@ -54,17 +56,17 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(new RegexMatcher(@"/batch/[a-fA-F0-9-]{36}"))
-                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-commit-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-commit-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = "400-badrequest-guid-fss-commit-batch",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{endPoint}",
                     errors = new[]
                     {
                         new
@@ -81,14 +83,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .WithHeader("X-Correlation-ID", "401-unauthorized-guid-fss-commit-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
                 .UsingPut()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("X-Correlation-ID", "401-unauthorized-guid-fss-commit-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         );
 
     // 403 Forbidden Response
@@ -96,14 +98,14 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
-                .WithHeader("X-Correlation-ID", "403-forbidden-guid-fss-commit-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
                 .UsingPut()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(403)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("X-Correlation-ID", "403-forbidden-guid-fss-commit-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         );
 
     // 409 Conflict Response
@@ -112,13 +114,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPut()
-                .WithHeader("X-Correlation-ID", "409-conflict-guid-fss-commit-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ConflictCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(409)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("X-Correlation-ID", "409-conflict-guid-fss-commit-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ConflictCorrelationId}{endPoint}")
         );
 
     // 429 Too Many Requests Response
@@ -127,13 +129,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
             Request.Create()
                 .WithPath(urlPattern)
                 .UsingPut()
-                .WithHeader("X-Correlation-ID", "429-toomanyrequests-guid-fss-commit-batch")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(429)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("X-Correlation-ID", "429-toomanyrequests-guid-fss-commit-batch")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
                 .WithHeader("Retry-After", "10")
         );
 }

@@ -20,6 +20,8 @@
         public const string RangeNotSatisfiableCorrelationId = "416-rangenotsatisfiable-guid-";
         public const string TooManyRequestsCorrelationId = "429-toomanyrequests-guid-";
         public const string TemporaryRedirectCorrelationId = "307-temporaryredirect-guid-";
+        public const string AcceptedCorrelationId = "202-accepted-guid-";
+        public const string ConflictCorrelationId = "409-conflict-guid-";
 
         // Additional headers (optional, based on usage)
         public const string AcceptHeader = "Accept";
