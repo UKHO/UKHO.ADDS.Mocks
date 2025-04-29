@@ -1,14 +1,13 @@
-﻿using System.Text.RegularExpressions;
-using UKHO.ADDS.Mocks.Mime;
+﻿using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
 {
-    public class GetFssBatchesEndpoint : ServiceEndpointMock
+    public class GetFssMsiBatchesEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint)
         {
-            endpoint.MapGet("/batch", async (HttpRequest request) =>
+            endpoint.MapGet("/batch", (HttpRequest request) =>
             {
                 var state = GetState(request);
 
@@ -16,8 +15,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 {
                     case WellKnownState.Default:
 
-
-                        var pathResult = endpoint.GetFile("batchsearchresult.json");
+                        var pathResult = endpoint.GetFile("annualfiles.json");
 
                         if (pathResult.IsSuccess(out var file))
                         {
@@ -34,9 +32,9 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
             .Produces<string>()
             .WithEndpointMetadata(endpoint, d =>
             {
-                d.Bold("Gets Batchs")
+                d.Bold("Gets Batchs (MSI)")
                     .AppendNewLine()
-                    .Italic("This is driven from a static file batchsearchresult.json")
+                    .Italic("This is driven from a static file annualfiles.json")
                 .AppendNewLine()
                 .Append("This is a description")
                 .AppendNewLine()

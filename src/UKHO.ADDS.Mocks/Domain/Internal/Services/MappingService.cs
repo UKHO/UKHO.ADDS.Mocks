@@ -57,8 +57,8 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                     var coreFilePath = Path.Combine(exeDirectory, $"Configuration/Files/{definition.Prefix}");
                     var overrideFilePath = Path.Combine(exeDirectory, $"Override/Files/{definition.Prefix}");
 
-                    var coreServiceMocks = allTypes.Where(x => x.Namespace!.StartsWith(coreCodeNamespace, StringComparison.InvariantCultureIgnoreCase)).Select(t => t).ToList();
-                    var overrideServiceMocks = allTypes.Where(x => !x.Namespace!.StartsWith(coreCodeNamespace, StringComparison.InvariantCultureIgnoreCase) &&
+                    var coreServiceMocks = allTypes.Where(x => x.Namespace!.Equals(coreCodeNamespace, StringComparison.InvariantCultureIgnoreCase)).Select(t => t).ToList();
+                    var overrideServiceMocks = allTypes.Where(x => !x.Namespace!.Equals(coreCodeNamespace, StringComparison.InvariantCultureIgnoreCase) &&
                                                                    x.Namespace.Contains(overrideCodeNamespace, StringComparison.InvariantCultureIgnoreCase)).Select(t => t).ToList();
 
                     var serviceMockTypes = new Dictionary<string, (Type, bool)>();

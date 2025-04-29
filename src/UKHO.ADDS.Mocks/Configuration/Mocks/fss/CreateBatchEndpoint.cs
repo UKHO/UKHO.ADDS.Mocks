@@ -36,7 +36,9 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 {
                     d.Bold("Create a batch")
                         .AppendNewLine()
-                        .Italic("Just returns a 201, won't actually create anything");
+                        .Italic("Just returns a 201, won't actually create anything")
+                        .AppendNewLine()
+                        .Append("Requires a json formatted body.");
                 });
         }
     }

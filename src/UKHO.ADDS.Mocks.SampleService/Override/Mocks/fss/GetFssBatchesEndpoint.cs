@@ -1,14 +1,13 @@
-﻿using System.Text.RegularExpressions;
-using UKHO.ADDS.Mocks.Mime;
+﻿using UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator;
 using UKHO.ADDS.Mocks.States;
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
+namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss
 {
     public class GetFssBatchesEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint)
         {
-            endpoint.MapGet("/batch", async (HttpRequest request) =>
+            endpoint.MapGet("/batch", (HttpRequest request) =>
             {
                 var state = GetState(request);
 
@@ -16,15 +15,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 {
                     case WellKnownState.Default:
 
-
-                        var pathResult = endpoint.GetFile("batchsearchresult.json");
-
-                        if (pathResult.IsSuccess(out var file))
-                        {
-                            return Results.File(file.Path, contentType: MimeType.Application.Json);
-                        }
-
-                        return Results.NotFound("Could not find the path in the /files GET method");
+                        return FssResponseGenerator.ProvideSearchFilterResponse(request);
 
                     default:
                         // Just send default responses
@@ -36,16 +27,15 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
             {
                 d.Bold("Gets Batchs")
                     .AppendNewLine()
-                    .Italic("This is driven from a static file batchsearchresult.json")
+                    .Italic("This is driven from Response Generator Process")
                 .AppendNewLine()
-                .Append("This is a description")
+                .Append("This works with a filter query")
                 .AppendNewLine()
                 .Append("Please go [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview?view=aspnetcore-9.0) if you want to know more about minimal APIs")
                 .AppendNewLine()
-                .Append("This is a list of things:")
-                .Append("- Thing 1")
-                .Append("- Thing 2")
-                .Append("- Thing 3");
+                .Append("Query Attributes:")
+                .Append("- Key $Filter")
+                .Append("- Value BusinessUnit eq 'ADDS' and $batch(ProductCode) eq 'AVCS' and  (($batch(ProductName) eq 'DE4NO13K' and $batch(EditionNumber) eq '2' and (($batch(UpdateNumber) eq '0' or $batch(UpdateNumber) eq '1' ))))");
             });
         }
     }
