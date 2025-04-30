@@ -12,44 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Dashboard\Data\**" />
-    <Compile Remove="Dashboard\Models\Github\**" />
-    <Compile Remove="Dashboard\Models\Northwind\**" />
-    <Content Remove="Dashboard\Data\**" />
-    <Content Remove="Dashboard\Models\Github\**" />
-    <Content Remove="Dashboard\Models\Northwind\**" />
-    <EmbeddedResource Remove="Dashboard\Data\**" />
-    <EmbeddedResource Remove="Dashboard\Models\Github\**" />
-    <EmbeddedResource Remove="Dashboard\Models\Northwind\**" />
-    <None Remove="Dashboard\Data\**" />
-    <None Remove="Dashboard\Models\Github\**" />
-    <None Remove="Dashboard\Models\Northwind\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Dashboard\Models\Appointment.cs" />
-    <Compile Remove="Dashboard\Models\Dollars.cs" />
-    <Compile Remove="Dashboard\Models\Temperature.cs" />
-    <Compile Remove="Dashboard\Services\CompilerService.cs" />
-    <Compile Remove="Dashboard\Services\GitHubService.cs" />
-    <Compile Remove="Dashboard\Services\NorthwindODataService.cs" />
-    <Compile Remove="Dashboard\Services\NorthwindService.cs" />
-    <Compile Remove="Dashboard\Shared\DbContextPage.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Dashboard\Shared\CodeViewer.razor" />
-    <Content Remove="Dashboard\Shared\HelpPrerequirements.razor" />
-    <Content Remove="Dashboard\Shared\HomeLayout.razor" />
-    <Content Remove="Dashboard\Shared\KeyboardNavigationDataGrid.razor" />
-    <Content Remove="Dashboard\Shared\MainLayout.razor" />
-    <Content Remove="Dashboard\Shared\Monaco.razor" />
-    <Content Remove="Dashboard\Shared\RadzenExample.razor" />
-    <Content Remove="Dashboard\Shared\Social.razor" />
-    <Content Remove="Dashboard\Shared\UIBlocks.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
