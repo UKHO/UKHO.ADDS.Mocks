@@ -8,26 +8,26 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/batch/(.*)/expiry";
 
-    // 204 No Content Response 
+    // 204 No Content Response
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .UsingPut()
-                .WithBody(new RegexMatcher(@"""expiryDate"":\s*""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z""")) // Validate ISO 8601 format with milliseconds and UTC
+                .WithBody(new RegexMatcher(@"\{\s*""expiryDate"":\s*""\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z""\s*\}"))
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(204)
                 .WithHeader("Content-Type", "application/json")
-                .WithHeader("X-Correlation-ID", "204-nocontent-guid-fss-batch-expiry")
+                .WithHeader("_X-Correlation-ID", "204-nocontent-guid-fss-batch-expiry")
         );
 
     // 400 Bad Request Response
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .UsingPut()
                 .WithHeader("X-Correlation-ID", "400-badrequest-guid-fss-batch-expiry")
         )
