@@ -11,6 +11,11 @@ namespace UKHO.ADDS.Mocks.Configuration
 
         public static void AddDefinition(ServiceDefinition definition)
         {
+            if (definition.Prefix.Equals("_dashboard"))
+            {
+                throw new ArgumentException("Prefix cannot be '_dashboard'.", nameof(definition));
+            }
+
             var existing = _definitions.SingleOrDefault(d => d.Prefix.Equals(definition.Prefix, StringComparison.OrdinalIgnoreCase));
 
             if (existing == null)
