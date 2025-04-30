@@ -19,7 +19,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 switch (state)
                 {
                     case WellKnownState.Default:
-                        // ADDS Mock will have the 'default' state unless we have told it otherwise
+
                         var newBatch   = new
                         {
                             batchId = Guid.NewGuid().ToString()

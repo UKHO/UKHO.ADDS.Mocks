@@ -5,16 +5,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss.ResponseGenerator
 {
     public class BatchQueryParser
     {
-        private static readonly Regex BusinessUnitRegex = new Regex(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
-        private static readonly Regex ProductCodeRegex = new Regex(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
+        private static readonly Regex _businessUnitRegex = new Regex(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
+        private static readonly Regex _productCodeRegex = new Regex(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
         private const string BatchPattern = @"\$batch\((?<Property>\w+)\) eq '(?<Value>[^']*)'";
 
         public static FSSSearchFilterDetails ParseBatchQuery(string odataQuery)
         {
-            var filterDetails = new FSSSearchFilterDetails
-            {
-                Products = []
-            };
+            var filterDetails = new FSSSearchFilterDetails();
+            
             var filterMatch = Regex.Match(odataQuery, @"\$filter=(.*)");
             if (!filterMatch.Success)
             {
@@ -29,10 +27,10 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss.ResponseGenerator
 
         private static void ParseFilterExpression(string filter, FSSSearchFilterDetails filterDetails)
         {
-            var businessUnitMatch = BusinessUnitRegex.Match(filter);
+            var businessUnitMatch = _businessUnitRegex.Match(filter);
             filterDetails.BusinessUnit = businessUnitMatch.Success ? businessUnitMatch.Groups[1].Value : string.Empty;
 
-            var productCodeMatch = ProductCodeRegex.Match(filter);
+            var productCodeMatch = _productCodeRegex.Match(filter);
             filterDetails.ProductCode = productCodeMatch.Success ? productCodeMatch.Groups[1].Value : string.Empty;
 
             var conditions = filter.Split(")))", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -46,16 +44,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss.ResponseGenerator
             }
         }
 
-        private static Product ParseFilterProductProperties(string filter)
+        private static Product? ParseFilterProductProperties(string filter)
         {
             var matches = Regex.Matches(filter, BatchPattern);
 
             if (matches.Count == 0) return null;
 
-            var product = new Product
-            {
-                UpdateNumbers = []
-            };
+            var product = new Product();
+            
 
             foreach (Match match in matches)
             {

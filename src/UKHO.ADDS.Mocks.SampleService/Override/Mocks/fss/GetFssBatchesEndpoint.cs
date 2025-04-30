@@ -33,9 +33,9 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss
                 .AppendNewLine()
                 .Append("Please go [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview?view=aspnetcore-9.0) if you want to know more about minimal APIs")
                 .AppendNewLine()
-                .Append("Query Attributes:")
+                .Append("Sample query attributes:")
                 .Append("- Key $Filter")
-                .Append("- Value BusinessUnit eq 'ADDS' and $batch(ProductCode) eq 'AVCS' and  (($batch(ProductName) eq 'DE4NO13K' and $batch(EditionNumber) eq '2' and (($batch(UpdateNumber) eq '0' or $batch(UpdateNumber) eq '1' ))))");
+                .Append("- Value BusinessUnit eq 'ADDS' and $batch(ProductCode) eq 'AVCS' and  (($batch(ProductName) eq '101GB004DEVQK' and $batch(EditionNumber) eq '2' and (($batch(UpdateNumber) eq '0' or $batch(UpdateNumber) eq '1' ))))");
             });
         }
     }

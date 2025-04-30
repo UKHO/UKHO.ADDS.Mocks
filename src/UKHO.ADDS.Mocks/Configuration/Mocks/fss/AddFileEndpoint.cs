@@ -6,14 +6,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint)
         {
-            endpoint.MapPost("/batch/{batchId}/files/{fileName}", (HttpRequest request) =>
+            endpoint.MapPost("/batch/{batchId}/files/{fileName}", (string batchId, string fileName,HttpRequest request) =>
             {
                 var state = GetState(request);
 
                 switch (state)
                 {
                     case WellKnownState.Default:
-                        // ADDS Mock will have the 'default' state unless we have told it otherwise
+
                         return Results.Created();
 
                     default:
@@ -28,7 +28,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                         .AppendNewLine()
                         .Italic("Just returns a 201, won't actually create anything")
                         .AppendNewLine()
-                        .Append("Requires a BatchId & FileName.");
+                        .Append("Requires a batchId & fileName.");
                 });
         }
     }

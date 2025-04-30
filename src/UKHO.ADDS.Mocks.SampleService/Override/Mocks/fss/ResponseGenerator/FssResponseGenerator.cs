@@ -103,7 +103,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator
                 }
             };
 
-        private static JsonObject CreateLinkObject(string productCode, Product product)
+        private static JsonObject CreateLinkObject(string? productCode, Product? product)
         {
             var filterValue = !string.IsNullOrEmpty(product?.ProductName)
                 ? $"$batch(ProductCode) eq '{productCode}' and $batch(ProductName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
