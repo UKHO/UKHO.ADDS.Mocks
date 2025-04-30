@@ -1,4 +1,5 @@
 using ADDSMock.Domain.Mappings;
+using ADDSMock.Constants;
 using System.Net;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
@@ -7,6 +8,7 @@ using WireMock.ResponseBuilders;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/v2/catalogues/s100/basic.*";
+    var endPoint = "scs-basic-catalogue";
 
     server
         .Given(
@@ -17,9 +19,9 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .RespondWith(
             Response.Create()
                 .WithStatusCode(200)
-                .WithHeader("Content-Type", "application/json")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                .WithHeader("_X-Correlation-ID", "200-ok-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.CreatedCorrelationId}{endPoint}")
                 .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
 
@@ -27,31 +29,31 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.NotModifiedCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(304)
                 .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                .WithHeader("_X-Correlation-ID", "304-notmodified-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.NotModifiedCorrelationId}{endPoint}")
         );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "400-badrequest-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = "400-badrequest-guid-scs-basic-catalogue",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{endPoint}",
                     errors = new[]
                     {
                         new
@@ -67,17 +69,17 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "500-internalserver-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.InternalServerErrorCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(500)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "500-internalserver-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.InternalServerErrorCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = "500-internalserver-guid-scs-basic-catalogue",
+                    correlationId = $"{MockConstants.InternalServerErrorCorrelationId}{endPoint}",
                     details = "Internal Server Error"
                 })
         );
@@ -86,45 +88,45 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "401-unauthorised-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(403)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "403-forbidden-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "404-notfound-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(404)
-                .WithHeader("Content-Type", "application/json")
-                .WithHeader("_X-Correlation-ID", "404-notfound-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = "404-notfound-guid-scs-basic-catalogue",
+                    correlationId = $"{MockConstants.FileNotFoundCorrelationId}{endPoint}",
                     details = "Not Found"
                 })
         );
@@ -133,13 +135,13 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader("_X-Correlation-ID", "415-unsupportedmediatype-guid-scs-basic-catalogue")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnsupportedMediaTypeCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(415)
-                .WithHeader("Content-Type", "application/json")
+                .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithBodyAsJson(new
                 {
                     type = "https://example.com",
