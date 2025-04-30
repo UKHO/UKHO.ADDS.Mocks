@@ -12,24 +12,70 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Configuration\Files\scs\s100-catalogue.json" />
+    <Compile Remove="Dashboard\Data\**" />
+    <Compile Remove="Dashboard\Models\Github\**" />
+    <Compile Remove="Dashboard\Models\Northwind\**" />
+    <Content Remove="Dashboard\Data\**" />
+    <Content Remove="Dashboard\Models\Github\**" />
+    <Content Remove="Dashboard\Models\Northwind\**" />
+    <EmbeddedResource Remove="Dashboard\Data\**" />
+    <EmbeddedResource Remove="Dashboard\Models\Github\**" />
+    <EmbeddedResource Remove="Dashboard\Models\Northwind\**" />
+    <None Remove="Dashboard\Data\**" />
+    <None Remove="Dashboard\Models\Github\**" />
+    <None Remove="Dashboard\Models\Northwind\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dashboard\Models\Appointment.cs" />
+    <Compile Remove="Dashboard\Models\Dollars.cs" />
+    <Compile Remove="Dashboard\Models\Temperature.cs" />
+    <Compile Remove="Dashboard\Services\CompilerService.cs" />
+    <Compile Remove="Dashboard\Services\GitHubService.cs" />
+    <Compile Remove="Dashboard\Services\NorthwindODataService.cs" />
+    <Compile Remove="Dashboard\Services\NorthwindService.cs" />
+    <Compile Remove="Dashboard\Shared\DbContextPage.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Dashboard\Shared\CodeViewer.razor" />
+    <Content Remove="Dashboard\Shared\HelpPrerequirements.razor" />
+    <Content Remove="Dashboard\Shared\HomeLayout.razor" />
+    <Content Remove="Dashboard\Shared\KeyboardNavigationDataGrid.razor" />
+    <Content Remove="Dashboard\Shared\MainLayout.razor" />
+    <Content Remove="Dashboard\Shared\Monaco.razor" />
+    <Content Remove="Dashboard\Shared\RadzenExample.razor" />
+    <Content Remove="Dashboard\Shared\Social.razor" />
+    <Content Remove="Dashboard\Shared\UIBlocks.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Properties\launchSettings.json" />
-    <None Include="wwwroot\app.css" />
-    <None Include="wwwroot\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
-    <PackageReference Include="MudBlazor" Version="8.5.1" />
-    <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="3.2.0" />
+    <PackageReference Include="Radzen.Blazor" Version="6.6.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.1.13" />
     <PackageReference Include="System.IO.Abstractions" Version="21.3.1" />
     <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="0.0.50322-alpha.2" />
     <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="0.0.50322-alpha.2" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.*-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.*-*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.*-*" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.10" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="6.0.10" />
+    <PackageReference Include="MetadataReferenceService.BlazorWasm" Version="*" />
+
   </ItemGroup>
 
   <ItemGroup>
