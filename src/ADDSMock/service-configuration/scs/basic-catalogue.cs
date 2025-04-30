@@ -8,7 +8,7 @@ using WireMock.ResponseBuilders;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = ".*/v2/catalogues/s100/basic.*";
-    var EndPoint = "scs-basic-catalogue";
+    var endPoint = "scs-basic-catalogue";
 
     server
         .Given(
@@ -21,7 +21,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
                 .WithStatusCode(200)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
                 .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.CreatedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.CreatedCorrelationId}{endPoint}")
                 .WithBodyFromFile(mockService.Files.FirstOrDefault()?.Path)
         );
 
@@ -29,31 +29,31 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.NotModifiedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.NotModifiedCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(304)
                 .WithHeader("Last-Modified", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.NotModifiedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.NotModifiedCorrelationId}{endPoint}")
         );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(400)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = $"{MockConstants.BadRequestCorrelationId}{EndPoint}",
+                    correlationId = $"{MockConstants.BadRequestCorrelationId}{endPoint}",
                     errors = new[]
                     {
                         new
@@ -69,17 +69,17 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.InternalServerErrorCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.InternalServerErrorCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(500)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.InternalServerErrorCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.InternalServerErrorCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = $"{MockConstants.InternalServerErrorCorrelationId}{EndPoint}",
+                    correlationId = $"{MockConstants.InternalServerErrorCorrelationId}{endPoint}",
                     details = "Internal Server Error"
                 })
         );
@@ -88,45 +88,45 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(401)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
         );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(403)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
         );
 
     server
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
             Response.Create()
                 .WithStatusCode(404)
                 .WithHeader(MockConstants.ContentTypeHeader, MockConstants.ApplicationJson)
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.FileNotFoundCorrelationId}{endPoint}")
                 .WithBodyAsJson(new
                 {
-                    correlationId = $"{MockConstants.FileNotFoundCorrelationId}{EndPoint}",
+                    correlationId = $"{MockConstants.FileNotFoundCorrelationId}{endPoint}",
                     details = "Not Found"
                 })
         );
@@ -135,7 +135,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.RangeNotSatisfiableCorrelationId}{EndPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnsupportedMediaTypeCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
