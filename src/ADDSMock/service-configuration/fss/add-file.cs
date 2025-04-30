@@ -8,7 +8,7 @@ using WireMock.ResponseBuilders;
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
     var urlPattern = "/batch/(.*)/files/(.*)";
-    var EndPoint = "fss-add-file";
+    var endPoint = "fss-add-file";
 
     // 201 Created Response
     server

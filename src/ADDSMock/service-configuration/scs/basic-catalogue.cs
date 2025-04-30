@@ -135,7 +135,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
         .Given(
             Request.Create()
                 .WithUrl(new RegexMatcher(urlPattern))
-                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.RangeNotSatisfiableCorrelationId}{endPoint}")
+                .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnsupportedMediaTypeCorrelationId}{endPoint}")
                 .UsingGet()
         )
         .RespondWith(
