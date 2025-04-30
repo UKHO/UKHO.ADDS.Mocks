@@ -82,7 +82,7 @@ namespace ADDSMock.ResponseGenerator
                             CreateAttribute("ProductName", product.ProductName),
                             CreateAttribute("EditionNumber", product.EditionNumber),
                             CreateAttribute("UpdateNumber", updateNumber),
-                            CreateAttribute("ProductCode", filterDetails.ProductCode)
+                            CreateAttribute("ProductType", filterDetails.ProductType)
                         },
                         ["businessUnit"] = filterDetails.BusinessUnit,
                         ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
@@ -96,7 +96,7 @@ namespace ADDSMock.ResponseGenerator
             jsonTemplate["count"] = entries.Count;
             jsonTemplate["total"] = entries.Count;
             jsonTemplate["entries"] = entries;
-            jsonTemplate["_links"] = CreateLinkObject(filterDetails.ProductCode, filterDetails.Products.FirstOrDefault());
+            jsonTemplate["_links"] = CreateLinkObject(filterDetails.ProductType, filterDetails.Products.FirstOrDefault());
         }
 
         private static JsonObject CreateAttribute(string attr, object value) =>
@@ -106,10 +106,10 @@ namespace ADDSMock.ResponseGenerator
                 ["value"] = JsonValue.Create(value)
             };
 
-        private static JsonArray CreateFilesArray(string productName, string batchId, int updateNo) =>
+        private static JsonArray CreateFilesArray(string productName, string batchId, string updateNo) =>
             new()
             {
-                CreateFileObject(productName, $".{updateNo:D3}", 874, batchId),
+                CreateFileObject(productName, $".{updateNo.PadLeft(3,'0')}", 874, batchId),
                 CreateFileObject(productName, ".TXT", 1192, batchId)
             };
 
@@ -120,17 +120,18 @@ namespace ADDSMock.ResponseGenerator
                 ["fileSize"] = fileSize,
                 ["mimeType"] = "text/plain",
                 ["hash"] = string.Empty,
+                ["attributes"] = new JsonArray(),
                 ["links"] = new JsonObject
                 {
                     ["get"] = new JsonObject { ["href"] = $"/batch/{batchId}/files/{productName}{extension}" }
                 }
             };
 
-        private static JsonObject CreateLinkObject(string productCode, Product product)
+        private static JsonObject CreateLinkObject(string productType, Product product)
         {
             var filterValue = !string.IsNullOrEmpty(product?.ProductName)
-                ? $"$batch(ProductCode) eq '{productCode}' and $batch(ProductName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
-                : $"$batch(ProductCode) eq '{productCode}'";
+                ? $"$batch(ProductType) eq '{productType}' and $batch(ProductName) eq '{product.ProductName}' and $batch(EditionNumber) eq '{product.EditionNumber}' and $batch(UpdateNumber) eq '{product.UpdateNumbers.FirstOrDefault()}'"
+                : $"$batch(ProductType) eq '{productType}'";
 
             var encodedFilterUrl = $"/batch?limit=10&start=0&$filter={Uri.EscapeDataString(filterValue)}";
 

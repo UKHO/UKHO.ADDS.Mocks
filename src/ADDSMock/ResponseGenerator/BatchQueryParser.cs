@@ -6,7 +6,7 @@ namespace ADDSMock.ResponseGenerator
     public class BatchQueryParser
     {
         private static readonly Regex BusinessUnitRegex = new Regex(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
-        private static readonly Regex ProductCodeRegex = new Regex(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
+        private static readonly Regex ProductTypeRegex = new Regex(@"\$batch\(ProductType\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
         private const string BatchPattern = @"\$batch\((?<Property>\w+)\) eq '(?<Value>[^']*)'";
 
         public static FSSSearchFilterDetails ParseBatchQuery(string odataQuery)
@@ -15,7 +15,7 @@ namespace ADDSMock.ResponseGenerator
             {
                 Products = []
             };
-            var filterMatch = Regex.Match(odataQuery, @"\$filter=(.*)");        
+            var filterMatch = Regex.Match(odataQuery, @"\$filter=(.*)");
             if (!filterMatch.Success)
             {
                 return filterDetails;
@@ -32,8 +32,8 @@ namespace ADDSMock.ResponseGenerator
             var businessUnitMatch = BusinessUnitRegex.Match(filter);
             filterDetails.BusinessUnit = businessUnitMatch.Success ? businessUnitMatch.Groups[1].Value : string.Empty;
 
-            var productCodeMatch = ProductCodeRegex.Match(filter);
-            filterDetails.ProductCode = productCodeMatch.Success ? productCodeMatch.Groups[1].Value : string.Empty;
+            var productTypeMatch = ProductTypeRegex.Match(filter);
+            filterDetails.ProductType = productTypeMatch.Success ? productTypeMatch.Groups[1].Value : string.Empty;
 
             var conditions = filter.Split(")))", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             foreach (var condition in conditions)
@@ -43,7 +43,7 @@ namespace ADDSMock.ResponseGenerator
                 {
                     filterDetails.Products.Add(product);
                 }
-            }            
+            }
         }
 
         private static Product ParseFilterProductProperties(string filter)
@@ -69,16 +69,16 @@ namespace ADDSMock.ResponseGenerator
                     case "ProductName":
                         product.ProductName = value;
                         break;
-                    case "EditionNumber" when int.TryParse(value, out var editionNumber):
-                        product.EditionNumber = editionNumber;
+                    case "EditionNumber":
+                        product.EditionNumber = value;
                         break;
-                    case "UpdateNumber" when int.TryParse(value, out var updateNumber):
-                        product.UpdateNumbers.Add(updateNumber);
+                    case "UpdateNumber":
+                        product.UpdateNumbers.Add(value);
                         break;
                 }
             }
 
-            return product.UpdateNumbers.Count == 0 && string.IsNullOrEmpty(product.ProductName) && product.EditionNumber == 0
+            return product.UpdateNumbers.Count == 0 && string.IsNullOrEmpty(product.ProductName) && string.IsNullOrEmpty(product.EditionNumber)
                 ? null
                 : product;
         }
