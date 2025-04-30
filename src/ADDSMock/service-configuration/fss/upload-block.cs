@@ -11,6 +11,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     var endPoint = "fss-upload-block";
 
     // 201 Created Response
+    server
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
