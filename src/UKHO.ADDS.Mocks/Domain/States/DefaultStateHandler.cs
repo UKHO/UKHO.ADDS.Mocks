@@ -3,8 +3,6 @@ namespace UKHO.ADDS.Mocks.States
 {
     public static class DefaultStateHandler
     {
-        public static IResult HandleDefaultState() => HandleDefaultState(WellKnownState.Default);
-
         public static IResult HandleDefaultState(string state)
         {
             return state switch
