@@ -15,7 +15,7 @@
         public const string BadRequestCorrelationId = "400-badrequest-guid-";
         public const string UnauthorizedCorrelationId = "401-unauthorized-guid-";
         public const string ForbiddenCorrelationId = "403-forbidden-guid-";
-        public const string FileNotFoundCorrelationId = "404-filenotfound-guid-";
+        public const string FileNotFoundCorrelationId = "404-notfound-guid-";
         public const string GoneCorrelationId = "410-gone-guid-";
         public const string RangeNotSatisfiableCorrelationId = "416-rangenotsatisfiable-guid-";
         public const string UnsupportedMediaTypeCorrelationId = "415-unsupportedmediatype-guid-";
