@@ -7,11 +7,10 @@ using WireMock.ResponseBuilders;
 
 public void RegisterFragment(WireMockServer server, MockService mockService)
 {
-    var urlPattern = ".*/batch/{batchId}/files/{filename}/{blockId}";
+    var urlPattern = ".*/batch/(.*)/files/(.*)/(.*)";
     var endPoint = "fss-upload-block";
 
-    // 201 Created Response with File Download
-    server
+    // 201 Created Response
         .Given(
             Request.Create()
                 .WithPath(urlPattern)
