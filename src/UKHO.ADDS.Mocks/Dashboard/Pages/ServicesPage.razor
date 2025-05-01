@@ -2,17 +2,18 @@
 @page "/"
 @page "/_dashboard/"
 
+@using UKHO.ADDS.Mocks.Configuration
 @using UKHO.ADDS.Mocks.Domain.Configuration
 @using UKHO.ADDS.Mocks.States
 @inject NavigationManager NavManager
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem;">
-    @foreach (var service in services)
+    @foreach (var service in _services)
     {
         var rootAddress = NavManager.BaseUri.TrimEnd('/');
         var fullServiceUrl = $"{rootAddress}/{service.Prefix}";
 
-        var currentState = appliedStates.ContainsKey(service) ? appliedStates[service] : WellKnownState.Default;
+        var currentState = _appliedStates.ContainsKey(service) ? _appliedStates[service] : WellKnownState.Default;
         var isModified = currentState != WellKnownState.Default;
 
         var borderColor = isModified ? "red" : "#444";
@@ -38,28 +39,28 @@
             @if (service.HasError)
             {
                 <RadzenBadge Text="Error"
-                             Style="@errorBadgeStyle"
-                             BadgeStyle="BadgeStyle.Danger" />
+                Style="@errorBadgeStyle"
+                BadgeStyle="BadgeStyle.Danger" />
             }
 
             @* State locked badge *@
             @if (isModified)
             {
                 <RadzenBadge Text="State locked"
-                             Style="@stateLockedBadgeStyle"
-                             BadgeStyle="BadgeStyle.Danger" />
+                Style="@stateLockedBadgeStyle"
+                BadgeStyle="BadgeStyle.Danger" />
             }
 
             @* Overrides badge *@
             @if (hasOverride)
             {
                 <RadzenBadge Text="Overrides"
-                             Style="@overridesBadgeStyle"
-                             BadgeStyle="BadgeStyle.Success" />
+                Style="@overridesBadgeStyle"
+                BadgeStyle="BadgeStyle.Success" />
             }
 
             <RadzenCard class="rz-m-2 rz-p-2 rz-shadow-1"
-                        Style=@($"border: 1px solid {borderColor};")>
+            Style=@($"border: 1px solid {borderColor};")>
                 <RadzenText TextStyle="TextStyle.H6" class="rz-mb-2">
                     <strong>@service.Name</strong>
                 </RadzenText>
@@ -74,22 +75,22 @@
 
                     <RadzenColumn SizeSM="12" class="rz-mt-1">
                         <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">Current state</RadzenText>
-                        <RadzenDropDown @bind-Value="selectedStates[service]"
-                                        Data="service.States"
-                                        Style="width: 100%"
-                                        Placeholder="Select a state" />
+                        <RadzenDropDown @bind-Value="_selectedStates[service]"
+                        Data="service.States"
+                        Style="width: 100%"
+                        Placeholder="Select a state" />
                     </RadzenColumn>
                 </RadzenRow>
 
                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-mt-2">
                     <RadzenButton Size="ButtonSize.Small"
-                                  Variant="Variant.Text"
-                                  Text="Reset state"
-                                  Click="() => ResetState(service)" />
+                    Variant="Variant.Text"
+                    Text="Reset state"
+                    Click="() => ResetState(service)" />
                     <RadzenButton Size="ButtonSize.Small"
-                                  Variant="Variant.Text"
-                                  Text="Set State"
-                                  Click="() => SetState(service)" />
+                    Variant="Variant.Text"
+                    Text="Set State"
+                    Click="() => SetState(service)" />
                 </RadzenStack>
             </RadzenCard>
         </div>
@@ -97,53 +98,30 @@
 </div>
 
 @code {
-    private List<ServiceDefinition> services = new();
-    private Dictionary<ServiceDefinition, string> selectedStates = new();
-    private Dictionary<ServiceDefinition, string> appliedStates = new();
+    private List<ServiceDefinition> _services = [];
+    private readonly Dictionary<ServiceDefinition, string> _selectedStates = new();
+    private readonly Dictionary<ServiceDefinition, string> _appliedStates = new();
 
     protected override void OnInitialized()
     {
-        services = Enumerable.Range(1, 12).Select(i =>
+        _services = ServiceRegistry.Definitions.ToList();
+
+        foreach (var s in _services)
         {
-            var prefix = $"svc{i:D2}";
-            var name = $"Service {i}";
-
-            var initialStates = new List<string> { "Idle", "Active", "Paused", "Stopped" };
-
-            var service = new ServiceDefinition(prefix, name, initialStates);
-
-            if (i % 4 == 0) // Inject error every 4th service
-            {
-                service.SetError("Error occurred");
-            }
-
-            if (i % 3 == 0) // Inject override fragments every 3rd service
-            {
-                service.AddServiceMockTypes(new Dictionary<string, (Type, bool)>
-                    {
-                    { "MockTypeA", (typeof(string), true) }
-                    });
-            }
-
-            return service;
-        }).ToList();
-
-        foreach (var s in services)
-        {
-            selectedStates[s] = WellKnownState.Default;
-            appliedStates[s] = WellKnownState.Default;
+            _selectedStates[s] = WellKnownState.Default;
+            _appliedStates[s] = WellKnownState.Default;
         }
     }
 
     private void SetState(ServiceDefinition service)
     {
-        var selected = selectedStates[service];
-        appliedStates[service] = selected;
+        var selected = _selectedStates[service];
+        _appliedStates[service] = selected;
     }
 
     private void ResetState(ServiceDefinition service)
     {
-        selectedStates[service] = WellKnownState.Default;
-        appliedStates[service] = WellKnownState.Default;
+        _selectedStates[service] = WellKnownState.Default;
+        _appliedStates[service] = WellKnownState.Default;
     }
 }
