@@ -1,10 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
+using System.Runtime.InteropServices.Marshalling;
+using Aspire.Hosting.ApplicationModel;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace UKHO.ADDS.Mocks.LocalHost.Extensions
 {
     internal static class ResourceBuilderExtensions
     {
+
         internal static IResourceBuilder<T> WithDashboard<T>(this IResourceBuilder<T> builder, string displayName) where T : IResourceWithEndpoints
         {
             return builder.WithDashboard(displayName, "adds-mock-dashboard");
@@ -16,7 +20,7 @@ namespace UKHO.ADDS.Mocks.LocalHost.Extensions
             return builder.WithCommand(
                 name,
                 displayName,
-                executeCommand: async _ =>
+                executeCommand: async (ExecuteCommandContext context) =>
                 {
                     try
                     {
@@ -32,9 +36,17 @@ namespace UKHO.ADDS.Mocks.LocalHost.Extensions
                         return new ExecuteCommandResult { Success = false, ErrorMessage = e.ToString() };
 
                     }
-                }, updateState: context => context.ResourceSnapshot.HealthStatus == HealthStatus.Healthy ?
-                    ResourceCommandState.Enabled : ResourceCommandState.Disabled,
-                iconName: "Document", iconVariant: IconVariant.Filled);
+                },
+                commandOptions: new CommandOptions
+                {
+                    UpdateState = (UpdateCommandStateContext context) =>
+                    {
+                        return context.ResourceSnapshot.HealthStatus == HealthStatus.Healthy ?
+                    ResourceCommandState.Enabled : ResourceCommandState.Disabled;
+                    },
+                    IconName = "Document",
+                    IconVariant = IconVariant.Filled
+                });
         }
     }
 }
