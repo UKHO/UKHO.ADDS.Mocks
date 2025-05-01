@@ -87,9 +87,6 @@ namespace UKHO.ADDS.Mocks
 
             await mappingService.BuildDefinitionsAsync(app.Lifetime.ApplicationStopping);
             await mappingService.ApplyDefinitionsAsync(app, app.Lifetime.ApplicationStopping);
-
-            var dashboardService = app.Services.GetRequiredService<DashboardService>();
-            dashboardService.StartGeneratingData();
         }
 
         private static void ConfigureApplication(WebApplicationBuilder builder)
