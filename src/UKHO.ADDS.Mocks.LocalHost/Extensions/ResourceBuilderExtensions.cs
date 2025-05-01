@@ -8,50 +8,6 @@ namespace UKHO.ADDS.Mocks.LocalHost.Extensions
 {
     internal static class ResourceBuilderExtensions
     {
-        internal static IResourceBuilder<T> WithScalar<T>(this IResourceBuilder<T> builder) where T : IResourceWithEndpoints
-        {
-            return builder.WithOpenApiDocs("Scalar API Documentation", "scalar/v1", "scalar-docs");
-        }
-
-        internal static IResourceBuilder<T> WithScalar<T>(this IResourceBuilder<T> builder, string displayName) where T : IResourceWithEndpoints
-        {
-            return builder.WithOpenApiDocs(displayName, "scalar/v1", "scalar-docs");
-        }
-
-        internal static IResourceBuilder<T> WithOpenApiDocs<T>(this IResourceBuilder<T> builder, string displayName, string openApiUiPath, string name)
-            where T : IResourceWithEndpoints
-        {
-            return builder.WithCommand(
-                name,
-                displayName,
-                executeCommand: async (ExecuteCommandContext context) =>
-                {
-                    try
-                    {
-                        var endpoint = builder.GetEndpoint("https");
-                        var url = $"{endpoint.Url}/{openApiUiPath}";
-
-                        Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-
-                        return await Task.FromResult(new ExecuteCommandResult { Success = true });
-                    }
-                    catch (Exception e)
-                    {
-                        return new ExecuteCommandResult { Success = false, ErrorMessage = e.ToString() };
-
-                    }
-                },
-                commandOptions: new CommandOptions
-                {
-                    UpdateState = (UpdateCommandStateContext context) =>
-                    {
-                        return context.ResourceSnapshot.HealthStatus == HealthStatus.Healthy ?
-                                       ResourceCommandState.Enabled : ResourceCommandState.Disabled;
-                    },
-                    IconName = "Document",
-                    IconVariant = IconVariant.Filled
-                });
-        }
 
         internal static IResourceBuilder<T> WithDashboard<T>(this IResourceBuilder<T> builder, string displayName) where T : IResourceWithEndpoints
         {
