@@ -17,7 +17,7 @@
         var currentState = appliedStates.ContainsKey(service) ? appliedStates[service] : WellKnownState.Default;
         var isModified = currentState != WellKnownState.Default;
 
-        var borderColor = isModified ? "red" : "#444"; // red border if state is set and not Default
+        var borderColor = isModified ? "red" : "#444";
 
         var hasOverride = service.ServiceFragments.Any(f => f.IsOverride);
 
@@ -25,22 +25,38 @@
         var pointerEvents = service.HasError ? "none" : "auto";
         var cursorStyle = service.HasError ? "not-allowed" : "auto";
 
+        var errorBadgeTop = 12;
+        var stateLockedBadgeTop = service.HasError ? 47 : 12;
+        var overridesBadgeTop = service.HasError
+        ? (isModified ? 82 : 47)
+        : (isModified ? 47 : 12);
+
+        var errorBadgeStyle = $"position: absolute; top: {errorBadgeTop}px; right: 12px; z-index: 1;";
+        var stateLockedBadgeStyle = $"position: absolute; top: {stateLockedBadgeTop}px; right: 12px; z-index: 1;";
+        var overridesBadgeStyle = $"position: absolute; top: {overridesBadgeTop}px; right: 12px; z-index: 1;";
+
         <div style="position: relative; opacity: @cardOpacity; pointer-events: @pointerEvents; cursor: @cursorStyle;">
+            @* Error badge *@
             @if (service.HasError)
             {
                 <RadzenBadge Text="Error"
-                             Style="position: absolute; top: 12px; right: 12px; z-index: 1;"
+                             Style="@errorBadgeStyle"
                              BadgeStyle="BadgeStyle.Danger" />
             }
 
+            @* State locked badge *@
+            @if (isModified)
+            {
+                <RadzenBadge Text="State locked"
+                             Style="@stateLockedBadgeStyle"
+                             BadgeStyle="BadgeStyle.Danger" />
+            }
+
+            @* Overrides badge *@
             @if (hasOverride)
             {
-                var overrideBadgeStyle = service.HasError
-                    ? "position: absolute; top: 12px; right: 12px; z-index: 1; transform: translateY(35px);"
-                    : "position: absolute; top: 12px; right: 12px; z-index: 1;";
-
                 <RadzenBadge Text="Overrides"
-                             Style="@overrideBadgeStyle"
+                             Style="@overridesBadgeStyle"
                              BadgeStyle="BadgeStyle.Success" />
             }
 
