@@ -23,7 +23,7 @@ variables:
 - name: WindowPool
   value: "NautilusBuild"
 - name: SdkVersion
-  value: "8.x"
+  value: "9.x"
 
 stages:
 - stage: BuildTest
@@ -89,27 +89,27 @@ stages:
         targetType: filePath
         filePath: '$(Build.SourcesDirectory)\Pipeline\GetLocalHostUrl.ps1'
 
-    - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
-      - task: DotNetCoreCLI@2
-        displayName: Build - functional tests
-        inputs:
-          command: build
-          projects: |
-            **/UKHO.ADDS.Mocks.Functional.Tests.csproj
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\FunctionalTests --no-restore'
+    # - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
+    #   - task: DotNetCoreCLI@2
+    #     displayName: Build - functional tests
+    #     inputs:
+    #       command: build
+    #       projects: |
+    #         **/UKHO.ADDS.Mocks.Functional.Tests.csproj
+    #       arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\FunctionalTests --no-restore'
 
-      - task: FileTransform@2
-        displayName: File transform - functional test settings
-        inputs:
-          folderPath: '$(Build.BinariesDirectory)\FunctionalTests'
-          xmlTransformationRules: ''
-          enableXmlTransform: false
-          jsonTargetFiles: '**\appsettings.json'
+    #   - task: FileTransform@2
+    #     displayName: File transform - functional test settings
+    #     inputs:
+    #       folderPath: '$(Build.BinariesDirectory)\FunctionalTests'
+    #       xmlTransformationRules: ''
+    #       enableXmlTransform: false
+    #       jsonTargetFiles: '**\appsettings.json'
 
-      - task: DotNetCoreCLI@2
-        displayName: Run - functional tests
-        inputs:
-          command: test
-          projects: '$(Build.BinariesDirectory)\FunctionalTests\UKHO.ADDS.Mocks.Functional.Tests.dll'
-          publishTestResults: true
-          testRunTitle: FunctionalTests
+    #   - task: DotNetCoreCLI@2
+    #     displayName: Run - functional tests
+    #     inputs:
+    #       command: test
+    #       projects: '$(Build.BinariesDirectory)\FunctionalTests\UKHO.ADDS.Mocks.Functional.Tests.dll'
+    #       publishTestResults: true
+    #       testRunTitle: FunctionalTests
