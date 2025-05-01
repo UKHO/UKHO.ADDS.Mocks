@@ -22,15 +22,7 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
                 Title = "",
                 Description = "",
                 Icon = "\ue0c6"
-            },
-            new DashboardPage
-            {
-                Name = "States",
-                Path = "/_dashboard/states",
-                Title = "",
-                Description = "",
-                Icon = "\ue0c6"
-            },
+            }
         };
 
         public IEnumerable<DashboardPage> Pages => _allPages;
