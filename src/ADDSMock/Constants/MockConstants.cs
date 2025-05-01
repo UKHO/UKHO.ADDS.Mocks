@@ -22,6 +22,7 @@
         public const string UnsupportedMediaTypeCorrelationId = "415-unsupportedmediatype-guid-";
         public const string TooManyRequestsCorrelationId = "429-toomanyrequests-guid-";
         public const string TemporaryRedirectCorrelationId = "307-temporaryredirect-guid-";
+        public const string PayloadTooLargeCorrelationId = "413-payloadtoolarge-guid-";
 
         // Additional headers (optional, based on usage)
         public const string AcceptHeader = "Accept";
