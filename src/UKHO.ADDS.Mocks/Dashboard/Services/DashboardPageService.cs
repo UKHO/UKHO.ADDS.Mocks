@@ -6,7 +6,7 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
     {
         private readonly DashboardPage[] _allPages = new[]
         {
-            new DashboardPage { Name = "Home", Path = "/", Icon = "\ue88a" },
+            new DashboardPage { Name = "Services", Path = "/", Icon = "\ue88a" },
             new DashboardPage
             {
                 Name = "Explorer",

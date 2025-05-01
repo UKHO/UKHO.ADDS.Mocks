@@ -134,8 +134,12 @@
                     <p>Select a row to view response details.</p>
                 }
             </div>
-            <div style="flex: none; padding: 0.5rem;">
+            <div style="flex: none; padding: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Response Body</span>
+                @if (SelectedItem != null)
+                {
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Response.Body)))" />
+                }
             </div>
             <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
                 @if (SelectedItem != null)
