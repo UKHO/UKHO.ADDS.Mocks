@@ -49,6 +49,7 @@ namespace UKHO.ADDS.Mocks
             builder.Services.AddRadzenQueryStringThemeService();
 
             builder.Services.AddScoped<DashboardPageService>();
+            builder.Services.AddSingleton<DashboardService>();
             builder.Services.AddLocalization();
 
             builder.Services.AddAuthorization();
@@ -86,6 +87,9 @@ namespace UKHO.ADDS.Mocks
 
             await mappingService.BuildDefinitionsAsync(app.Lifetime.ApplicationStopping);
             await mappingService.ApplyDefinitionsAsync(app, app.Lifetime.ApplicationStopping);
+
+            var dashboardService = app.Services.GetRequiredService<DashboardService>();
+            dashboardService.StartGeneratingData();
         }
 
         private static void ConfigureApplication(WebApplicationBuilder builder)
