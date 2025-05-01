@@ -86,8 +86,11 @@
                                      Style="margin-right: 0.5rem;" />
                         @SelectedItem.Request.Path @SelectedItem.Request.QueryString
                     </p>
-                    <p style="margin: 0.25rem 0; font-size: 0.85rem; font-weight: 400; color: #ccc;">
-                        @string.Join(", ", SelectedItem.Request.Headers.Select(h => $"{h.Key}: {h.Value}"))
+                    <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
+                        @foreach (var header in SelectedItem.Request.Headers)
+                        {
+                            <div>@header.Key: @header.Value</div>
+                        }
                     </p>
                 }
                 else
@@ -125,10 +128,12 @@
                                      Style="margin-right: 0.5rem;" />
                         <b>@SelectedItem.Response.StatusCode</b> — @GetStatusLabel(SelectedItem.Response.StatusCode)
                     </p>
-                    <p style="margin: 0.25rem 0; font-size: 0.85rem; font-weight: 400; color: #ccc;">
-                        @string.Join(", ", SelectedItem.Response.Headers.Select(h => $"{h.Key}: {h.Value}"))
-                    </p>
-                }
+                    <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
+                        @foreach (var header in SelectedItem.Response.Headers)
+                        {
+                            <div>@header.Key: @header.Value</div>
+                        }
+                    </p>                }
                 else
                 {
                     <p>Select a row to view response details</p>
