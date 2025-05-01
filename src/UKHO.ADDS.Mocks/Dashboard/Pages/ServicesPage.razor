@@ -1,0 +1,149 @@
+﻿@layout DashboardLayout
+@page "/"
+@page "/_dashboard/"
+
+@using UKHO.ADDS.Mocks.Domain.Configuration
+@using UKHO.ADDS.Mocks.States
+@inject NavigationManager NavManager
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem;">
+    @foreach (var service in services)
+    {
+        var rootAddress = NavManager.BaseUri.TrimEnd('/');
+        var fullServiceUrl = $"{rootAddress}/{service.Prefix}";
+
+        var currentState = appliedStates.ContainsKey(service) ? appliedStates[service] : WellKnownState.Default;
+        var isModified = currentState != WellKnownState.Default;
+
+        var borderColor = isModified ? "red" : "#444";
+
+        var hasOverride = service.ServiceFragments.Any(f => f.IsOverride);
+
+        var cardOpacity = service.HasError ? "0.5" : "1.0";
+        var pointerEvents = service.HasError ? "none" : "auto";
+        var cursorStyle = service.HasError ? "not-allowed" : "auto";
+
+        var errorBadgeTop = 12;
+        var stateLockedBadgeTop = service.HasError ? 47 : 12;
+        var overridesBadgeTop = service.HasError
+        ? (isModified ? 82 : 47)
+        : (isModified ? 47 : 12);
+
+        var errorBadgeStyle = $"position: absolute; top: {errorBadgeTop}px; right: 12px; z-index: 1;";
+        var stateLockedBadgeStyle = $"position: absolute; top: {stateLockedBadgeTop}px; right: 12px; z-index: 1;";
+        var overridesBadgeStyle = $"position: absolute; top: {overridesBadgeTop}px; right: 12px; z-index: 1;";
+
+        <div style="position: relative; opacity: @cardOpacity; pointer-events: @pointerEvents; cursor: @cursorStyle;">
+            @* Error badge *@
+            @if (service.HasError)
+            {
+                <RadzenBadge Text="Error"
+                             Style="@errorBadgeStyle"
+                             BadgeStyle="BadgeStyle.Danger" />
+            }
+
+            @* State locked badge *@
+            @if (isModified)
+            {
+                <RadzenBadge Text="State locked"
+                             Style="@stateLockedBadgeStyle"
+                             BadgeStyle="BadgeStyle.Danger" />
+            }
+
+            @* Overrides badge *@
+            @if (hasOverride)
+            {
+                <RadzenBadge Text="Overrides"
+                             Style="@overridesBadgeStyle"
+                             BadgeStyle="BadgeStyle.Success" />
+            }
+
+            <RadzenCard class="rz-m-2 rz-p-2 rz-shadow-1"
+                        Style=@($"border: 1px solid {borderColor};")>
+                <RadzenText TextStyle="TextStyle.H6" class="rz-mb-2">
+                    <strong>@service.Name</strong>
+                </RadzenText>
+
+                <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">@fullServiceUrl</RadzenText>
+
+                <RadzenRow RowGap="0">
+                    <RadzenColumn SizeSM="12">
+                        <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">State</RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body2"><b>@currentState</b></RadzenText>
+                    </RadzenColumn>
+
+                    <RadzenColumn SizeSM="12" class="rz-mt-1">
+                        <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">Current state</RadzenText>
+                        <RadzenDropDown @bind-Value="selectedStates[service]"
+                                        Data="service.States"
+                                        Style="width: 100%"
+                                        Placeholder="Select a state" />
+                    </RadzenColumn>
+                </RadzenRow>
+
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-mt-2">
+                    <RadzenButton Size="ButtonSize.Small"
+                                  Variant="Variant.Text"
+                                  Text="Reset state"
+                                  Click="() => ResetState(service)" />
+                    <RadzenButton Size="ButtonSize.Small"
+                                  Variant="Variant.Text"
+                                  Text="Set State"
+                                  Click="() => SetState(service)" />
+                </RadzenStack>
+            </RadzenCard>
+        </div>
+    }
+</div>
+
+@code {
+    private List<ServiceDefinition> services = new();
+    private Dictionary<ServiceDefinition, string> selectedStates = new();
+    private Dictionary<ServiceDefinition, string> appliedStates = new();
+
+    protected override void OnInitialized()
+    {
+        services = Enumerable.Range(1, 12).Select(i =>
+        {
+            var prefix = $"svc{i:D2}";
+            var name = $"Service {i}";
+
+            var initialStates = new List<string> { "Idle", "Active", "Paused", "Stopped" };
+
+            var service = new ServiceDefinition(prefix, name, initialStates);
+
+            if (i % 4 == 0) // Inject error every 4th service
+            {
+                service.SetError("Error occurred");
+            }
+
+            if (i % 3 == 0) // Inject override fragments every 3rd service
+            {
+                service.AddServiceMockTypes(new Dictionary<string, (Type, bool)>
+                    {
+                    { "MockTypeA", (typeof(string), true) }
+                    });
+            }
+
+            return service;
+        }).ToList();
+
+        foreach (var s in services)
+        {
+            selectedStates[s] = WellKnownState.Default;
+            appliedStates[s] = WellKnownState.Default;
+        }
+    }
+
+    private void SetState(ServiceDefinition service)
+    {
+        var selected = selectedStates[service];
+        appliedStates[service] = selected;
+    }
+
+    private void ResetState(ServiceDefinition service)
+    {
+        selectedStates[service] = WellKnownState.Default;
+        appliedStates[service] = WellKnownState.Default;
+    }
+}

@@ -17,8 +17,7 @@ namespace UKHO.ADDS.Mocks.LocalHost
             var builder = DistributedApplication.CreateBuilder(args);
 
             var mockService = builder.AddProject<UKHO_ADDS_Mocks_SampleService>("adds-mocks-sample")
-                .WithScalar("Mock Browser")
-                .WithDashboard("Mock Dashboard");
+                .WithDashboard("Dashboard");
 
             await builder.Build().RunAsync();
 

@@ -17,6 +17,17 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             _hasCreatedMapping = false;
 
             _tagName = GenerateTagName();
+
+            // Prevent caching
+            _group.AddEndpointFilter(async (ctx, next) =>
+            {
+                var context = ctx.HttpContext;
+
+                context.Response.Headers.CacheControl = "no-store, no-cache, must-revalidate";
+                context.Response.Headers.Pragma = "no-cache";
+                context.Response.Headers.Expires = "0";
+                return await next(ctx);
+            });
         }
 
         public ServiceFragment Fragment { get; }

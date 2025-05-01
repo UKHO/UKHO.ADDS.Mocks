@@ -1,14 +1,16 @@
-﻿using System.ComponentModel;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using MudBlazor.Services;
 using Scalar.AspNetCore;
 using Serilog;
 using UKHO.ADDS.Mocks.Dashboard;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
 using UKHO.ADDS.Mocks.Domain.Internal.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Traffic;
+using Radzen;
+using UKHO.ADDS.Mocks.Dashboard.Services;
 
 namespace UKHO.ADDS.Mocks
 {
@@ -18,13 +20,38 @@ namespace UKHO.ADDS.Mocks
         {
             MockServices.AddServices();
 
-            var builder = WebApplication.CreateBuilder(args);
+            var appContextBase = AppContext.BaseDirectory;
+
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                Args = args,
+                ContentRootPath = appContextBase
+            });
 
             builder.Host.UseSerilog((context, services, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
+            builder.WebHost.UseStaticWebAssets();
+
+            builder.Services.AddRazorPages();
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-            builder.Services.AddMudServices();
+            builder.Services.AddSingleton(sp =>
+            {
+                // Get the address that the app is currently running at
+                var server = sp.GetRequiredService<IServer>();
+                var addressFeature = server.Features.Get<IServerAddressesFeature>();
+                var baseAddress = addressFeature != null ? addressFeature.Addresses.First() : string.Empty;
+                return new HttpClient { BaseAddress = new Uri(baseAddress) };
+            });
+
+
+            builder.Services.AddRadzenComponents();
+            builder.Services.AddRadzenQueryStringThemeService();
+
+            builder.Services.AddScoped<DashboardPageService>();
+            builder.Services.AddSingleton<DashboardService>();
+            builder.Services.AddLocalization();
+
             builder.Services.AddAuthorization();
             builder.Services.AddOpenApi();
 
@@ -36,20 +63,16 @@ namespace UKHO.ADDS.Mocks
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            app.UseMiddleware<MockTrafficCaptureMiddleware>();
-
-            app.UseRouting();
-
             app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            app.UseAntiforgery();
             app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAntiforgery();
 
+            app.MapRazorPages();
             app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
-            ConfigureCaching(app);
+            app.UseMiddleware<MockTrafficCaptureMiddleware>();
+
             await StartApplication(app);
 
             app.MapOpenApi();
@@ -58,23 +81,15 @@ namespace UKHO.ADDS.Mocks
             await app.RunAsync();
         }
 
-        private static void ConfigureCaching(WebApplication app)
-        {
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.CacheControl = "no-store, no-cache, must-revalidate";
-                context.Response.Headers.Pragma = "no-cache";
-                context.Response.Headers.Expires = "0";
-                await next();
-            });
-        }
-
         private static async Task StartApplication(WebApplication app)
         {
             var mappingService = app.Services.GetRequiredService<MappingService>();
 
             await mappingService.BuildDefinitionsAsync(app.Lifetime.ApplicationStopping);
             await mappingService.ApplyDefinitionsAsync(app, app.Lifetime.ApplicationStopping);
+
+            var dashboardService = app.Services.GetRequiredService<DashboardService>();
+            dashboardService.StartGeneratingData();
         }
 
         private static void ConfigureApplication(WebApplicationBuilder builder)
