@@ -108,8 +108,10 @@
 
         foreach (var s in _services)
         {
-            _selectedStates[s] = WellKnownState.Default;
-            _appliedStates[s] = WellKnownState.Default;
+            var initialState = s.DefaultState ?? WellKnownState.Default;
+
+            _selectedStates[s] = initialState;
+            _appliedStates[s] = initialState;
         }
     }
 
@@ -117,11 +119,15 @@
     {
         var selected = _selectedStates[service];
         _appliedStates[service] = selected;
+
+        service.DefaultState = selected;
     }
 
     private void ResetState(ServiceDefinition service)
     {
         _selectedStates[service] = WellKnownState.Default;
         _appliedStates[service] = WellKnownState.Default;
+
+        service.DefaultState = WellKnownState.Default;
     }
 }

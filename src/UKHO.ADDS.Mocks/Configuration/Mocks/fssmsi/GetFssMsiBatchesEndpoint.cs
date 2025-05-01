@@ -26,7 +26,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
 
                     default:
                         // Just send default responses
-                        return DefaultStateHandler.HandleDefaultState(state);
+                        return WellKnownStateHandler.HandleWellKnownState(state);
                 }
             })
             .Produces<string>()

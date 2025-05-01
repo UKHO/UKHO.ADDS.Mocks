@@ -24,6 +24,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                     {
                         var serviceMock = (ServiceEndpointMock)Activator.CreateInstance(serviceFragment.Type)!;
 
+                        serviceMock.SetDefinition(definition);
                         serviceMock.RegisterSingleEndpoint(serviceFragment.CreateBuilder(group));
                     }
                 }

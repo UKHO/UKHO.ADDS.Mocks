@@ -8,8 +8,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
         {
             endpoint.MapDelete("/files", (HttpRequest request) =>
                 {
-                    // Just send default responses
-                    return DefaultStateHandler.HandleDefaultState(GetState(request));
+                    return WellKnownStateHandler.HandleWellKnownState(GetState(request));
                 })
                 .WithEndpointMetadata(endpoint, d =>
                 {

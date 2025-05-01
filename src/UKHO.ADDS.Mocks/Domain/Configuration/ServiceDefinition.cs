@@ -47,6 +47,8 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal IEnumerable<ServiceFile> ServiceFiles => _serviceFiles;
 
+        internal string DefaultState { get; set; } = WellKnownState.Default;
+
         internal void SetError(string error) => _error = error;
 
         internal void AddState(string state)

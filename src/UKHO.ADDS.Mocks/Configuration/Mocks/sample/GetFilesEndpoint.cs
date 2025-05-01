@@ -30,7 +30,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 
                     default:
                         // Just send default responses
-                        return DefaultStateHandler.HandleDefaultState(state);
+                        return WellKnownStateHandler.HandleWellKnownState(state);
                 }
             })
             .Produces<string>()

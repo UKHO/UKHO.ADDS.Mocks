@@ -42,7 +42,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
                     default:
                         // Just send default responses
-                        return DefaultStateHandler.HandleDefaultState(state);
+                        return WellKnownStateHandler.HandleWellKnownState(state);
                 }
             })
             .WithEndpointMetadata(endpoint, d =>

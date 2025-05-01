@@ -19,7 +19,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss
 
                     default:
                         // Just send default responses
-                        return DefaultStateHandler.HandleDefaultState(state);
+                        return WellKnownStateHandler.HandleWellKnownState(state);
                 }
             })
             .Produces<string>()
