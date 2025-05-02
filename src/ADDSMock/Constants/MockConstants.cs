@@ -10,6 +10,7 @@
 
         // Correlation ID values
         public const string CreatedCorrelationId = "201-created-guid-";
+        public const string NoContentCorrelationId = "204-no-content-guid-";
         public const string NotModifiedCorrelationId = "304-notmodified-guid-";
         public const string InternalServerErrorCorrelationId = "500-internalserver-guid-";
         public const string BadRequestCorrelationId = "400-badrequest-guid-";
@@ -23,6 +24,7 @@
         public const string TemporaryRedirectCorrelationId = "307-temporaryredirect-guid-";
         public const string AcceptedCorrelationId = "202-accepted-guid-";
         public const string ConflictCorrelationId = "409-conflict-guid-";
+        public const string PayloadTooLargeCorrelationId = "413-payloadtoolarge-guid-";
 
         // Additional headers (optional, based on usage)
         public const string AcceptHeader = "Accept";
