@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 {
@@ -24,9 +25,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Bold("Creates a file")
-                        .AppendNewLine()
-                        .Italic("Just a demo method, won't actually create anything");
+                    d.Append(new MarkdownHeader("Creates a file", 3));
+                    d.Append(new MarkdownParagraph("Just a demo method, won't actually create anything"));
                 });
         }
     }

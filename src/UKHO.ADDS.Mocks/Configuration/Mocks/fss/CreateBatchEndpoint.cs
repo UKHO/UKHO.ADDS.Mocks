@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
 {
@@ -34,11 +35,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Bold("Create a batch")
-                        .AppendNewLine()
-                        .Italic("Just returns a 201, won't actually create anything")
-                        .AppendNewLine()
-                        .Append("Requires a json formatted body.");
+                    d.Append(new MarkdownHeader("Create a batch", 3));
+                    d.Append(new MarkdownParagraph("Just returns a 201, won't actually create anything"));
                 });
         }
     }

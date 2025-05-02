@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
 {
@@ -24,11 +25,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Bold("Add a file")
-                        .AppendNewLine()
-                        .Italic("Just returns a 201, won't actually create anything")
-                        .AppendNewLine()
-                        .Append("Requires a batchId & fileName.");
+                    d.Append(new MarkdownHeader("Adds a file", 3));
+                    d.Append(new MarkdownParagraph("Just returns a 201, won't actually create anything"));
                 });
         }
     }

@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.Mime;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
@@ -32,15 +33,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
             .Produces<string>()
             .WithEndpointMetadata(endpoint, d =>
             {
-                d.Bold("Gets Batch Attributes (MSI)")
-                    .AppendNewLine()
-                    .Italic("This is driven from a static file attributes.json")
-                .AppendNewLine()
-                .Append("Simulates basic attribute query")
-                .AppendNewLine()
-                .Append("Please go [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview?view=aspnetcore-9.0) if you want to know more about minimal APIs")
-                .AppendNewLine();
-                
+                d.Append(new MarkdownHeader("Gets Batch Attributes (MSI)", 3));
+                d.Append(new MarkdownParagraph("This is driven from a static file attributes.json, and simulates a basic attribute query"));
             });
         }
     }

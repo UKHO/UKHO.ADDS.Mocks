@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.Mime;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
@@ -36,18 +37,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
             .Produces<string>()
             .WithEndpointMetadata(endpoint, d =>
             {
-                d.Bold("Gets a file")
-                    .AppendNewLine()
-                    .Italic("Just a demo method, nothing too exciting")
-                .AppendNewLine()
-                .Append("This is a description")
-                .AppendNewLine()
-                .Append("Please go [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview?view=aspnetcore-9.0) if you want to know more about minimal APIs")
-                .AppendNewLine()
-                .Append("This is a list of things:")
-                .Append("- Thing 1")
-                .Append("- Thing 2")
-                .Append("- Thing 3");
+                d.Append(new MarkdownHeader("Gets a file", 3));
+                d.Append(new MarkdownParagraph("Just a demo method, nothing too exciting"));
             });
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
@@ -33,18 +34,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
             .Produces<string>()
             .WithEndpointMetadata(endpoint, d =>
             {
-                d.Bold("Gets Batchs")
-                    .AppendNewLine()
-                    .Italic("This is driven from a static file batchsearchresult.json")
-                .AppendNewLine()
-                .Append("This is a description")
-                .AppendNewLine()
-                .Append("Please go [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview?view=aspnetcore-9.0) if you want to know more about minimal APIs")
-                .AppendNewLine()
-                .Append("Sample list of things:")
-                .Append("- Thing 1")
-                .Append("- Thing 2")
-                .Append("- Thing 3");
+                d.Append(new MarkdownHeader("Gets Batches", 3));
+                d.Append(new MarkdownParagraph("This is driven from a static file batchsearchresult.json"));
             });
         }
     }

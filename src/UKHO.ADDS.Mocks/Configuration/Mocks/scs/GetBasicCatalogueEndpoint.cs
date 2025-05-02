@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.Mime;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
@@ -38,10 +39,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Bold("Gets a basic catalogue")
-                        .AppendNewLine()
-                        .Italic("Only s100 is implemented at the moment")
-                        .AppendNewLine();
+                    d.Append(new MarkdownHeader("Gets a basic catalog", 3));
+                    d.Append(new MarkdownParagraph(new MarkdownEmphasis("Only s100 is implemented at the moment")));
                 });
         }
     }

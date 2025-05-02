@@ -1,5 +1,7 @@
-﻿using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
+using UKHO.ADDS.Mocks.Markdown;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks
@@ -21,7 +23,7 @@ namespace UKHO.ADDS.Mocks
         public static RouteHandlerBuilder WithEndpointMetadata(
             this RouteHandlerBuilder builder,
             IEndpointMock mockBuilder,
-            Action<IServiceMarkdownBuilder> descriptionBuilder)
+            Action<IMarkdownDocument> descriptionBuilder)
         {
             builder = builder.WithRequiredHeader(mockBuilder, ServiceEndpointMock.HeaderKey, "Set the ADDS Mock state for this request");
 
@@ -43,40 +45,33 @@ namespace UKHO.ADDS.Mocks
                 }
             });
 
-            var markdownBuilder = new ServiceMarkdownBuilder();
+            var document = new MarkdownDocument();
 
-            descriptionBuilder.Invoke(markdownBuilder);
-
-            markdownBuilder.AppendNewLine();
+            descriptionBuilder.Invoke(document);
 
             var (project, typePath) = ParseFullTypeName(fragment.Type.FullName!);
 
             if (fragment.IsOverride)
             {
-                markdownBuilder.Append("[OVERRIDE]");
-                markdownBuilder.AppendNewLine();
+                document.Append(new MarkdownHeader("[OVERRIDE]", 3));
             }
 
-            markdownBuilder.Append($"Project    : {project}");
-            markdownBuilder.AppendNewLine();
-            markdownBuilder.Append($"Definition : {typePath}");
+            document.Append(new MarkdownParagraph($"Project    : {project}"));
+            document.Append(new MarkdownParagraph($"Definition : {typePath}"));
 
-            markdownBuilder.AppendLine();
-            markdownBuilder.AppendLine();
+            document.Append(new MarkdownHeader("States", 2));
 
-            markdownBuilder.AppendLine("| State    | Description                        |");
-            markdownBuilder.AppendLine("|----------|------------------------------------|");
+            var stateTableRows = new List<MarkdownTableRow>();
 
             foreach (var state in fragment.Definition.States)
             {
-                markdownBuilder.Append("| ");
-                markdownBuilder.Append(state.State);
-                markdownBuilder.Append(" | ");
-                markdownBuilder.Append(state.Description);
-                markdownBuilder.AppendLine(" |");
+                var description = state.Description ?? string.Empty;
+                stateTableRows.Add(new MarkdownTableRow(state.State, description));
             }
 
-            var markdown = markdownBuilder.ToString();
+            document.Append(new MarkdownTable(new MarkdownTableHeader(new MarkdownTableHeaderCell("State"), new MarkdownTableHeaderCell("Description")), stateTableRows));
+
+            var markdown = document.ToString();
 
             builder = builder.WithDescription(markdown);
 

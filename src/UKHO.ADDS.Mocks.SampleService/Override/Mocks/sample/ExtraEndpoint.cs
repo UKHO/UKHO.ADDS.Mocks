@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample.Models;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample.Models;
 
 namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 {
@@ -12,7 +13,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
             }).WithEndpointMetadata(endpoint, d =>
             {
-                d.Bold("Don't ever call this endpoint");
+                d.Append(new MarkdownParagraph(new MarkdownStrongEmphasis("Don't ever call this endpoint")));
             }); ;
         }
     }

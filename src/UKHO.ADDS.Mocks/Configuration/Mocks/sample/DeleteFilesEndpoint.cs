@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 {
@@ -12,9 +13,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
                 })
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Bold("Deletes a file")
-                        .AppendNewLine()
-                        .Italic("Just a demo method, won't actually delete anything");
+                    d.Append(new MarkdownHeader("Deletes a file", 3));
+                    d.Append(new MarkdownParagraph("Just a demo method, won't actually delete anything"));
                 });
         }
     }
