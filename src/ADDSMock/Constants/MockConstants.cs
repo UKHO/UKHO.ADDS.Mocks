@@ -16,12 +16,14 @@
         public const string BadRequestCorrelationId = "400-badrequest-guid-";
         public const string UnauthorizedCorrelationId = "401-unauthorized-guid-";
         public const string ForbiddenCorrelationId = "403-forbidden-guid-";
-        public const string FileNotFoundCorrelationId = "404-filenotfound-guid-";
+        public const string FileNotFoundCorrelationId = "404-notfound-guid-";
         public const string GoneCorrelationId = "410-gone-guid-";
         public const string RangeNotSatisfiableCorrelationId = "416-rangenotsatisfiable-guid-";
         public const string UnsupportedMediaTypeCorrelationId = "415-unsupportedmediatype-guid-";
         public const string TooManyRequestsCorrelationId = "429-toomanyrequests-guid-";
         public const string TemporaryRedirectCorrelationId = "307-temporaryredirect-guid-";
+        public const string AcceptedCorrelationId = "202-accepted-guid-";
+        public const string ConflictCorrelationId = "409-conflict-guid-";
         public const string PayloadTooLargeCorrelationId = "413-payloadtoolarge-guid-";
 
         // Additional headers (optional, based on usage)
