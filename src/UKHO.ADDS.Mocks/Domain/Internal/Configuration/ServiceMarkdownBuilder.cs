@@ -8,9 +8,22 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 
         public IServiceMarkdownBuilder Append(string text = "")
         {
+            _sb.Append(text);
+            return this;
+        }
+
+        public IServiceMarkdownBuilder AppendLine()
+        {
+            _sb.AppendLine();
+            return this;
+        }
+
+        public IServiceMarkdownBuilder AppendLine(string text)
+        {
             _sb.AppendLine(text);
             return this;
         }
+
 
         public IServiceMarkdownBuilder AppendNewLine()
         {

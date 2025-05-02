@@ -1,4 +1,5 @@
 using UKHO.ADDS.Mocks.Configuration;
+using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.SampleService
 {
@@ -7,7 +8,7 @@ namespace UKHO.ADDS.Mocks.SampleService
         public static async Task Main(string[] args)
         {
             MockServices.AddServices();
-            ServiceRegistry.AddDefinitionState("sample", "get-jpeg");
+            ServiceRegistry.AddDefinitionState("sample", new StateDefinition("get-jpeg", "Gets a JPEG file"));
 
             await MockServer.RunAsync(args);
         }

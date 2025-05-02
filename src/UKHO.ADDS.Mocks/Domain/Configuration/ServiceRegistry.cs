@@ -1,4 +1,5 @@
 ﻿using UKHO.ADDS.Mocks.Domain.Configuration;
+using UKHO.ADDS.Mocks.States;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks.Configuration
@@ -24,7 +25,7 @@ namespace UKHO.ADDS.Mocks.Configuration
             }
         }
 
-        public static void AddDefinitionState(string definitionPrefix, string state)
+        public static void AddDefinitionState(string definitionPrefix, StateDefinition state)
         {
             var definition = _definitions.FirstOrDefault(d => d.Prefix.Equals(definitionPrefix, StringComparison.OrdinalIgnoreCase));
             if (definition != null)

@@ -12,7 +12,7 @@ namespace UKHO.ADDS.Mocks
             {
                 var states = endpointBuilder.Fragment.Definition.States;
 
-                builder.Add(x => { x.Metadata.Add(new OpenApiHeaderParameter { Name = name, Description = description, Required = false, ExpectedValues = states }); });
+                builder.Add(x => { x.Metadata.Add(new OpenApiHeaderParameter { Name = name, Description = description, Required = false, ExpectedValues = states.Select(s => s.State) }); });
             }
 
             return builder;
@@ -60,8 +60,25 @@ namespace UKHO.ADDS.Mocks
             markdownBuilder.Append($"Project    : {project}");
             markdownBuilder.AppendNewLine();
             markdownBuilder.Append($"Definition : {typePath}");
-            
-            builder = builder.WithDescription(markdownBuilder.ToString());
+
+            markdownBuilder.AppendLine();
+            markdownBuilder.AppendLine();
+
+            markdownBuilder.AppendLine("| State    | Description                        |");
+            markdownBuilder.AppendLine("|----------|------------------------------------|");
+
+            foreach (var state in fragment.Definition.States)
+            {
+                markdownBuilder.Append("| ");
+                markdownBuilder.Append(state.State);
+                markdownBuilder.Append(" | ");
+                markdownBuilder.Append(state.Description);
+                markdownBuilder.AppendLine(" |");
+            }
+
+            var markdown = markdownBuilder.ToString();
+
+            builder = builder.WithDescription(markdown);
 
             return builder;
         }

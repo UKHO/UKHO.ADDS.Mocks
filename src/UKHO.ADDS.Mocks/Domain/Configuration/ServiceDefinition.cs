@@ -6,7 +6,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
     public sealed class ServiceDefinition
     {
         private readonly string _name;
-        private readonly List<string> _states;
+        private readonly List<StateDefinition> _states;
         private readonly string _prefix;
 
         private readonly List<ServiceFile> _serviceFiles;
@@ -14,7 +14,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         private string? _error;
 
-        public ServiceDefinition(string prefix, string name, IEnumerable<string> states)
+        public ServiceDefinition(string prefix, string name, IEnumerable<StateDefinition> states)
         {
             _name = name;
             _states = [..states];
@@ -23,14 +23,14 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             _serviceFiles = [];
             _serviceFragments = [];
 
-            _states.Add(WellKnownState.Default);
-            _states.Add(WellKnownState.NotFound);
-            _states.Add(WellKnownState.NotModified);
-            _states.Add(WellKnownState.BadRequest);
-            _states.Add(WellKnownState.Conflict);
-            _states.Add(WellKnownState.Forbidden);
-            _states.Add(WellKnownState.InternalServerError);
-            _states.Add(WellKnownState.Unauthorized);
+            _states.Add(new StateDefinition(WellKnownState.Default, "The default state (whatever your endpoint returns without state)"));
+            _states.Add(new StateDefinition(WellKnownState.NotFound, "Returns Not Found (404)"));
+            _states.Add(new StateDefinition(WellKnownState.NotModified, "Returns Not Modified (304)"));
+            _states.Add(new StateDefinition(WellKnownState.BadRequest, "Returns Bad Request (400)"));
+            _states.Add(new StateDefinition(WellKnownState.Conflict, "Returns Conflict (409)"));
+            _states.Add(new StateDefinition(WellKnownState.Forbidden, "Returns Forbidden (403)"));
+            _states.Add(new StateDefinition(WellKnownState.InternalServerError, "Returns Internal Server Error (500)"));
+            _states.Add(new StateDefinition(WellKnownState.Unauthorized, "Returns Unauthorized (401)"));
         }
 
         public string Prefix => _prefix;
@@ -41,7 +41,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal string Error => _error ?? string.Empty;
 
-        internal IEnumerable<string> States => _states;
+        internal IEnumerable<StateDefinition> States => _states;
 
         internal IEnumerable<ServiceFragment> ServiceFragments => _serviceFragments;
 
@@ -51,7 +51,13 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal void SetError(string error) => _error = error;
 
-        internal void AddState(string state)
+
+        internal void AddState(string state, string description)
+        {
+            AddState(new StateDefinition(state, description));
+        }
+
+        internal void AddState(StateDefinition state)
         {
             _states.Insert(0, state);
         }
