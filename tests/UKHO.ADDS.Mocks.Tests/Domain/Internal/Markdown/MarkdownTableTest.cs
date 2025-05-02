@@ -24,10 +24,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestNullHeader()
-        {
-            Assert.Throws<ArgumentNullException>(() => new MarkdownTable(null));
-        }
+        public void TestNullHeader() => Assert.Throws<ArgumentNullException>(() => new MarkdownTable(null));
 
         [Fact]
         public void TestColumnCount()
@@ -50,11 +47,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
             {
                 var table = new MarkdownTable(
                     new MarkdownTableHeader(3),
-                    new MarkdownTableRow[]
-                    {
-                        new MarkdownTableRow(3),
-                        new MarkdownTableRow(3)
-                    }
+                    new MarkdownTableRow[] { new(3), new(3) }
                 );
                 Assert.Equal(2, table.RowsCount);
                 Assert.Equal(2, table.RowsCapacity);
@@ -84,15 +77,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestInitializeWithInvalidRow()
-        {
+        public void TestInitializeWithInvalidRow() =>
             Assert.Throws<ArgumentException>(
                 () => new MarkdownTable(
                     new MarkdownTableHeader(3),
-                    new MarkdownTableRow[] { new MarkdownTableRow(2) }
+                    new MarkdownTableRow[] { new(2) }
                 )
             );
-        }
 
         [Fact]
         public void TestAddRow()
@@ -115,11 +106,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         public void TestAddRowRange()
         {
             var table = new MarkdownTable(new MarkdownTableHeader(3));
-            MarkdownTableRow[] rows =
-            {
-                new MarkdownTableRow("A", "B", "C"),
-                new MarkdownTableRow("A", "B", "C")
-            };
+            MarkdownTableRow[] rows = { new("A", "B", "C"), new("A", "B", "C") };
             table.AddRowRange(rows);
 
             Assert.Equal(2, table.RowsCount);
@@ -129,11 +116,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         public void TestAddInvalidRowRange()
         {
             var table = new MarkdownTable(new MarkdownTableHeader(3));
-            MarkdownTableRow[] rows =
-            {
-                new MarkdownTableRow("A", "B"),
-                new MarkdownTableRow("A", "B")
-            };
+            MarkdownTableRow[] rows = { new("A", "B"), new("A", "B") };
             Assert.Throws<ArgumentException>(() => table.AddRowRange(rows));
             Assert.Equal(0, table.RowsCount);
         }
@@ -162,18 +145,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         public void TestToString()
         {
             var table = new MarkdownTable(
-                new MarkdownTableHeader(
-                    new MarkdownTableHeaderCell[]
-                    {
-                        new MarkdownTableHeaderCell("Header"),
-                        new MarkdownTableHeaderCell("Header")
-                    }
-                ),
-                new MarkdownTableRow[]
-                {
-                    new MarkdownTableRow("cell", "cell"),
-                    new MarkdownTableRow("cell", "cell")
-                }
+                new MarkdownTableHeader(new MarkdownTableHeaderCell("Header"), new MarkdownTableHeaderCell("Header")),
+                new MarkdownTableRow[] { new("cell", "cell"), new("cell", "cell") }
             );
             Assert.Equal(
                 "| Header | Header |" + Environment.NewLine +

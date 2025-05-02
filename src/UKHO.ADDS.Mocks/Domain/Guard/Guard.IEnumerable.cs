@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Collections;
+﻿using System.Collections;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -234,7 +232,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (count < minCount || count > maxCount)
                 {
                     var m = message?.Invoke(argument.Value, minCount, maxCount)
-                        ?? Messages.CollectionCountInRange(argument, minCount, maxCount);
+                            ?? Messages.CollectionCountInRange(argument, minCount, maxCount);
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -443,7 +441,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (containsDuplicate)
                 {
                     var m = message?.Invoke(argument.Value, duplicateValue)
-                        ?? Messages.CollectionDoesNotContain(argument, "duplicate items");
+                            ?? Messages.CollectionDoesNotContain(argument, "duplicate items");
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -483,7 +481,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (containsDuplicate)
                 {
                     var m = message?.Invoke(argument.Value, duplicateValue)
-                        ?? Messages.CollectionDoesNotContain(argument, "duplicate items");
+                            ?? Messages.CollectionDoesNotContain(argument, "duplicate items");
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -550,7 +548,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 !Collection<TCollection>.Typed<TItem>.Contains(collection, argument.Value, comparer))
             {
                 var m = message?.Invoke(argument.Value, collection)
-                    ?? Messages.InCollection(argument, collection);
+                        ?? Messages.InCollection(argument, collection);
 
                 throw Fail(new ArgumentException(m, argument.Name));
             }
@@ -576,8 +574,12 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var comparer = EqualityComparer<TItem>.Default;
                 for (var i = 0; i < items.Length; i++)
+                {
                     if (comparer.Equals(argument.Value, items[i]))
+                    {
                         return ref argument;
+                    }
+                }
 
                 var m = Messages.InCollection(argument, items);
                 throw Fail(new ArgumentException(m, argument.Name));
@@ -640,11 +642,10 @@ namespace UKHO.ADDS.Mocks.Guard
             where TCollection : IEnumerable?
         {
             if (argument.HasValue() &&
-                collection != null &&
-                Collection<TCollection>.Typed<TItem>.Contains(collection, argument.Value, comparer))
+                collection != null && Collection<TCollection>.Typed<TItem>.Contains(collection, argument.Value, comparer))
             {
                 var m = message?.Invoke(argument.Value, collection)
-                    ?? Messages.NotInCollection(argument, collection);
+                        ?? Messages.NotInCollection(argument, collection);
 
                 throw Fail(new ArgumentException(m, argument.Name));
             }
@@ -670,11 +671,13 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var comparer = EqualityComparer<TItem>.Default;
                 for (var i = 0; i < items.Length; i++)
+                {
                     if (comparer.Equals(argument.Value, items[i]))
                     {
                         var m = Messages.NotInCollection(argument, items);
                         throw Fail(new ArgumentException(m, argument.Name));
                     }
+                }
             }
 
             return ref argument;
@@ -691,7 +694,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 = new Dictionary<Type, Func<object, int, int>>();
 
             /// <summary>The locker that synchronizes access to <see cref="CachedCountFunctions" />.</summary>
-            public static readonly ReaderWriterLockSlim CachedCountFunctionsLocker = new ReaderWriterLockSlim();
+            public static readonly ReaderWriterLockSlim CachedCountFunctionsLocker = new();
 
             /// <summary>
             ///     The <see cref="Collection{TCollection}.ContainsNull" /> delegates cached by their
@@ -701,7 +704,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 = new Dictionary<Type, Func<object, bool>>();
 
             /// <summary>The locker that synchronizes access to <see cref="CachedContainsNullFunctions" />.</summary>
-            public static readonly ReaderWriterLockSlim CachedContainsNullFunctionsLocker = new ReaderWriterLockSlim();
+            public static readonly ReaderWriterLockSlim CachedContainsNullFunctionsLocker = new();
 
             /// <summary>
             ///     The <see cref="Collection{TCollection}.Typed{TItem}.Contains" /> delegates cached
@@ -711,7 +714,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 = new Dictionary<(Type, Type), Delegate>();
 
             /// <summary>The locker that synchronizes access to <see cref="CachedContainsFunctions" />.</summary>
-            public static readonly ReaderWriterLockSlim CachedContainsFunctionsLocker = new ReaderWriterLockSlim();
+            public static readonly ReaderWriterLockSlim CachedContainsFunctionsLocker = new();
         }
 
         /// <summary>Provides cached collection utilities for the type <typeparamref name="TCollection" />.</summary>
@@ -761,17 +764,23 @@ namespace UKHO.ADDS.Mocks.Guard
                 return (collection, max) =>
                 {
                     if (typeof(TCollection) != collection!.GetType())
+                    {
                         return ProxyCount(collection, max);
+                    }
 
                     if (max == 0)
+                    {
                         return 0;
+                    }
 
                     var i = 0;
                     var enumerator = collection.GetEnumerator();
                     try
                     {
                         while (i < max && enumerator.MoveNext())
+                        {
                             i++;
+                        }
                     }
                     finally
                     {
@@ -833,24 +842,32 @@ namespace UKHO.ADDS.Mocks.Guard
                 var implementedType = typeof(ICollection);
 
                 if (implementedType.IsAssignableFrom(collectionType))
+                {
                     return implementedType.GetPropertyGetter("Count");
+                }
 
                 var itemType = GetItemType();
                 if (itemType != null)
                 {
                     implementedType = typeof(IReadOnlyCollection<>).MakeGenericType(itemType);
                     if (implementedType.IsAssignableFrom(collectionType))
+                    {
                         return implementedType.GetPropertyGetter("Count");
+                    }
                 }
 
                 var returnType = typeof(int);
                 var getter = collectionType.GetPropertyGetter("Count");
                 if (getter?.IsStatic == false && getter.ReturnType == returnType)
+                {
                     return getter;
+                }
 
                 getter = collectionType.GetPropertyGetter("Length");
                 if (getter?.IsStatic == false && getter.ReturnType == returnType)
+                {
                     return getter;
+                }
 
                 return null;
             }
@@ -882,7 +899,9 @@ namespace UKHO.ADDS.Mocks.Guard
                     {
                         var parameters = method.GetParameters();
                         if (parameters.Length != 1)
+                        {
                             continue;
+                        }
 
                         var paramType = parameters[0].ParameterType;
                         if (!IsValueType(paramType) || paramType.IsGenericType(typeof(Nullable<>)))
@@ -909,7 +928,9 @@ namespace UKHO.ADDS.Mocks.Guard
                     }
 
                     if (foundVal)
+                    {
                         return collection => false;
+                    }
                 }
 
                 return EnumeratingContainsNull;
@@ -917,11 +938,17 @@ namespace UKHO.ADDS.Mocks.Guard
                 bool EnumeratingContainsNull(TCollection collection)
                 {
                     if (collectionType != collection!.GetType())
+                    {
                         return ProxyContainsNull(collection);
+                    }
 
                     foreach (var item in collection)
+                    {
                         if (item is null)
+                        {
                             return true;
+                        }
+                    }
 
                     return false;
                 }
@@ -975,15 +1002,21 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var itemType = GetItemType();
                 if (itemType is null)
+                {
                     return (collection, _) =>
                     {
                         var set = new HashSet<object>();
                         foreach (var item in collection!)
+                        {
                             if (!set.Add(item))
+                            {
                                 return (true, item);
+                            }
+                        }
 
                         return default;
                     };
+                }
 
                 var collectionType = typeof(TCollection);
                 var collectionParam = Expression.Parameter(collectionType, "collection");
@@ -1044,6 +1077,7 @@ namespace UKHO.ADDS.Mocks.Guard
 
                     var countGetter = GetCountGetter();
                     if (countGetter != null)
+                    {
                         try
                         {
                             var setCtor = setType.GetConstructor(new[] { typeof(int) });
@@ -1054,6 +1088,7 @@ namespace UKHO.ADDS.Mocks.Guard
                         {
                             // Swallow and use default
                         }
+                    }
 
                     return Expression.New(setType);
                 }
@@ -1072,11 +1107,17 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var openType = typeof(IEnumerable<>);
                     foreach (var interfaceType in collectionType.GetInterfaces())
+                    {
                         if (interfaceType.IsGenericType(openType))
+                        {
                             return interfaceType.GetGenericArguments()[0];
+                        }
+                    }
 
                     if (collectionType.IsGenericType(openType))
+                    {
                         return collectionType.GetGenericArguments()[0];
+                    }
 
                     var baseType = collectionType.GetBaseType();
                     return baseType != null
@@ -1106,7 +1147,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var collectionType = typeof(TCollection);
 
-                    Type? itemType = typeof(TItem);
+                    var itemType = typeof(TItem);
                     do
                     {
                         var method = collectionType.GetMethod("Contains", new[] { itemType });
@@ -1118,7 +1159,9 @@ namespace UKHO.ADDS.Mocks.Guard
 
                             var convert = itemParam as Expression;
                             if (p.ParameterType != itemType && p.ParameterType.IsGenericType(typeof(Nullable<>)))
+                            {
                                 convert = Expression.Convert(itemParam, p.ParameterType);
+                            }
 
                             var call = Expression.Call(colParam, method, convert);
                             var lambda = Expression.Lambda<Func<TCollection, TItem, bool>>(call, colParam, itemParam);
@@ -1129,29 +1172,41 @@ namespace UKHO.ADDS.Mocks.Guard
                         }
 
                         itemType = itemType.GetBaseType();
-                    }
-                    while (itemType != null);
+                    } while (itemType != null);
+
                     return EnumeratingContains;
 
                     bool EnumeratingContains(TCollection collection, TItem item, IEqualityComparer<TItem> comparer)
                     {
                         if (collectionType != collection!.GetType())
+                        {
                             return ProxyContains(collection, item, comparer);
+                        }
 
                         if (comparer is null)
+                        {
                             comparer = EqualityComparer<TItem>.Default;
+                        }
 
                         if (collection is IEnumerable<TItem> typed)
                         {
                             foreach (var current in typed)
+                            {
                                 if (comparer.Equals(current, item))
+                                {
                                     return true;
+                                }
+                            }
                         }
                         else
                         {
                             foreach (var current in collection)
+                            {
                                 if (current is TItem c && comparer.Equals(c, item))
+                                {
                                     return true;
+                                }
+                            }
                         }
 
                         return false;

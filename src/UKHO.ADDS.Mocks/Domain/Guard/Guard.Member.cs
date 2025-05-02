@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -110,7 +108,7 @@ namespace UKHO.ADDS.Mocks.Guard
                     var m = message?.Invoke(argument.Value, memberValue, ex) ?? ex.Message;
                     throw Fail(!validatesRange || argument.Modified
                         ? new ArgumentException(m, argument.Name, ex)
-                        : new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m));
+                        : new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m));
                 }
             }
 
@@ -232,8 +230,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 = new Dictionary<MemberInfo, Node>();
 
             /// <summary>The lock that synchronizes access to <see cref="Nodes" />.</summary>
-            private static readonly ReaderWriterLockSlim NodesLock
-                = new ReaderWriterLockSlim();
+            private static readonly ReaderWriterLockSlim NodesLock = new();
 
             /// <summary>Returns the cached argument member for the specified lambda expression.</summary>
             /// <typeparam name="T">The type of the argument.</typeparam>
@@ -300,7 +297,9 @@ namespace UKHO.ADDS.Mocks.Guard
                 try
                 {
                     if (node.Info is ArgumentMemberInfo<T, TMember> info)
+                    {
                         return info;
+                    }
 
                     node.Lock.EnterWriteLock();
                     try

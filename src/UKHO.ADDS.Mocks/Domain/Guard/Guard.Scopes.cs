@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-#if !NETSTANDARD1_0
+﻿#if !NETSTANDARD1_0
 
 using System.Diagnostics;
 
@@ -21,12 +19,10 @@ namespace UKHO.ADDS.Mocks.Guard
         /// </param>
         /// <returns>An object that when disposed, will end the guarding scope.</returns>
         [GuardFunction("Scopes")]
-        public static IDisposable BeginScope(Action<Exception, StackTrace> exceptionInterceptor, bool propagates = true)
-        {
-            return exceptionInterceptor != null || !propagates
+        public static IDisposable BeginScope(Action<Exception, StackTrace> exceptionInterceptor, bool propagates = true) =>
+            exceptionInterceptor != null || !propagates
                 ? new Scope(exceptionInterceptor, propagates)
                 : Disposable.Empty;
-        }
 
         /// <summary>Represents a guarding scope.</summary>
         private sealed class Scope : IDisposable
@@ -34,7 +30,7 @@ namespace UKHO.ADDS.Mocks.Guard
             /// <summary>
             ///     The scope data that is local to the calling asynchronous control flow.
             /// </summary>
-            private static readonly AsyncLocal<Scope?> Local = new AsyncLocal<Scope?>();
+            private static readonly AsyncLocal<Scope?> Local = new();
 
             /// <summary>
             ///     Contains zero if the instance is not disposed; and one if it is disposed.
@@ -83,7 +79,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public void Dispose()
             {
                 if (Interlocked.CompareExchange(ref _disposed, 1, 0) == 0)
+                {
                     Current = Parent;
+                }
             }
         }
 

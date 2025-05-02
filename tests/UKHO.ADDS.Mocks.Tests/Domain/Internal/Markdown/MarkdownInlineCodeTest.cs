@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownInlineCodeTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("code", new MarkdownInlineCode("code").Text);
-        }
+        public void TestText() => Assert.Equal("code", new MarkdownInlineCode("code").Text);
 
         [Fact]
         public void TestInlineElement()
@@ -19,9 +16,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestToString()
-        {
-            Assert.Equal("`code`", new MarkdownInlineCode("code").ToString());
-        }
+        public void TestToString() => Assert.Equal("`code`", new MarkdownInlineCode("code").ToString());
     }
 }

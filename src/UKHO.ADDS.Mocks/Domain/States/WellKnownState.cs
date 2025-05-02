@@ -1,4 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.States
 {
     public static class WellKnownState

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
+﻿using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
 using UKHO.ADDS.Mocks.Markdown;
 

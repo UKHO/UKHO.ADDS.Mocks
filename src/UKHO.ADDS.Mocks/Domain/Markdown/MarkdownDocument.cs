@@ -1,8 +1,9 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.Markdown
 {
     /// <summary>
-    /// Markdown document.
+    ///     Markdown document.
     /// </summary>
     /// <seealso cref="IMarkdownDocument" />
     public class MarkdownDocument : IMarkdownDocument
@@ -10,9 +11,24 @@ namespace UKHO.ADDS.Mocks.Markdown
         private readonly List<IMarkdownBlockElement> _blockElements;
 
         /// <summary>
-        /// Gets or sets the maximum number of markdown block elements that can be contained in the memory allocated by the current instance.
+        ///     Initializes a new instance of the <see cref="MarkdownDocument" /> class.
         /// </summary>
-        /// <value>The maximum number of markdown block elements that can be contained in the memory allocated by the current instance.</value>
+        public MarkdownDocument() => _blockElements = new List<IMarkdownBlockElement>();
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MarkdownDocument" /> class.
+        /// </summary>
+        /// <param name="capacity">The block elements capacity.</param>
+        public MarkdownDocument(int capacity) => _blockElements = new List<IMarkdownBlockElement>(capacity);
+
+        /// <summary>
+        ///     Gets or sets the maximum number of markdown block elements that can be contained in the memory allocated by the
+        ///     current instance.
+        /// </summary>
+        /// <value>
+        ///     The maximum number of markdown block elements that can be contained in the memory allocated by the current
+        ///     instance.
+        /// </value>
         public int Capacity
         {
             get => _blockElements.Capacity;
@@ -20,27 +36,10 @@ namespace UKHO.ADDS.Mocks.Markdown
         }
 
         /// <summary>
-        /// Gets the length of the current <see cref="IMarkdownDocument" /> object.
+        ///     Gets the length of the current <see cref="IMarkdownDocument" /> object.
         /// </summary>
         /// <value>The length of this instance.</value>
         public int Length => _blockElements.Count;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownDocument" /> class.
-        /// </summary>
-        public MarkdownDocument()
-        {
-            _blockElements = new List<IMarkdownBlockElement>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownDocument" /> class.
-        /// </summary>
-        /// <param name="capacity">The block elements capacity.</param>
-        public MarkdownDocument(int capacity)
-        {
-            _blockElements = new List<IMarkdownBlockElement>(capacity);
-        }
 
         /// <summary>Appends the specified block element.</summary>
         /// <param name="blockElement">The block element.</param>
@@ -69,10 +68,7 @@ namespace UKHO.ADDS.Mocks.Markdown
         /// <summary>Returns the specified block element index.</summary>
         /// <param name="blockElement">The block element.</param>
         /// <returns>The block element index.</returns>
-        public int IndexOf(IMarkdownBlockElement blockElement)
-        {
-            return _blockElements.IndexOf(blockElement);
-        }
+        public int IndexOf(IMarkdownBlockElement blockElement) => _blockElements.IndexOf(blockElement);
 
         /// <summary>Inserts the specified block element into this instance at a specified position.</summary>
         /// <param name="index">The position in this instance where insertion begins.</param>
@@ -123,12 +119,9 @@ namespace UKHO.ADDS.Mocks.Markdown
         }
 
         /// <summary>
-        /// Returns a string that represents the current markdown document.
+        ///     Returns a string that represents the current markdown document.
         /// </summary>
         /// <returns>A string that represents the current markdown document.</returns>
-        public override string ToString()
-        {
-            return string.Join(Environment.NewLine, _blockElements);
-        }
+        public override string ToString() => string.Join(Environment.NewLine, _blockElements);
     }
 }

@@ -117,13 +117,17 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     : count * (secure ? 2 : 3);
 
                 if (result == 0)
+                {
                     result++;
+                }
 
                 return result;
             }
 
             bool TestGeneratedMessage(string message, ITestEnumerable<string> enumerable)
-                => secure || enumerable.Items.All(i => message.Contains(i.ToString()));
+            {
+                return secure || enumerable.Items.All(i => message.Contains(i.ToString()));
+            }
         }
 
         [Theory(DisplayName = "Email: HasDisplayName/DoesNotHaveDisplayName")]

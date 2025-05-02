@@ -1,12 +1,10 @@
-﻿#nullable enable
-
-using System.Reflection;
+﻿using System.Reflection;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks.Guard
 {
     /// <summary>Marks a target as a function of <see cref="Guard" />.</summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     internal sealed class GuardFunctionAttribute : Attribute
     {
         /// <summary>
@@ -54,16 +52,15 @@ namespace UKHO.ADDS.Mocks.Guard
         ///     An enumerable of methods and <see cref="GuardFunctionAttribute" /> instances that
         ///     mark them.
         /// </returns>
-        public static IEnumerable<KeyValuePair<MethodInfo, GuardFunctionAttribute>> GetMethods(Assembly assembly)
-        {
-            return from t in assembly.ExportedTypes
-                   select t.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance) into methods
-                   from m in methods
-                   let a = m.GetCustomAttribute<GuardFunctionAttribute>()
-                   where a != null
-                   orderby a.Group, m.Name, a.Order
-                   select new KeyValuePair<MethodInfo, GuardFunctionAttribute>(m, a);
-        }
+        public static IEnumerable<KeyValuePair<MethodInfo, GuardFunctionAttribute>> GetMethods(Assembly assembly) =>
+            from t in assembly.ExportedTypes
+            select t.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance)
+            into methods
+            from m in methods
+            let a = m.GetCustomAttribute<GuardFunctionAttribute>()
+            where a != null
+            orderby a.Group, m.Name, a.Order
+            select new KeyValuePair<MethodInfo, GuardFunctionAttribute>(m, a);
 
 #endif
     }

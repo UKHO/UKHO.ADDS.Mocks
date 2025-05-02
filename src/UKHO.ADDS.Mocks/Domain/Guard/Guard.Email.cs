@@ -120,8 +120,7 @@ namespace UKHO.ADDS.Mocks.Guard
             Func<MailAddress, IEnumerable<string>, string> message = null)
             where TCollection : IEnumerable<string>
         {
-            if (argument.HasValue() &&
-                Collection<TCollection>.Typed<string>.Contains(hosts, argument.Value.Host, null))
+            if (argument.HasValue() && Collection<TCollection>.Typed<string>.Contains(hosts, argument.Value.Host, null))
             {
                 var m = message?.Invoke(argument.Value, hosts) ?? Messages.EmailHostNotIn(argument, hosts);
                 throw Fail(new ArgumentException(m, argument.Name));

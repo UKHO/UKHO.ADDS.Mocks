@@ -4,16 +4,12 @@
 namespace UKHO.ADDS.Mocks.Markdown
 {
     /// <summary>
-    /// Markdown table row.
+    ///     Markdown table row.
     /// </summary>
     public class MarkdownTableRow
     {
-        /// <summary>Gets the cells.</summary>
-        /// <value>The cells.</value>
-        public MarkdownInlineElement[] Cells { get; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTableRow"/> class.
+        ///     Initializes a new instance of the <see cref="MarkdownTableRow" /> class.
         /// </summary>
         /// <param name="cells">The cells.</param>
         public MarkdownTableRow(IEnumerable<MarkdownInlineElement> cells)
@@ -24,7 +20,7 @@ namespace UKHO.ADDS.Mocks.Markdown
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTableRow"/> class.
+        ///     Initializes a new instance of the <see cref="MarkdownTableRow" /> class.
         /// </summary>
         /// <param name="cells">The cells.</param>
         public MarkdownTableRow(params MarkdownInlineElement[] cells)
@@ -35,7 +31,7 @@ namespace UKHO.ADDS.Mocks.Markdown
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTableRow"/> class.
+        ///     Initializes a new instance of the <see cref="MarkdownTableRow" /> class.
         /// </summary>
         /// <param name="cells">The cells.</param>
         public MarkdownTableRow(IEnumerable<string> cells)
@@ -46,7 +42,7 @@ namespace UKHO.ADDS.Mocks.Markdown
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTableRow"/> class.
+        ///     Initializes a new instance of the <see cref="MarkdownTableRow" /> class.
         /// </summary>
         /// <param name="cells">The cells.</param>
         public MarkdownTableRow(params string[] cells)
@@ -57,7 +53,7 @@ namespace UKHO.ADDS.Mocks.Markdown
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTableRow"/> class.
+        ///     Initializes a new instance of the <see cref="MarkdownTableRow" /> class.
         /// </summary>
         /// <param name="capacity">The capacity.</param>
         public MarkdownTableRow(int capacity)
@@ -67,13 +63,14 @@ namespace UKHO.ADDS.Mocks.Markdown
             Cells = new MarkdownInlineElement[capacity];
         }
 
+        /// <summary>Gets the cells.</summary>
+        /// <value>The cells.</value>
+        public MarkdownInlineElement[] Cells { get; }
+
         /// <summary>
-        /// Returns a string that represents the current markdown table row.
+        ///     Returns a string that represents the current markdown table row.
         /// </summary>
         /// <returns>A string that represents the current markdown table row.</returns>
-        public override string ToString()
-        {
-            return $"{string.Concat(Cells.Select(c => $"| {c} "))}|";
-        }
+        public override string ToString() => $"{string.Concat(Cells.Select(c => $"| {c} "))}|";
     }
 }

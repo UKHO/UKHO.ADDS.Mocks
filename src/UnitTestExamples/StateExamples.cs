@@ -11,10 +11,7 @@ namespace UnitTestExamples
 
         private readonly MockHttpClientFactory _factory;
 
-        public StateExamples()
-        {
-            _factory = new MockHttpClientFactory();
-        }
+        public StateExamples() => _factory = new MockHttpClientFactory();
 
         [Fact]
         public async Task SetMockToDefaultState()

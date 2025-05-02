@@ -5,14 +5,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss.ResponseGenerator
 {
     public class BatchQueryParser
     {
-        private static readonly Regex _businessUnitRegex = new Regex(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
-        private static readonly Regex _productCodeRegex = new Regex(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
         private const string BatchPattern = @"\$batch\((?<Property>\w+)\) eq '(?<Value>[^']*)'";
+        private static readonly Regex _businessUnitRegex = new(@"BusinessUnit\s*eq\s*'([^']*)'", RegexOptions.Compiled);
+        private static readonly Regex _productCodeRegex = new(@"\$batch\(ProductCode\) eq '(?<Value>[^']*)'", RegexOptions.Compiled);
 
         public static FSSSearchFilterDetails ParseBatchQuery(string odataQuery)
         {
             var filterDetails = new FSSSearchFilterDetails();
-            
+
             var filterMatch = Regex.Match(odataQuery, @"\$filter=(.*)");
             if (!filterMatch.Success)
             {
@@ -48,17 +48,23 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss.ResponseGenerator
         {
             var matches = Regex.Matches(filter, BatchPattern);
 
-            if (matches.Count == 0) return null;
+            if (matches.Count == 0)
+            {
+                return null;
+            }
 
             var product = new Product();
-            
+
 
             foreach (Match match in matches)
             {
                 var property = match.Groups["Property"].Value;
                 var value = match.Groups["Value"].Value;
 
-                if (string.IsNullOrEmpty(property) || string.IsNullOrEmpty(value)) continue;
+                if (string.IsNullOrEmpty(property) || string.IsNullOrEmpty(value))
+                {
+                    continue;
+                }
 
                 switch (property)
                 {

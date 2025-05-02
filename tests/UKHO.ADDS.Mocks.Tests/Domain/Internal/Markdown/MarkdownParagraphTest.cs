@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownParagraphTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Paragraph", new MarkdownParagraph("Paragraph").Text);
-        }
+        public void TestText() => Assert.Equal("Paragraph", new MarkdownParagraph("Paragraph").Text);
 
         [Fact]
         public void TestInlineElement()
@@ -19,9 +16,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestToString()
-        {
-            Assert.Equal("Paragraph" + Environment.NewLine, new MarkdownParagraph("Paragraph").ToString());
-        }
+        public void TestToString() => Assert.Equal("Paragraph" + Environment.NewLine, new MarkdownParagraph("Paragraph").ToString());
     }
 }

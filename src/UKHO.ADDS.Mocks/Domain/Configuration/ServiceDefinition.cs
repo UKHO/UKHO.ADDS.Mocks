@@ -6,11 +6,11 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
     public sealed class ServiceDefinition
     {
         private readonly string _name;
-        private readonly List<StateDefinition> _states;
         private readonly string _prefix;
 
         private readonly List<ServiceFile> _serviceFiles;
         private readonly List<ServiceFragment> _serviceFragments;
+        private readonly List<StateDefinition> _states;
 
         private string? _error;
 
@@ -52,15 +52,9 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
         internal void SetError(string error) => _error = error;
 
 
-        internal void AddState(string state, string description)
-        {
-            AddState(new StateDefinition(state, description));
-        }
+        internal void AddState(string state, string description) => AddState(new StateDefinition(state, description));
 
-        internal void AddState(StateDefinition state)
-        {
-            _states.Insert(0, state);
-        }
+        internal void AddState(StateDefinition state) => _states.Insert(0, state);
 
         internal void AddServiceMockTypes(IDictionary<string, (Type type, bool isOverride)> serviceMockTypes)
         {

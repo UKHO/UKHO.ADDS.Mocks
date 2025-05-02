@@ -1,24 +1,24 @@
 // ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.Markdown
 {
     /// <summary>
-    /// Markdown emoji.
+    ///     Markdown emoji.
     /// </summary>
     public class MarkdownEmoji : MarkdownInlineElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownEmoji" /> class.
+        ///     Initializes a new instance of the <see cref="MarkdownEmoji" /> class.
         /// </summary>
         /// <param name="code">The emoji code.</param>
-        public MarkdownEmoji(string code) : base(code) { }
+        public MarkdownEmoji(string code) : base(code)
+        {
+        }
 
         /// <summary>
-        /// Returns a string that represents the current markdown emoji code.
+        ///     Returns a string that represents the current markdown emoji code.
         /// </summary>
         /// <returns>A string that represents the current markdown emoji code.</returns>
-        public override string ToString()
-        {
-            return $":{Text}:";
-        }
+        public override string ToString() => $":{Text}:";
     }
 }

@@ -6,24 +6,15 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownDocumentTest
     {
         [Fact]
-        public void TestInitialize()
-        {
-            Assert.Equal(0, new MarkdownDocument().Length);
-        }
+        public void TestInitialize() => Assert.Equal(0, new MarkdownDocument().Length);
 
         [Fact]
-        public void TestInitializeWithCapacity()
-        {
-            Assert.Equal(2, new MarkdownDocument(2).Capacity);
-        }
+        public void TestInitializeWithCapacity() => Assert.Equal(2, new MarkdownDocument(2).Capacity);
 
         [Fact]
         public void TestCapacity()
         {
-            var document = new MarkdownDocument
-            {
-                Capacity = 2
-            };
+            var document = new MarkdownDocument { Capacity = 2 };
             Assert.Equal(2, document.Capacity);
         }
 

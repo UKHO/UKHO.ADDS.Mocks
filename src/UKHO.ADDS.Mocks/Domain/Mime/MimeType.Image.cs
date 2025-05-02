@@ -1,57 +1,58 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.Mime
 {
     public static partial class MimeType
     {
         /// <summary>
-        /// MIME type constants for <c>image/*</c> types
+        ///     MIME type constants for <c>image/*</c> types
         /// </summary>
         public static class Image
         {
             private const string Prefix = "image/";
 
             /// <summary>
-            /// image/avif
+            ///     image/avif
             /// </summary>
             public const string Avif = Prefix + "avif";
 
             /// <summary>
-            /// image/bmp
+            ///     image/bmp
             /// </summary>
             public const string Bmp = Prefix + "bmp";
 
             /// <summary>
-            /// image/gif
+            ///     image/gif
             /// </summary>
             public const string Gif = Prefix + "gif";
 
             /// <summary>
-            /// image/jpeg
+            ///     image/jpeg
             /// </summary>
             public const string Jpeg = Prefix + "jpeg";
 
             /// <summary>
-            /// image/png
+            ///     image/png
             /// </summary>
             public const string Png = Prefix + "png";
 
             /// <summary>
-            /// image/svg+xml
+            ///     image/svg+xml
             /// </summary>
             public const string SvgXml = Prefix + "svg+xml";
 
             /// <summary>
-            /// image/tiff
+            ///     image/tiff
             /// </summary>
             public const string Tiff = Prefix + "tiff";
 
             /// <summary>
-            /// image/vnd.microsoft.icon
+            ///     image/vnd.microsoft.icon
             /// </summary>
             public const string VndMicrosoftIcon = Prefix + "vnd.microsoft.icon";
 
             /// <summary>
-            /// image/webp
+            ///     image/webp
             /// </summary>
             public const string Webp = Prefix + "webp";
         }

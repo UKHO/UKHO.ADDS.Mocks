@@ -1,11 +1,11 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.States
 {
     public static class WellKnownStateHandler
     {
-        public static IResult HandleWellKnownState(string state)
-        {
-            return state switch
+        public static IResult HandleWellKnownState(string state) =>
+            state switch
             {
                 WellKnownState.BadRequest => Results.BadRequest("Bad request"),
                 WellKnownState.Unauthorized => Results.Unauthorized(),
@@ -16,6 +16,5 @@ namespace UKHO.ADDS.Mocks.States
                 WellKnownState.InternalServerError => Results.StatusCode(500),
                 _ => Results.NotFound("You must handle the default state in your endpoint")
             };
-        }
     }
 }

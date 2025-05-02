@@ -142,8 +142,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             void Test(string value, string same, string nonSame, bool secure)
             {
-                same = same?.ToString();
-                nonSame = nonSame?.ToString();
+                same = same;
+                nonSame = nonSame;
 
                 var valueArg = Mocks.Guard.Guard.Argument(() => value, secure);
                 valueArg

@@ -29,11 +29,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         public void TestConstructorWithListItemsEnumerable()
         {
             var orderedList = new MarkdownOrderedList(
-                new List<MarkdownTextListItem>
-                {
-                    new MarkdownTextListItem("One"),
-                    new MarkdownTextListItem("Two")
-                }
+                new List<MarkdownTextListItem> { new("One"), new("Two") }
             );
 
             Assert.Equal(2, orderedList.ListItems.Count);

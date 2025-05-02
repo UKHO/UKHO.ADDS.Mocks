@@ -6,8 +6,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
 {
     public class GetBasicCatalogueEndpoint : ServiceEndpointMock
     {
-        public override void RegisterSingleEndpoint(IEndpointMock endpoint)
-        {
+        public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
             endpoint.MapGet("/v2/catalogues/{productType}/basic", (string productType, HttpRequest request) =>
                 {
                     var state = GetState(request);
@@ -23,7 +22,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
 
                                     if (pathResult.IsSuccess(out var file))
                                     {
-                                        return Results.File(file.Path, contentType: MimeType.Application.Json);
+                                        return Results.File(file.Path, MimeType.Application.Json);
                                     }
 
                                     return Results.NotFound("Could not find the path in the /files GET method");
@@ -42,6 +41,5 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                     d.Append(new MarkdownHeader("Gets a basic catalog", 3));
                     d.Append(new MarkdownParagraph(new MarkdownEmphasis("Only s100 is implemented at the moment")));
                 });
-        }
     }
 }

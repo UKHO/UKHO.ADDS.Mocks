@@ -32,11 +32,11 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var empty = GetEnumerable<int>(emptyOptions);
             var emptyArg = Mocks.Guard.Guard.Argument(() => empty).Empty();
-            CheckAndReset(empty, countCalled: true, enumerationCount: 0, enumerated: true);
+            CheckAndReset(empty, true, enumerationCount: 0, enumerated: true);
 
             var nonEmpty = GetEnumerable<int>(nonEmptyOptions);
             var nonEmptyArg = Mocks.Guard.Guard.Argument(() => nonEmpty).NotEmpty();
-            CheckAndReset(nonEmpty, countCalled: true, enumerationCount: 1);
+            CheckAndReset(nonEmpty, true, enumerationCount: 1);
 
             if (empty is null)
             {
@@ -54,7 +54,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            CheckAndReset(nonEmpty, countCalled: true, enumerationCount: 2);
+            CheckAndReset(nonEmpty, true, enumerationCount: 2);
 
             ThrowsArgumentException(
                 emptyArg,
@@ -65,7 +65,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            CheckAndReset(empty, countCalled: true, enumerationCount: 0, enumerated: true);
+            CheckAndReset(empty, true, enumerationCount: 0, enumerated: true);
         }
 
         [Theory(DisplayName = "Enumerable: Count/NotCount")]
@@ -116,7 +116,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var enumerable = GetEnumerable<int>(options, count);
             var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable).MinCount(countOrLess);
-            CheckAndReset(enumerable, countCalled: true, enumerationCount: countOrLess, enumerated: countOrLess != 0);
+            CheckAndReset(enumerable, true, enumerationCount: countOrLess, enumerated: countOrLess != 0);
 
             if (enumerable is null)
             {
@@ -147,7 +147,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var enumerable = GetEnumerable<int>(options, count);
             var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable).MaxCount(countOrMore);
-            CheckAndReset(enumerable, countCalled: true, enumerationCount: count, enumerated: countOrMore + 1 != 0);
+            CheckAndReset(enumerable, true, enumerationCount: count, enumerated: countOrMore + 1 != 0);
 
             if (enumerable is null)
             {
@@ -180,16 +180,16 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable);
 
             enumerableArg.CountInRange(lessThanCount, count);
-            CheckAndReset(enumerable, countCalled: true, enumerationCount: count, enumerated: count + 1 != 0);
+            CheckAndReset(enumerable, true, enumerationCount: count, enumerated: count + 1 != 0);
 
             enumerableArg.CountInRange(count, count);
-            CheckAndReset(enumerable, countCalled: true, enumerationCount: count, enumerated: count + 1 != 0);
+            CheckAndReset(enumerable, true, enumerationCount: count, enumerated: count + 1 != 0);
 
             enumerableArg.CountInRange(count, greaterThanCount);
-            CheckAndReset(enumerable, countCalled: true, enumerationCount: count, enumerated: greaterThanCount + 1 != 0);
+            CheckAndReset(enumerable, true, enumerationCount: count, enumerated: greaterThanCount + 1 != 0);
 
             enumerableArg.CountInRange(lessThanCount, greaterThanCount);
-            CheckAndReset(enumerable, countCalled: true, enumerationCount: count, enumerated: greaterThanCount + 1 != 0);
+            CheckAndReset(enumerable, true, enumerationCount: count, enumerated: greaterThanCount + 1 != 0);
 
             if (enumerable is null)
             {
@@ -217,7 +217,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     }));
 
                 var enumerationCount = (i == 0 ? limit + 1 : count) * 2;
-                CheckAndReset(enumerable, countCalled: true, enumerationCount: enumerationCount, enumerated: limit + 1 != 0);
+                CheckAndReset(enumerable, true, enumerationCount: enumerationCount, enumerated: limit + 1 != 0);
             }
         }
 
@@ -249,7 +249,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 enumerableArg.Contains(contained.Value);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: index + 1);
 
-                enumerableArg.Contains(contained.Value, null);
+                enumerableArg.Contains(contained.Value);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: index + 1);
 
                 enumerableArg.Contains(contained.Value, comparer);
@@ -261,7 +261,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 enumerableArg.DoesNotContain(nonContained.Value);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: count, enumerated: true);
 
-                enumerableArg.DoesNotContain(nonContained.Value, null);
+                enumerableArg.DoesNotContain(nonContained.Value);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: count, enumerated: true);
 
                 enumerableArg.DoesNotContain(nonContained.Value, comparer);
@@ -271,16 +271,20 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             if (enumerable is null)
             {
                 if (nonContained.HasValue)
+                {
                     enumerableArg
                         .Contains(nonContained.Value)
-                        .Contains(nonContained.Value, null)
+                        .Contains(nonContained.Value)
                         .Contains(nonContained.Value, comparer);
+                }
 
                 if (contained.HasValue)
+                {
                     enumerableArg
                         .DoesNotContain(contained.Value)
-                        .DoesNotContain(contained.Value, null)
+                        .DoesNotContain(contained.Value)
                         .DoesNotContain(contained.Value, comparer);
+                }
 
                 return;
             }
@@ -302,7 +306,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
                 ThrowsArgumentException(
                     enumerableArg,
-                    arg => arg.Contains(nonContained.Value, null),
+                    arg => arg.Contains(nonContained.Value),
                     m => secure != m.Contains(nonContained.ToString()),
                     (arg, message) => arg.Contains(nonContained.Value, null, (e, i) =>
                     {
@@ -344,7 +348,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
                 ThrowsArgumentException(
                     enumerableArg,
-                    arg => arg.DoesNotContain(contained.Value, null),
+                    arg => arg.DoesNotContain(contained.Value),
                     m => secure != m.Contains(contained.ToString()),
                     (arg, message) => arg.DoesNotContain(contained.Value, null, (e, i) =>
                     {
@@ -595,15 +599,15 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                             return message;
                         }));
 
-                        ThrowsArgumentException(
-                            nonGenericCollectionWithDuplicateArg,
-                            arg => arg.DoesNotContainDuplicate(c),
-                            (arg, message) => arg.DoesNotContainDuplicate(c, (e, item) =>
-                            {
-                                Assert.Same(nonGenericCollectionWithDuplicate, e);
-                                Assert.Same(duplicateItem, item);
-                                return message;
-                            }));
+                    ThrowsArgumentException(
+                        nonGenericCollectionWithDuplicateArg,
+                        arg => arg.DoesNotContainDuplicate(c),
+                        (arg, message) => arg.DoesNotContainDuplicate(c, (e, item) =>
+                        {
+                            Assert.Same(nonGenericCollectionWithDuplicate, e);
+                            Assert.Same(duplicateItem, item);
+                            return message;
+                        }));
                 }
             }
         }
@@ -639,10 +643,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 containedArg
                     .In(enumerable)
-                    .In(enumerable, null)
+                    .In(enumerable)
                     .In(enumerable, comparer)
                     .NotIn(enumerable)
-                    .NotIn(enumerable, null)
+                    .NotIn(enumerable)
                     .NotIn(enumerable, comparer);
             }
             else
@@ -650,7 +654,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 containedArg.In(enumerable);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: index + 1);
 
-                containedArg.In(enumerable, null);
+                containedArg.In(enumerable);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: index + 1);
 
                 containedArg.In(enumerable, comparer);
@@ -672,7 +676,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
                 ThrowsArgumentException(
                     containedArg,
-                    arg => arg.NotIn(enumerable, null),
+                    arg => arg.NotIn(enumerable),
                     TestGeneratedMessage,
                     (arg, message) => arg.NotIn(enumerable, null, (i, e) =>
                     {
@@ -703,10 +707,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 nonContainedArg
                     .In(enumerable)
-                    .In(enumerable, null)
+                    .In(enumerable)
                     .In(enumerable, comparer)
                     .NotIn(enumerable)
-                    .NotIn(enumerable, null)
+                    .NotIn(enumerable)
                     .NotIn(enumerable, comparer);
             }
             else
@@ -714,7 +718,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 nonContainedArg.NotIn(enumerable);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: count, enumerated: true);
 
-                nonContainedArg.NotIn(enumerable, null);
+                nonContainedArg.NotIn(enumerable);
                 CheckAndReset(enumerable, containsCalled: true, enumerationCount: count, enumerated: true);
 
                 nonContainedArg.NotIn(enumerable, comparer);
@@ -736,7 +740,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
                 ThrowsArgumentException(
                     nonContainedArg,
-                    arg => arg.In(enumerable, null),
+                    arg => arg.In(enumerable),
                     TestGeneratedMessage,
                     (arg, message) => arg.In(enumerable, null, (i, e) =>
                     {
@@ -770,13 +774,17 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     : count * (secure ? 2 : 3);
 
                 if (result == 0)
+                {
                     result++;
+                }
 
                 return result;
             }
 
             bool TestGeneratedMessage(string message)
-                => secure || enumerable.Items.Take(5).All(i => message.Contains(i.ToString()));
+            {
+                return secure || enumerable.Items.Take(5).All(i => message.Contains(i.ToString()));
+            }
         }
 
         [Theory(DisplayName = "Enumerable: In/NotIn array")]
@@ -836,7 +844,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         private static ITestEnumerable<T> GetEnumerable<T>(CollectionOptions options, int maxCount = 10)
         {
             if (options == CollectionOptions.Null)
+            {
                 return null;
+            }
 
             IEnumerable<T> items;
             if (options.HasFlag(CollectionOptions.Empty))
@@ -847,10 +857,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 var addCount = 0;
                 if (options.HasFlag(CollectionOptions.HasNullElement))
+                {
                     addCount++;
+                }
 
                 if (options.HasFlag(CollectionOptions.HasDuplicateElements))
+                {
                     addCount++;
+                }
 
                 var range = Enumerable.Range(1, maxCount - addCount);
                 var type = typeof(T);
@@ -882,22 +896,32 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             var list = items.ToList();
             if (options.HasFlag(CollectionOptions.HasNullElement))
+            {
                 list.Insert(RandomUtils.Current.Next(list.Count), default);
+            }
 
             if (options.HasFlag(CollectionOptions.HasDuplicateElements))
+            {
                 list.Insert(RandomUtils.Current.Next(list.Count), list[RandomUtils.Current.Next(list.Count)]);
+            }
 
             var hasCount = options.HasFlag(CollectionOptions.HasCount);
             var hasContains = options.HasFlag(CollectionOptions.HasContains);
 
             if (hasCount && hasContains)
+            {
                 return new TestEnumerableWithCountAndContains<T>(list);
+            }
 
             if (hasCount)
+            {
                 return new TestEnumerableWithCount<T>(list);
+            }
 
             if (hasContains)
+            {
                 return new TestEnumerableWithContains<T>(list);
+            }
 
             return new TestEnumerable<T>(list);
         }

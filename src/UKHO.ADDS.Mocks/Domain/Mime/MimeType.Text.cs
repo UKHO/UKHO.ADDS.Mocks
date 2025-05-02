@@ -1,62 +1,63 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.Mime
 {
     public static partial class MimeType
     {
         /// <summary>
-        /// MIME type constants for <c>text/*</c> types
+        ///     MIME type constants for <c>text/*</c> types
         /// </summary>
         public static class Text
         {
             private const string Prefix = "text/";
 
             /// <summary>
-            /// text/calendar
+            ///     text/calendar
             /// </summary>
             public const string Calendar = Prefix + "calendar";
 
             /// <summary>
-            /// text/css
+            ///     text/css
             /// </summary>
             public const string Css = Prefix + "css";
 
             /// <summary>
-            /// text/csv
+            ///     text/csv
             /// </summary>
             public const string Csv = Prefix + "csv";
 
             /// <summary>
-            /// text/html
+            ///     text/html
             /// </summary>
             public const string Html = Prefix + "html";
 
             /// <summary>
-            /// text/javascript
+            ///     text/javascript
             /// </summary>
             public const string Javascript = Prefix + "javascript";
 
             /// <summary>
-            /// text/plain
+            ///     text/plain
             /// </summary>
             public const string Plain = Prefix + "plain";
 
             /// <summary>
-            /// text/richtext
+            ///     text/richtext
             /// </summary>
             public const string RichText = Prefix + "richtext";
 
             /// <summary>
-            /// text/sgml
+            ///     text/sgml
             /// </summary>
             public const string Sgml = Prefix + "sgml";
 
             /// <summary>
-            /// text/xml
+            ///     text/xml
             /// </summary>
             public const string Xml = Prefix + "xml";
 
             /// <summary>
-            /// text/yaml
+            ///     text/yaml
             /// </summary>
             public const string Yaml = Prefix + "yaml";
         }

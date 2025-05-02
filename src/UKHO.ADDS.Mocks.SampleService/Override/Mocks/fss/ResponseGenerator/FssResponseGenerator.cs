@@ -7,15 +7,15 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator
     public static class FssResponseGenerator
     {
         private static readonly string _template =
-        $$"""
-        {
-          "count": 0,
-          "total": 0,
-          "entries": [],
-          "_links": {    
-          }
-        }
-        """;
+            """
+            {
+              "count": 0,
+              "total": 0,
+              "entries": [],
+              "_links": {    
+              }
+            }
+            """;
 
         public static IResult ProvideSearchFilterResponse(HttpRequest requestMessage)
         {
@@ -38,7 +38,6 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator
             }
         }
 
-        
 
         private static void UpdateResponseTemplate(JsonObject jsonTemplate, FSSSearchFilterDetails filterDetails)
         {
@@ -54,13 +53,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator
                         ["batchId"] = batchId,
                         ["status"] = "Committed",
                         ["allFilesZipSize"] = null,
-                        ["attributes"] = new JsonArray
-                        {
-                            CreateAttribute("ProductName", product.ProductName),
-                            CreateAttribute("EditionNumber", product.EditionNumber),
-                            CreateAttribute("UpdateNumber", updateNumber),
-                            CreateAttribute("ProductCode", filterDetails.ProductCode)
-                        },
+                        ["attributes"] = new JsonArray { CreateAttribute("ProductName", product.ProductName), CreateAttribute("EditionNumber", product.EditionNumber), CreateAttribute("UpdateNumber", updateNumber), CreateAttribute("ProductCode", filterDetails.ProductCode) },
                         ["businessUnit"] = filterDetails.BusinessUnit,
                         ["batchPublishedDate"] = DateTime.UtcNow.AddMonths(-2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
                         ["expiryDate"] = DateTime.UtcNow.AddMonths(2).ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
@@ -77,18 +70,10 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator
         }
 
         private static JsonObject CreateAttribute(string attr, object value) =>
-            new()
-            {
-                ["key"] = attr,
-                ["value"] = JsonValue.Create(value)
-            };
+            new() { ["key"] = attr, ["value"] = JsonValue.Create(value) };
 
         private static JsonArray CreateFilesArray(string productName, string batchId, int updateNo) =>
-            new()
-            {
-                CreateFileObject(productName, $".{updateNo:D3}", 874, batchId),
-                CreateFileObject(productName, ".TXT", 1192, batchId)
-            };
+            new() { CreateFileObject(productName, $".{updateNo:D3}", 874, batchId), CreateFileObject(productName, ".TXT", 1192, batchId) };
 
         private static JsonObject CreateFileObject(string productName, string extension, int fileSize, string batchId) =>
             new()
@@ -97,10 +82,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator
                 ["fileSize"] = fileSize,
                 ["mimeType"] = "text/plain",
                 ["hash"] = string.Empty,
-                ["links"] = new JsonObject
-                {
-                    ["get"] = new JsonObject { ["href"] = $"/batch/{batchId}/files/{productName}{extension}" }
-                }
+                ["links"] = new JsonObject { ["get"] = new JsonObject { ["href"] = $"/batch/{batchId}/files/{productName}{extension}" } }
             };
 
         private static JsonObject CreateLinkObject(string? productCode, Product? product)

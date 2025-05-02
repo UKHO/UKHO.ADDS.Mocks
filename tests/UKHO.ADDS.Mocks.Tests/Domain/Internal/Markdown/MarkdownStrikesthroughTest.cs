@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownStrikethroughTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Strikethrough", new MarkdownStrikethrough("Strikethrough").Text);
-        }
+        public void TestText() => Assert.Equal("Strikethrough", new MarkdownStrikethrough("Strikethrough").Text);
 
         [Fact]
         public void TestInlineElement()
@@ -19,9 +16,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestToString()
-        {
-            Assert.Equal("~~Strikethrough~~", new MarkdownStrikethrough("Strikethrough").ToString());
-        }
+        public void TestToString() => Assert.Equal("~~Strikethrough~~", new MarkdownStrikethrough("Strikethrough").ToString());
     }
 }

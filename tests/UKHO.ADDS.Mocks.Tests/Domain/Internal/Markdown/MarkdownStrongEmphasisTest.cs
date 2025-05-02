@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownStringEmphasisTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Strong emphasis", new MarkdownStrongEmphasis("Strong emphasis").Text);
-        }
+        public void TestText() => Assert.Equal("Strong emphasis", new MarkdownStrongEmphasis("Strong emphasis").Text);
 
         [Fact]
         public void TestInlineElement()
@@ -19,9 +16,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestToString()
-        {
-            Assert.Equal("**Strong emphasis**", new MarkdownStrongEmphasis("Strong emphasis").ToString());
-        }
+        public void TestToString() => Assert.Equal("**Strong emphasis**", new MarkdownStrongEmphasis("Strong emphasis").ToString());
     }
 }

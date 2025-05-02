@@ -1,19 +1,24 @@
 ﻿// ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.Markdown
 {
     /// <summary>
-    /// Markdown document.
+    ///     Markdown document.
     /// </summary>
     public interface IMarkdownDocument
     {
         /// <summary>
-        /// Gets or sets the maximum number of markdown block elements that can be contained in the memory allocated by the current instance.
+        ///     Gets or sets the maximum number of markdown block elements that can be contained in the memory allocated by the
+        ///     current instance.
         /// </summary>
-        /// <value>The maximum number of markdown block elements that can be contained in the memory allocated by the current instance.</value>
+        /// <value>
+        ///     The maximum number of markdown block elements that can be contained in the memory allocated by the current
+        ///     instance.
+        /// </value>
         int Capacity { get; set; }
 
         /// <summary>
-        /// Gets the length of the current <see cref="IMarkdownDocument" /> object.
+        ///     Gets the length of the current <see cref="IMarkdownDocument" /> object.
         /// </summary>
         /// <value>The length of this instance.</value>
         int Length { get; }
@@ -60,7 +65,7 @@ namespace UKHO.ADDS.Mocks.Markdown
         IMarkdownDocument Insert(int index, IMarkdownBlockElement blockElement);
 
         /// <summary>
-        /// Returns a string that represents the current markdown document.
+        ///     Returns a string that represents the current markdown document.
         /// </summary>
         /// <returns>A string that represents the current markdown document.</returns>
         string ToString();

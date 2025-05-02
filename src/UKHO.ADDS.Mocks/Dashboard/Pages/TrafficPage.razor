@@ -1,4 +1,5 @@
 ﻿@page "/_dashboard/traffic/"
+@using System.Net
 @using System.Text
 @using System.Text.Json
 @using Microsoft.AspNetCore.WebUtilities
@@ -8,7 +9,7 @@
 @inject IJSRuntime JS
 
 <HeadContent>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
@@ -45,7 +46,7 @@
                         <RadzenBadge Text="@item.Request.Method"
                                      BadgeStyle="@GetBadgeStyleForMethod(item.Request.Method)"
                                      Tooltip="HTTP Method"
-                                     Style="cursor: default;" />
+                                     Style="cursor: default;"/>
                     </Template>
                 </RadzenDataGridColumn>
 
@@ -60,7 +61,7 @@
                         <RadzenBadge Text="@item.Response.StatusCode.ToString()"
                                      BadgeStyle="@GetBadgeStyleForStatus(item.Response.StatusCode)"
                                      Tooltip="@GetStatusLabel(item.Response.StatusCode)"
-                                     Style="cursor: default;" />
+                                     Style="cursor: default;"/>
                     </Template>
                 </RadzenDataGridColumn>
 
@@ -83,7 +84,7 @@
                     <p style="margin: 0;">
                         <RadzenBadge Text="@SelectedItem.Request.Method"
                                      BadgeStyle="@GetBadgeStyleForMethod(SelectedItem.Request.Method)"
-                                     Style="margin-right: 0.5rem;" />
+                                     Style="margin-right: 0.5rem;"/>
                         @SelectedItem.Request.Path @SelectedItem.Request.QueryString
                     </p>
                     <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
@@ -102,7 +103,7 @@
                 <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Request Body</span>
                 @if (SelectedItem != null)
                 {
-                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Request.Body)))" />
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Request.Body)))"/>
                 }
             </div>
             <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
@@ -125,7 +126,7 @@
                     <p style="margin: 0;">
                         <RadzenBadge Text="@SelectedItem.Response.StatusCode.ToString()"
                                      BadgeStyle="@GetBadgeStyleForStatus(SelectedItem.Response.StatusCode)"
-                                     Style="margin-right: 0.5rem;" />
+                                     Style="margin-right: 0.5rem;"/>
                         <b>@SelectedItem.Response.StatusCode</b> — @GetStatusLabel(SelectedItem.Response.StatusCode)
                     </p>
                     <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
@@ -133,7 +134,8 @@
                         {
                             <div>@header.Key: @header.Value</div>
                         }
-                    </p>                }
+                    </p>
+                }
                 else
                 {
                     <p>Select a row to view response details</p>
@@ -143,7 +145,7 @@
                 <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Response Body</span>
                 @if (SelectedItem != null)
                 {
-                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Response.Body)))" />
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Response.Body)))"/>
                 }
             </div>
             <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
@@ -166,10 +168,7 @@
 
     protected override void OnInitialized()
     {
-        DashboardService.RequestResponses.CollectionChanged += (_, __) =>
-        {
-            InvokeAsync(StateHasChanged);
-        };
+        DashboardService.RequestResponses.CollectionChanged += (_, __) => { InvokeAsync(StateHasChanged); };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -190,32 +189,35 @@
         return Encoding.UTF8.GetString(data);
     }
 
-    private RenderFragment RenderHighlightedContent(byte[] data) => builder =>
+    private RenderFragment RenderHighlightedContent(byte[] data)
     {
-        var content = Encoding.UTF8.GetString(data);
-        string? detectedLanguage = null;
-        string prettyContent = content;
+        return builder =>
+        {
+            var content = Encoding.UTF8.GetString(data);
+            string? detectedLanguage = null;
+            var prettyContent = content;
 
-        if (TryFormatJson(data, out var prettyJson))
-        {
-            detectedLanguage = "json";
-            prettyContent = prettyJson;
-        }
-        else if (IsXml(content))
-        {
-            detectedLanguage = "xml";
-            prettyContent = content;
-        }
+            if (TryFormatJson(data, out var prettyJson))
+            {
+                detectedLanguage = "json";
+                prettyContent = prettyJson;
+            }
+            else if (IsXml(content))
+            {
+                detectedLanguage = "xml";
+                prettyContent = content;
+            }
 
-        if (detectedLanguage != null)
-        {
-            builder.AddMarkupContent(0, $"<pre><code class=\"language-{detectedLanguage}\">{System.Net.WebUtility.HtmlEncode(prettyContent)}</code></pre>");
-        }
-        else
-        {
-            builder.AddMarkupContent(1, $"<div style=\"font-size: 0.70rem; line-height: 1.4; font-family: monospace; white-space: pre;\">{System.Net.WebUtility.HtmlEncode(TruncateUtf8(data, 5000))}</div>");
-        }
-    };
+            if (detectedLanguage != null)
+            {
+                builder.AddMarkupContent(0, $"<pre><code class=\"language-{detectedLanguage}\">{WebUtility.HtmlEncode(prettyContent)}</code></pre>");
+            }
+            else
+            {
+                builder.AddMarkupContent(1, $"<div style=\"font-size: 0.70rem; line-height: 1.4; font-family: monospace; white-space: pre;\">{WebUtility.HtmlEncode(TruncateUtf8(data, 5000))}</div>");
+            }
+        };
+    }
 
     private bool TryFormatJson(byte[] data, out string prettyJson)
     {
@@ -244,27 +246,36 @@
         return text.Length > maxLength ? text[..maxLength] + "... (truncated)" : text;
     }
 
-    private BadgeStyle GetBadgeStyleForStatus(int statusCode) => statusCode switch
+    private BadgeStyle GetBadgeStyleForStatus(int statusCode)
     {
-        >= 200 and < 300 => BadgeStyle.Success,
-        >= 300 and < 400 => BadgeStyle.Info,
-        >= 400 and < 500 => BadgeStyle.Warning,
-        >= 500 => BadgeStyle.Danger,
-        _ => BadgeStyle.Secondary
-    };
+        return statusCode switch
+        {
+            >= 200 and < 300 => BadgeStyle.Success,
+            >= 300 and < 400 => BadgeStyle.Info,
+            >= 400 and < 500 => BadgeStyle.Warning,
+            >= 500 => BadgeStyle.Danger,
+            _ => BadgeStyle.Secondary
+        };
+    }
 
-    private string GetStatusLabel(int statusCode) =>
-        ReasonPhrases.GetReasonPhrase(statusCode) ?? "Unknown Status";
-
-    private BadgeStyle GetBadgeStyleForMethod(string method) => method.ToUpperInvariant() switch
+    private string GetStatusLabel(int statusCode)
     {
-        "GET" => BadgeStyle.Success,
-        "POST" => BadgeStyle.Info,
-        "PUT" => BadgeStyle.Warning,
-        "DELETE" => BadgeStyle.Danger,
-        "PATCH" => BadgeStyle.Dark,
-        "OPTIONS" => BadgeStyle.Secondary,
-        "HEAD" => BadgeStyle.Secondary,
-        _ => BadgeStyle.Base
-    };
+        return ReasonPhrases.GetReasonPhrase(statusCode) ?? "Unknown Status";
+    }
+
+    private BadgeStyle GetBadgeStyleForMethod(string method)
+    {
+        return method.ToUpperInvariant() switch
+        {
+            "GET" => BadgeStyle.Success,
+            "POST" => BadgeStyle.Info,
+            "PUT" => BadgeStyle.Warning,
+            "DELETE" => BadgeStyle.Danger,
+            "PATCH" => BadgeStyle.Dark,
+            "OPTIONS" => BadgeStyle.Secondary,
+            "HEAD" => BadgeStyle.Secondary,
+            _ => BadgeStyle.Base
+        };
+    }
+
 }

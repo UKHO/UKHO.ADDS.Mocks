@@ -1,4 +1,4 @@
-﻿#nullable enable
+﻿
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks.Guard

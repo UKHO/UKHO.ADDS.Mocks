@@ -2,26 +2,17 @@
 {
     public class MockHttpClientFactory : IHttpClientFactory
     {
-        const string StateHeader = "x-addsmockstate";
-        const string DefaultState = "default";
+        private const string StateHeader = "x-addsmockstate";
+        private const string DefaultState = "default";
 
         private string _state;
 
-        public MockHttpClientFactory()
-        {
-            _state = DefaultState;
-        }
+        public MockHttpClientFactory() => _state = DefaultState;
 
-        public HttpClient CreateClient(string name) => new HttpClient(new HeaderInjectingHandler(StateHeader, () => _state));
+        public HttpClient CreateClient(string name) => new(new HeaderInjectingHandler(StateHeader, () => _state));
 
-        public void SetState(string state)
-        {
-            _state = state;
-        }
+        public void SetState(string state) => _state = state;
 
-        public void ResetState()
-        {
-            _state = DefaultState;
-        }
+        public void ResetState() => _state = DefaultState;
     }
 }

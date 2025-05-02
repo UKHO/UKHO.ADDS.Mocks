@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -36,10 +34,10 @@ namespace UKHO.ADDS.Mocks.Guard
         /// </param>
         /// <returns>An object used for asserting preconditions.</returns>
         [DebuggerStepThrough]
-        [GuardFunction("Initialization", "ga", order: 1)]
+        [GuardFunction("Initialization", "ga", 1)]
         public static ArgumentInfo<T> Argument<T>(
             T value, [InvokerParameterName] string? name = null, bool secure = false)
-            => new ArgumentInfo<T>(value, name, secure: secure);
+            => new(value, name, secure: secure);
 
         /// <summary>
         ///     Returns an object that can be used to assert preconditions for the specified method argument.
@@ -59,7 +57,9 @@ namespace UKHO.ADDS.Mocks.Guard
         public static ArgumentInfo<T> Argument<T>(Expression<Func<T>> e, bool secure = false)
         {
             if (e is null)
+            {
                 throw new ArgumentNullException(nameof(e));
+            }
 
             return e.Body is MemberExpression m
                 ? Argument(e.Compile()(), m.Member.Name, secure)
@@ -81,7 +81,9 @@ namespace UKHO.ADDS.Mocks.Guard
                     stackTrace ?? (stackTrace = new StackTrace(1, true)));
 
                 if (!scope.Propagates)
+                {
                     break;
+                }
             }
 #endif
 

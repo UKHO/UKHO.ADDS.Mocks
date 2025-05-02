@@ -5,6 +5,20 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 {
     public sealed class EnumTests : BaseTests
     {
+        [Flags]
+        public enum Colors
+        {
+            None = 0,
+
+            Red = 1,
+
+            Green = 2,
+
+            Blue = 4,
+
+            All = Red | Green | Blue
+        }
+
         [Theory(DisplayName = "Enum: Defined")]
         [InlineData(null, null)]
         [InlineData(Colors.Red, Colors.All + 1)]
@@ -109,20 +123,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     Assert.Equal(setFlags, f);
                     return message;
                 }));
-        }
-
-        [Flags]
-        public enum Colors
-        {
-            None = 0,
-
-            Red = 1,
-
-            Green = 2,
-
-            Blue = 4,
-
-            All = Red | Green | Blue
         }
     }
 }

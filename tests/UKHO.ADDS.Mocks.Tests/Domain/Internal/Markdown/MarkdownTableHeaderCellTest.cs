@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownTableHeaderCellTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Text", new MarkdownTableHeaderCell("Text").Text);
-        }
+        public void TestText() => Assert.Equal("Text", new MarkdownTableHeaderCell("Text").Text);
 
         [Fact]
         public void TestInlineELement()

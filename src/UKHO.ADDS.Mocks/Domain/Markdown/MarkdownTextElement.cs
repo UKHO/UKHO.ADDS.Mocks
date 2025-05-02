@@ -4,14 +4,33 @@
 namespace UKHO.ADDS.Mocks.Markdown
 {
     /// <summary>
-    /// Markdown text element.
+    ///     Markdown text element.
     /// </summary>
     public abstract class MarkdownTextElement
     {
         private MarkdownInlineElement _inlineElement;
 
+        private string _text;
+
         /// <summary>
-        /// Gets or sets the markdown inline element.
+        ///     Initializes a new instance of the <see cref="MarkdownTextElement" /> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        protected MarkdownTextElement(string text) => Text = text;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MarkdownTextElement" /> class.
+        /// </summary>
+        /// <param name="inlineElement">The text as markdown inline element.</param>
+        protected MarkdownTextElement(MarkdownInlineElement inlineElement)
+        {
+            Guard.Guard.Argument(inlineElement, nameof(inlineElement)).NotNull();
+
+            InlineElement = inlineElement;
+        }
+
+        /// <summary>
+        ///     Gets or sets the markdown inline element.
         /// </summary>
         /// <value>The markdown inline element.</value>
         protected MarkdownInlineElement InlineElement
@@ -28,10 +47,8 @@ namespace UKHO.ADDS.Mocks.Markdown
             }
         }
 
-        private string _text;
-
         /// <summary>
-        /// Gets or sets the text.
+        ///     Gets or sets the text.
         /// </summary>
         /// <value>The text or a string that represents the markdown inline element.</value>
         public string Text
@@ -54,26 +71,6 @@ namespace UKHO.ADDS.Mocks.Markdown
 
                 _text = value;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTextElement" /> class.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        protected MarkdownTextElement(string text)
-        {
-            Text = text;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTextElement" /> class.
-        /// </summary>
-        /// <param name="inlineElement">The text as markdown inline element.</param>
-        protected MarkdownTextElement(MarkdownInlineElement inlineElement)
-        {
-            Guard.Guard.Argument(inlineElement, nameof(inlineElement)).NotNull();
-
-            InlineElement = inlineElement;
         }
     }
 }

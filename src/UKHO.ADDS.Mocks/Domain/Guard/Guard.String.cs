@@ -230,7 +230,7 @@ namespace UKHO.ADDS.Mocks.Guard
             in this ArgumentInfo<string> argument,
             int minLength,
             Func<string, int, string>
-            message = null)
+                message = null)
         {
             if (argument.Value?.Length < minLength)
             {
@@ -305,13 +305,15 @@ namespace UKHO.ADDS.Mocks.Guard
             Func<string, int, int, string> message = null)
         {
             if (argument.HasValue())
+            {
                 if (argument.Value.Length < minLength || argument.Value.Length > maxLength)
                 {
                     var m = message?.Invoke(argument.Value, minLength, maxLength)
-                        ?? Messages.StringLengthInRange(argument, minLength, maxLength);
+                            ?? Messages.StringLengthInRange(argument, minLength, maxLength);
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
+            }
 
             return ref argument;
         }
@@ -655,7 +657,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (!matches)
                 {
                     var m = message?.Invoke(argument.Value, false)
-                        ?? Messages.StringMatches(argument, pattern);
+                            ?? Messages.StringMatches(argument, pattern);
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -710,7 +712,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 catch (RegexMatchTimeoutException ex)
                 {
                     var m = message?.Invoke(argument.Value, true)
-                        ?? Messages.StringMatchesTimeout(argument, pattern, matchTimeout);
+                            ?? Messages.StringMatchesTimeout(argument, pattern, matchTimeout);
 
                     throw Fail(new ArgumentException(m, argument.Name, ex));
                 }
@@ -718,7 +720,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (!matches)
                 {
                     var m = message?.Invoke(argument.Value, false)
-                        ?? Messages.StringMatches(argument, pattern);
+                            ?? Messages.StringMatches(argument, pattern);
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -760,7 +762,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 catch (RegexMatchTimeoutException ex)
                 {
                     var m = message?.Invoke(argument.Value, true)
-                        ?? Messages.StringMatchesTimeout(argument, regex.ToString(), ex.MatchTimeout);
+                            ?? Messages.StringMatchesTimeout(argument, regex.ToString(), ex.MatchTimeout);
 
                     throw Fail(new ArgumentException(m, argument.Name, ex));
                 }
@@ -768,7 +770,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (!matches)
                 {
                     var m = message?.Invoke(argument.Value, false)
-                        ?? Messages.StringMatches(argument, regex.ToString());
+                            ?? Messages.StringMatches(argument, regex.ToString());
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -817,7 +819,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (matches)
                 {
                     var m = message?.Invoke(argument.Value, false)
-                        ?? Messages.StringDoesNotMatch(argument, pattern);
+                            ?? Messages.StringDoesNotMatch(argument, pattern);
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -873,7 +875,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 catch (RegexMatchTimeoutException ex)
                 {
                     var m = message?.Invoke(argument.Value, true)
-                        ?? Messages.StringDoesNotMatchTimeout(argument, pattern, matchTimeout);
+                            ?? Messages.StringDoesNotMatchTimeout(argument, pattern, matchTimeout);
 
                     throw Fail(new ArgumentException(m, argument.Name, ex));
                 }
@@ -881,7 +883,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (matches)
                 {
                     var m = message?.Invoke(argument.Value, false)
-                        ?? Messages.StringDoesNotMatch(argument, pattern);
+                            ?? Messages.StringDoesNotMatch(argument, pattern);
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -924,7 +926,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 catch (RegexMatchTimeoutException ex)
                 {
                     var m = message?.Invoke(argument.Value, true)
-                        ?? Messages.StringDoesNotMatchTimeout(argument, regex.ToString(), ex.MatchTimeout);
+                            ?? Messages.StringDoesNotMatchTimeout(argument, regex.ToString(), ex.MatchTimeout);
 
                     throw Fail(new ArgumentException(m, argument.Name, ex));
                 }
@@ -932,7 +934,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 if (matches)
                 {
                     var m = message?.Invoke(argument.Value, false)
-                        ?? Messages.StringDoesNotMatch(argument, regex.ToString());
+                            ?? Messages.StringDoesNotMatch(argument, regex.ToString());
 
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
@@ -960,7 +962,7 @@ namespace UKHO.ADDS.Mocks.Guard
 #endif
                 StringComparison.Ordinal => StringComparer.Ordinal,
                 StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,
-                _ => EqualityComparer<string>.Default,
+                _ => EqualityComparer<string>.Default
             };
         }
     }

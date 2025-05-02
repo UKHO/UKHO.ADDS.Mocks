@@ -6,40 +6,38 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 {
     public class GetFilesEndpoint : ServiceEndpointMock
     {
-        public override void RegisterSingleEndpoint(IEndpointMock endpoint)
-        {
+        public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
             endpoint.MapGet("/files", (HttpRequest request) =>
-            {
-                var state = GetState(request);
-
-                switch (state)
                 {
-                    case WellKnownState.Default:
-                        // ADDS Mock will have the 'default' state unless we have told it otherwise
-                        return Results.Ok("This is a result");
+                    var state = GetState(request);
 
-                    case "get-file":
+                    switch (state)
+                    {
+                        case WellKnownState.Default:
+                            // ADDS Mock will have the 'default' state unless we have told it otherwise
+                            return Results.Ok("This is a result");
 
-                        var pathResult = endpoint.GetFile("readme.txt");
+                        case "get-file":
 
-                        if (pathResult.IsSuccess(out var file))
-                        {
-                            return Results.File(file.Path, contentType: MimeType.Text.Plain);
-                        }
+                            var pathResult = endpoint.GetFile("readme.txt");
 
-                        return Results.NotFound("Could not find the path in the /files GET method");
+                            if (pathResult.IsSuccess(out var file))
+                            {
+                                return Results.File(file.Path, MimeType.Text.Plain);
+                            }
 
-                    default:
-                        // Just send default responses
-                        return WellKnownStateHandler.HandleWellKnownState(state);
-                }
-            })
-            .Produces<string>()
-            .WithEndpointMetadata(endpoint, d =>
-            {
-                d.Append(new MarkdownHeader("Gets a file", 3));
-                d.Append(new MarkdownParagraph("Just a demo method, nothing too exciting"));
-            });
-        }
+                            return Results.NotFound("Could not find the path in the /files GET method");
+
+                        default:
+                            // Just send default responses
+                            return WellKnownStateHandler.HandleWellKnownState(state);
+                    }
+                })
+                .Produces<string>()
+                .WithEndpointMetadata(endpoint, d =>
+                {
+                    d.Append(new MarkdownHeader("Gets a file", 3));
+                    d.Append(new MarkdownParagraph("Just a demo method, nothing too exciting"));
+                });
     }
 }

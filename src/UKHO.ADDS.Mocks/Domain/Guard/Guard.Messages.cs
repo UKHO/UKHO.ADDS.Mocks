@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Collections;
+﻿using System.Collections;
 using System.Net.Mail;
 
 // ReSharper disable once CheckNamespace
@@ -256,6 +254,38 @@ namespace UKHO.ADDS.Mocks.Guard
             public static string UriHttps(in ArgumentInfo<Uri> argument)
                 => $"{argument.Name} must be an absolute URI with the HTTPS scheme.";
 
+            public static string KindSpecified<T>(in ArgumentInfo<T> argument)
+                => $"{argument.Name} must have its kind specified.";
+
+            public static string KindUnspecified<T>(in ArgumentInfo<T> argument)
+                => $"{argument.Name} cannot have its kind specified.";
+
+            private static string ToString(object? obj) => obj?.ToString() ?? "null";
+
+            private static string Join(IEnumerable collection)
+            {
+                const int max = 5;
+
+                var objects = collection is IEnumerable<string> e
+                    ? e.Select(i => $"\"{i}\"")
+                    : collection.Cast<object>();
+
+                var list = objects.Take(max + 1).ToList();
+                var ellipsis = list.Count > max;
+                if (ellipsis)
+                {
+                    list.RemoveAt(max);
+                }
+
+                var result = string.Join(", ", list);
+                if (ellipsis)
+                {
+                    result += "...";
+                }
+
+                return result;
+            }
+
 #if !NETSTANDARD1_0
             public static string EmailHasHost(in ArgumentInfo<MailAddress> argument, string host)
                 => argument.Secure ? Require(argument) : $"{argument.Name} must have the host '{host}'.";
@@ -275,34 +305,6 @@ namespace UKHO.ADDS.Mocks.Guard
             public static string EmailDoesNotHaveDisplayName(in ArgumentInfo<MailAddress> argument)
                 => $"{argument.Name} cannot have a display name specified.";
 #endif
-
-            public static string KindSpecified<T>(in ArgumentInfo<T> argument)
-                => $"{argument.Name} must have its kind specified.";
-
-            public static string KindUnspecified<T>(in ArgumentInfo<T> argument)
-                => $"{argument.Name} cannot have its kind specified.";
-
-            private static string ToString(object? obj) => obj?.ToString() ?? "null";
-
-            private static string Join(IEnumerable collection)
-            {
-                const int max = 5;
-
-                var objects = collection is IEnumerable<string> e
-                    ? e.Select(i => $"\"{i}\"") as IEnumerable<object>
-                    : collection.Cast<object>();
-
-                var list = objects.Take(max + 1).ToList();
-                var ellipsis = list.Count > max;
-                if (ellipsis)
-                    list.RemoveAt(max);
-
-                var result = string.Join(", ", list);
-                if (ellipsis)
-                    result += "...";
-
-                return result;
-            }
         }
     }
 }

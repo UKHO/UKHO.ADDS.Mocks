@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
@@ -40,8 +38,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value, minValue) ?? Messages.Min(argument, minValue);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -81,8 +79,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value, minValue) ?? Messages.Min(argument, minValue);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -119,8 +117,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value, other) ?? Messages.GreaterThan(argument, other);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -160,8 +158,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value, other) ?? Messages.GreaterThan(argument, other);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -198,8 +196,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value, maxValue) ?? Messages.Max(argument, maxValue);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -239,8 +237,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value, maxValue) ?? Messages.Max(argument, maxValue);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -277,8 +275,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value, other) ?? Messages.LessThan(argument, other);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -318,8 +316,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value, other) ?? Messages.GreaterThan(argument, other);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -362,7 +360,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(argument.Value, minValue, maxValue) ?? Messages.InRange(argument, minValue, maxValue);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -411,7 +409,7 @@ namespace UKHO.ADDS.Mocks.Guard
                     {
                         var m = message?.Invoke(value, minValue, maxValue) ?? Messages.InRange(argument, minValue, maxValue);
                         throw Fail(!argument.Modified
-                            ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                            ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                             : new ArgumentException(m, argument.Name));
                     }
                 }
@@ -446,8 +444,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.Zero(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -490,8 +488,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.Zero(argument);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -525,8 +523,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.NotZero(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -557,8 +555,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message ?? Messages.NotZero(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -599,8 +597,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(a.Value) ?? Messages.NotZero(a);
                 throw Fail(!a.Modified
-                     ? new ArgumentOutOfRangeException(a.Name, argument.Secure ? null : a.Value as object, m)
-                     : new ArgumentException(m, a.Name));
+                    ? new ArgumentOutOfRangeException(a.Name, argument.Secure ? null : a.Value, m)
+                    : new ArgumentException(m, a.Name));
             }
 
             return ref argument;
@@ -642,8 +640,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message ?? Messages.NotZero(argument);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -677,8 +675,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.Positive(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -722,8 +720,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.Positive(argument);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -757,8 +755,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.NotPositive(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -802,8 +800,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.NotPositive(argument);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -837,8 +835,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.Negative(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -882,8 +880,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.Negative(argument);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 
@@ -917,8 +915,8 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.NotNegative(argument);
                 throw Fail(!argument.Modified
-                     ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
-                     : new ArgumentException(m, argument.Name));
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
+                    : new ArgumentException(m, argument.Name));
             }
 
             return ref argument;
@@ -962,8 +960,8 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.NotNegative(argument);
                     throw Fail(!argument.Modified
-                         ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
-                         : new ArgumentException(m, argument.Name));
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
+                        : new ArgumentException(m, argument.Name));
                 }
             }
 

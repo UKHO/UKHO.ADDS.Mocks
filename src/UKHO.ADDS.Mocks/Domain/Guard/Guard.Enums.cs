@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
@@ -27,7 +25,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Enum", "gdef")]
         public static ref readonly ArgumentInfo<T> Defined<T>(
             this in ArgumentInfo<T> argument, Func<T, string>? message = null)
-            where T : struct, System.Enum
+            where T : struct, Enum
         {
             if (!EnumInfo<T>.Values.Contains(argument.Value))
             {
@@ -57,7 +55,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Enum", "gdef")]
         public static ref readonly ArgumentInfo<T?> Defined<T>(
             this in ArgumentInfo<T?> argument, Func<T?, string>? message = null)
-            where T : struct, System.Enum
+            where T : struct, Enum
         {
             if (argument.HasValue())
             {
@@ -91,7 +89,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Enum", "ghf")]
         public static ref readonly ArgumentInfo<T> HasFlag<T>(
             this in ArgumentInfo<T> argument, T flag, Func<T, T, string>? message = null)
-            where T : struct, System.Enum
+            where T : struct, Enum
         {
             if (!EnumInfo<T>.HasFlag(argument.Value, flag))
             {
@@ -122,7 +120,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Enum", "ghf")]
         public static ref readonly ArgumentInfo<T?> HasFlag<T>(
             this in ArgumentInfo<T?> argument, T flag, Func<T, T, string>? message = null)
-            where T : struct, System.Enum
+            where T : struct, Enum
         {
             if (argument.HasValue())
             {
@@ -156,7 +154,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Enum", "gnhf")]
         public static ref readonly ArgumentInfo<T> DoesNotHaveFlag<T>(
             this in ArgumentInfo<T> argument, T flag, Func<T, T, string>? message = null)
-            where T : struct, System.Enum
+            where T : struct, Enum
         {
             if (EnumInfo<T>.HasFlag(argument.Value, flag))
             {
@@ -187,7 +185,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Enum", "gnhf")]
         public static ref readonly ArgumentInfo<T?> DoesNotHaveFlag<T>(
             this in ArgumentInfo<T?> argument, T flag, Func<T, T, string>? message = null)
-            where T : struct, System.Enum
+            where T : struct, Enum
         {
             if (argument.HasValue())
             {
@@ -213,8 +211,7 @@ namespace UKHO.ADDS.Mocks.Guard
             public static readonly Func<T, T, bool> HasFlag = InitHasFlag();
 
             /// <summary>Contains all the enum values defined for type <typeparamref name="T" /></summary>
-            public static readonly HashSet<T> Values
-                = new HashSet<T>((System.Enum.GetValues(typeof(T)) as IEnumerable<T>)!);
+            public static readonly HashSet<T> Values = new((System.Enum.GetValues(typeof(T)) as IEnumerable<T>)!);
 
             /// <summary>Initializes <see cref="HasFlag" />.</summary>
             /// <returns>

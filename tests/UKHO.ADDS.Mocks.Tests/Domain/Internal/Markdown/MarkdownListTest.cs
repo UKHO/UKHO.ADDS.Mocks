@@ -23,10 +23,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestConstructorInvalidChar()
-        {
-            Assert.Throws<ArgumentException>(() => new MarkdownList('a'));
-        }
+        public void TestConstructorInvalidChar() => Assert.Throws<ArgumentException>(() => new MarkdownList('a'));
 
         [Fact]
         public void TestConstructorWithListItemsArray()
@@ -44,10 +41,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         public void TestConstructorWithListItemsEnumerable()
         {
             var list = new MarkdownList(
-                new List<MarkdownTextListItem> {
-                    new MarkdownTextListItem("One"),
-                    new MarkdownTextListItem("Two")
-                }
+                new List<MarkdownTextListItem> { new("One"), new("Two") }
             );
 
             Assert.Equal('-', list.Char);
@@ -89,8 +83,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestConstructorInvalidCharAndListItemsArray()
-        {
+        public void TestConstructorInvalidCharAndListItemsArray() =>
             Assert.Throws<ArgumentException>(
                 () => new MarkdownList(
                     'a',
@@ -98,7 +91,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
                     new MarkdownTextListItem("Two")
                 )
             );
-        }
 
         [Fact]
         public void TestConstructorWithCharAndListItemsEnumerable()
@@ -106,10 +98,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
             {
                 var list = new MarkdownList(
                     '-',
-                    new List<MarkdownTextListItem> {
-                        new MarkdownTextListItem("One"),
-                        new MarkdownTextListItem("Two")
-                    }
+                    new List<MarkdownTextListItem> { new("One"), new("Two") }
                 );
 
                 Assert.Equal('-', list.Char);
@@ -118,10 +107,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
             {
                 var list = new MarkdownList(
                     '*',
-                    new List<MarkdownTextListItem> {
-                        new MarkdownTextListItem("One"),
-                        new MarkdownTextListItem("Two")
-                    }
+                    new List<MarkdownTextListItem> { new("One"), new("Two") }
                 );
 
                 Assert.Equal('*', list.Char);
@@ -130,18 +116,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestConstructorInvalidCharAndListItemsEnumerable()
-        {
+        public void TestConstructorInvalidCharAndListItemsEnumerable() =>
             Assert.Throws<ArgumentException>(
                 () => new MarkdownList(
                     'a',
-                    new List<MarkdownTextListItem> {
-                        new MarkdownTextListItem("One"),
-                        new MarkdownTextListItem("Two")
-                    }
+                    new List<MarkdownTextListItem> { new("One"), new("Two") }
                 )
             );
-        }
 
         [Fact]
         public void TestConstructorWithCharAndStringArray()
@@ -161,10 +142,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestConstructorInvalidCharAndStringArray()
-        {
-            Assert.Throws<ArgumentException>(() => new MarkdownList('a', "One", "Two"));
-        }
+        public void TestConstructorInvalidCharAndStringArray() => Assert.Throws<ArgumentException>(() => new MarkdownList('a', "One", "Two"));
 
         [Fact]
         public void TestAddStringItem()

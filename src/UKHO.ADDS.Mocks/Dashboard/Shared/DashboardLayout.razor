@@ -1,10 +1,11 @@
-﻿@using UKHO.ADDS.Mocks.Dashboard.Models
+﻿@using System.Globalization
+@using UKHO.ADDS.Mocks.Dashboard.Models
 @using UKHO.ADDS.Mocks.Dashboard.Services
 @inherits LayoutComponentBase
 @inject DashboardPageService DashboardPageService
 @inject NavigationManager UriHelper
 
-<RadzenComponents />
+<RadzenComponents/>
 
 <RadzenLayout Style="grid-template-columns: auto 1fr auto; grid-template-areas: 'rz-header rz-header rz-header' 'rz-sidebar rz-body rz-config-sidebar'">
     <RadzenHeader>
@@ -12,16 +13,16 @@
             <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0px">
                 <RadzenColumn Size="5">
                     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
-                        <RadzenSidebarToggle Click="@(() => _sidebarExpanded = !_sidebarExpanded)" />
+                        <RadzenSidebarToggle Click="@(() => _sidebarExpanded = !_sidebarExpanded)"/>
                         <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">UKHO ADDS Mock Dashboard</span>
                     </RadzenStack>
                 </RadzenColumn>
                 <RadzenColumn Size="7">
                     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
                         <div class="rz-display-none rz-display-sm-inline-flex align-items-center">
-                             <RadzenLink Path="https://github.com/UKHO/UKHO.ADDS.Mocks" Text="GitHub" title="ADDS Mock on GitHub" class="rz-text-nowrap rz-mx-2 rz-mx-lg-4" target="_blank" />
+                            <RadzenLink Path="https://github.com/UKHO/UKHO.ADDS.Mocks" Text="GitHub" title="ADDS Mock on GitHub" class="rz-text-nowrap rz-mx-2 rz-mx-lg-4" target="_blank"/>
                         </div>
-                     </RadzenStack>
+                    </RadzenStack>
                 </RadzenColumn>
             </RadzenRow>
         </ChildContent>
@@ -48,13 +49,13 @@
                                     <NavigationItem @key=example @bind-Expanded=@example.Expanded Example=@example>
                                         @foreach (var child in example.Children)
                                         {
-                                            <NavigationItem @key=child @bind-Expanded=@child.Expanded Example=@child />
+                                            <NavigationItem @key=child @bind-Expanded=@child.Expanded Example=@child/>
                                         }
                                     </NavigationItem>
                                 }
                                 else
                                 {
-                                    <NavigationItem @key=example @bind-Expanded=@example.Expanded Example=@example />
+                                    <NavigationItem @key=example @bind-Expanded=@example.Expanded Example=@example/>
                                 }
                             }
                         }
@@ -89,7 +90,7 @@
 
         _page = DashboardPageService.FindCurrent(new Uri(UriHelper.Uri));
 
-        Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-GB");
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
     }
 
     void OnLocationChanged(object sender, LocationChangedEventArgs args)
@@ -111,4 +112,5 @@
             _rendered = true;
         }
     }
+
 }

@@ -1,8 +1,9 @@
 // ReSharper disable once CheckNamespace
+
 namespace UKHO.ADDS.Mocks.Markdown
 {
     /// <summary>
-    /// Markdown table text alignment.
+    ///     Markdown table text alignment.
     /// </summary>
     public enum MarkdownTableTextAlignment
     {

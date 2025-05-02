@@ -35,8 +35,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 3; i++)
             {
                 var arg = i == 0 ? Mocks.Guard.Guard.Argument(() => value)
-                    : i == 1 ? Mocks.Guard.Guard.Argument(() => value, false)
-                             : Mocks.Guard.Guard.Argument(() => value, true);
+                    : i == 1 ? Mocks.Guard.Guard.Argument(() => value)
+                    : Mocks.Guard.Guard.Argument(() => value, true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Equal(nameof(value), arg.Name);
@@ -61,8 +61,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 3; i++)
             {
                 var arg = i == 0 ? Mocks.Guard.Guard.Argument(value, nameof(value))
-                    : i == 1 ? Mocks.Guard.Guard.Argument(value, nameof(value), false)
-                             : Mocks.Guard.Guard.Argument(value, nameof(value), true);
+                    : i == 1 ? Mocks.Guard.Guard.Argument(value, nameof(value))
+                    : Mocks.Guard.Guard.Argument(value, nameof(value), true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Equal(nameof(value), arg.Name);
@@ -73,14 +73,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 9; i++)
             {
                 var arg = i == 0 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
-                    : i == 1 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), false)
+                    : i == 1 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
                     : i == 2 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true)
                     : i == 3 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), secure: false)
-                    : i == 4 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), false, false)
-                    : i == 5 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true, false)
+                    : i == 4 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
+                    : i == 5 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true)
                     : i == 6 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), secure: true)
                     : i == 7 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), false, true)
-                             : new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true, true);
+                    : new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true, true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Equal(nameof(value), arg.Name);
@@ -99,7 +99,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 var arg = i == 0 ? Mocks.Guard.Guard.Argument(value)
                     : i == 1 ? Mocks.Guard.Guard.Argument(value, secure: false)
-                             : Mocks.Guard.Guard.Argument(value, secure: true);
+                    : Mocks.Guard.Guard.Argument(value, secure: true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Contains(typeof(T).ToString(), arg.Name);
@@ -110,14 +110,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 9; i++)
             {
                 var arg = i == 0 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null)
-                    : i == 1 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, false)
+                    : i == 1 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null)
                     : i == 2 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true)
                     : i == 3 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, secure: false)
-                    : i == 4 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, false, false)
-                    : i == 5 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true, false)
+                    : i == 4 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null)
+                    : i == 5 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true)
                     : i == 6 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, secure: true)
                     : i == 7 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, false, true)
-                             : new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true, true);
+                    : new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true, true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Contains(typeof(T).ToString(), arg.Name);
@@ -134,9 +134,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var valueArg = Mocks.Guard.Guard.Argument(() => value);
             if (valueArg.HasValue())
+            {
                 Assert.Equal(value.ToString(), valueArg.ToString());
+            }
             else
+            {
                 Assert.Same(string.Empty, valueArg.ToString());
+            }
         }
 
         [Theory(DisplayName = "Argument: DebuggerDisplay")]
@@ -154,19 +158,31 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
                 var display = valueArg.DebuggerDisplay;
                 if (hasName)
+                {
                     Assert.Contains(nameof(value), display);
+                }
                 else
+                {
                     Assert.DoesNotContain(nameof(value), display);
+                }
 
                 if (isSecure)
+                {
                     Assert.Contains("SECURE", display, IgnoreCase);
+                }
                 else
+                {
                     Assert.DoesNotContain("SECURE", display, IgnoreCase);
+                }
 
                 if (valueArg.HasValue())
+                {
                     Assert.Contains(value.ToString(), display);
+                }
                 else
+                {
                     Assert.Contains("NULL", display, IgnoreCase);
+                }
             }
         }
     }

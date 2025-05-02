@@ -6,8 +6,8 @@ namespace UKHO.ADDS.Mocks
 {
     public abstract class ServiceEndpointMock
     {
-        private ServiceDefinition? _definition;
         internal const string HeaderKey = "x-addsmockstate";
+        private ServiceDefinition? _definition;
 
         public abstract void RegisterSingleEndpoint(IEndpointMock endpoint);
 
@@ -26,9 +26,6 @@ namespace UKHO.ADDS.Mocks
             return WellKnownState.Default;
         }
 
-        internal void SetDefinition(ServiceDefinition definition)
-        {
-            _definition = definition;
-        }
+        internal void SetDefinition(ServiceDefinition definition) => _definition = definition;
     }
 }

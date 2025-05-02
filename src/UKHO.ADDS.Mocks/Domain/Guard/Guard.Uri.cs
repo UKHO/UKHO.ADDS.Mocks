@@ -170,15 +170,21 @@ namespace UKHO.ADDS.Mocks.Guard
             in this ArgumentInfo<Uri> argument, bool allowHttps, Func<Uri, string> message = null)
         {
             if (!argument.HasValue())
+            {
                 return ref argument;
+            }
 
             if (argument.Value.IsAbsoluteUri)
             {
                 if (argument.Value.Scheme == HttpUriScheme)
+                {
                     return ref argument;
+                }
 
                 if (allowHttps && argument.Value.Scheme == HttpsUriScheme)
+                {
                     return ref argument;
+                }
             }
 
             var m = message?.Invoke(argument.Value) ?? Messages.UriHttp(argument);
@@ -202,11 +208,13 @@ namespace UKHO.ADDS.Mocks.Guard
             in this ArgumentInfo<Uri> argument, Func<Uri, string> message = null)
         {
             if (argument.HasValue())
+            {
                 if (!argument.Value.IsAbsoluteUri || argument.Value.Scheme != HttpsUriScheme)
                 {
                     var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);
                     throw Fail(new ArgumentException(m, argument.Name));
                 }
+            }
 
             return ref argument;
         }

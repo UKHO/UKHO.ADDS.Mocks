@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
@@ -27,7 +25,7 @@ namespace UKHO.ADDS.Mocks.Guard
             [DebuggerStepThrough]
             [GuardFunction("Predicate", "greq")]
             public ArgumentInfo<T> Require(bool condition, Func<T, string>? message = null)
-                => this.Require<ArgumentException>(condition, message);
+                => Require<ArgumentException>(condition, message);
 
             /// <summary>
             ///     Requires the argument to satisfy a condition and throws the specified type of
@@ -77,7 +75,7 @@ namespace UKHO.ADDS.Mocks.Guard
             [DebuggerStepThrough]
             [GuardFunction("Predicate", "greq")]
             public ArgumentInfo<T> Require(Func<T, bool> predicate, Func<T, string>? message = null)
-                => this.Require<ArgumentException>(predicate, message);
+                => Require<ArgumentException>(predicate, message);
 
             /// <summary>
             ///     Requires the argument to satisfy a condition and throws the specified type of
@@ -132,16 +130,22 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var type = typeof(T);
                 if (type == typeof(ArgumentException))
+                {
                     return (paramName, message) =>
                         (new ArgumentException(message, paramName) as T)!;
+                }
 
                 if (type.IsSubclassOf(typeof(ArgumentException)))
                 {
                     if (TryGetFactoryWithTwoStringArguments(type, out var two))
+                    {
                         return two;
+                    }
 
                     if (TryGetFactoryWithOneStringArgument(type, out var one))
+                    {
                         return (paramName, message) => one(paramName);
+                    }
                 }
                 else if (TryGetFactoryWithOneStringArgument(type, out var one))
                 {
@@ -149,13 +153,15 @@ namespace UKHO.ADDS.Mocks.Guard
                 }
 
                 if (TryGetFactoryWithNoArguments(type, out var none))
+                {
                     return (paramName, message) => none();
-                else
-                    return (paramName, message) =>
-                    {
-                        var x = new ArgumentException(message, paramName);
-                        throw new ArgumentException($"An instance of {type} cannot be initialized.", x);
-                    };
+                }
+
+                return (paramName, message) =>
+                {
+                    var x = new ArgumentException(message, paramName);
+                    throw new ArgumentException($"An instance of {type} cannot be initialized.", x);
+                };
             }
 
             private static bool TryGetFactoryWithTwoStringArguments(
@@ -164,11 +170,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 var ctor = type.GetConstructor(new[] { typeof(string), typeof(string) });
                 if (ctor != null)
                 {
-                    var args = new[]
-                    {
-                            Expression.Parameter(typeof(string), "arg1"),
-                            Expression.Parameter(typeof(string), "arg2")
-                        };
+                    var args = new[] { Expression.Parameter(typeof(string), "arg1"), Expression.Parameter(typeof(string), "arg2") };
 
                     factory = Expression.Lambda<Func<string, string, T>>(
                         Expression.New(ctor, args), args).Compile();

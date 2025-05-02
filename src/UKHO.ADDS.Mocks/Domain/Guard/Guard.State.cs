@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
@@ -24,10 +22,12 @@ namespace UKHO.ADDS.Mocks.Guard
         [DebuggerStepThrough]
         [GuardFunction("State", "gop")]
         public static void Operation(
-            bool valid, string? message = null, [CallerMemberName]string? caller = null)
+            bool valid, string? message = null, [CallerMemberName] string? caller = null)
         {
             if (!valid)
+            {
                 throw Fail(new InvalidOperationException(message ?? Messages.State(caller)));
+            }
         }
 
         /// <summary>Requires a method to be supported by the instance it belongs to.</summary>
@@ -42,10 +42,12 @@ namespace UKHO.ADDS.Mocks.Guard
         [DebuggerStepThrough]
         [GuardFunction("State", "gsup")]
         public static void Support(
-            bool supported, string? message = null, [CallerMemberName]string? caller = null)
+            bool supported, string? message = null, [CallerMemberName] string? caller = null)
         {
             if (!supported)
+            {
                 throw Fail(new NotSupportedException(message ?? Messages.Support(caller)));
+            }
         }
 
         /// <summary>Requires an instance not to be disposed.</summary>
@@ -65,7 +67,9 @@ namespace UKHO.ADDS.Mocks.Guard
         public static void Disposal(bool disposed, string? objectName = null, string? message = null)
         {
             if (disposed)
+            {
                 throw Fail(new ObjectDisposedException(objectName, message ?? Messages.Disposal()));
+            }
         }
     }
 }

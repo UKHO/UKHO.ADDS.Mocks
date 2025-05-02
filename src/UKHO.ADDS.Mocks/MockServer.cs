@@ -1,16 +1,16 @@
 ﻿using System.IO.Abstractions;
-using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Radzen;
 using Scalar.AspNetCore;
 using Serilog;
 using UKHO.ADDS.Mocks.Dashboard;
+using UKHO.ADDS.Mocks.Dashboard.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
 using UKHO.ADDS.Mocks.Domain.Internal.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Traffic;
-using Radzen;
-using UKHO.ADDS.Mocks.Dashboard.Services;
 
 namespace UKHO.ADDS.Mocks
 {
@@ -22,11 +22,7 @@ namespace UKHO.ADDS.Mocks
 
             var appContextBase = AppContext.BaseDirectory;
 
-            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-            {
-                Args = args,
-                ContentRootPath = appContextBase
-            });
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { Args = args, ContentRootPath = appContextBase });
 
             builder.Host.UseSerilog((context, services, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
@@ -99,8 +95,7 @@ namespace UKHO.ADDS.Mocks
             builder.Services.AddSingleton<MappingService>();
         }
 
-        private static void ConfigureOpenApi(WebApplicationBuilder builder)
-        {
+        private static void ConfigureOpenApi(WebApplicationBuilder builder) =>
             builder.Services.AddOpenApi(options =>
             {
                 options.AddOperationTransformer((operation, context, cancellationToken) =>
@@ -132,6 +127,5 @@ namespace UKHO.ADDS.Mocks
                     return Task.CompletedTask;
                 });
             });
-        }
     }
 }

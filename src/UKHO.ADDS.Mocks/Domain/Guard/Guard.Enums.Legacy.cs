@@ -322,7 +322,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> Defined(Func<T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.Defined(message);
+                }
 
                 return this;
             }
@@ -343,7 +345,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> None(Func<T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.None(message);
+                }
 
                 return this;
             }
@@ -362,7 +366,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> NotNone(Func<T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.NotNone(message);
+                }
 
                 return this;
             }
@@ -384,7 +390,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> Equal(T other, Func<T, T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.Equal(other, message);
+                }
 
                 return this;
             }
@@ -407,7 +415,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> NotEqual(T other, Func<T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.NotEqual(other, message);
+                }
 
                 return this;
             }
@@ -431,7 +441,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> HasFlag(T flag, Func<T, T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.HasFlag(flag, message);
+                }
 
                 return this;
             }
@@ -455,7 +467,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public NullableEnumArgumentInfo<T> DoesNotHaveFlag(T flag, Func<T, T, string> message = null)
             {
                 if (NotNull(out var a))
+                {
                     a.DoesNotHaveFlag(flag, message);
+                }
 
                 return this;
             }

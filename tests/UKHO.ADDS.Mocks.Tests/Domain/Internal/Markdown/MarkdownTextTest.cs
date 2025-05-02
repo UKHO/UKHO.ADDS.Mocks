@@ -6,28 +6,16 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownTextTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Text", new MarkdownText("Text").Text);
-        }
+        public void TestText() => Assert.Equal("Text", new MarkdownText("Text").Text);
 
         [Fact]
-        public void TestInlineElement()
-        {
-            Assert.Equal("Inline element", new MarkdownText(new MarkdownText("Inline element")).Text);
-        }
+        public void TestInlineElement() => Assert.Equal("Inline element", new MarkdownText(new MarkdownText("Inline element")).Text);
 
         [Fact]
-        public void TestAppendText()
-        {
-            Assert.Equal("Text Append", new MarkdownText("Text").Append(" Append").Text);
-        }
+        public void TestAppendText() => Assert.Equal("Text Append", new MarkdownText("Text").Append(" Append").Text);
 
         [Fact]
-        public void TestAppendInlineElement()
-        {
-            Assert.Equal("Inline element Append", new MarkdownText(new MarkdownText("Inline element")).Append(new MarkdownText(" Append")).Text);
-        }
+        public void TestAppendInlineElement() => Assert.Equal("Inline element Append", new MarkdownText(new MarkdownText("Inline element")).Append(new MarkdownText(" Append")).Text);
 
         [Fact]
         public void TestToString()

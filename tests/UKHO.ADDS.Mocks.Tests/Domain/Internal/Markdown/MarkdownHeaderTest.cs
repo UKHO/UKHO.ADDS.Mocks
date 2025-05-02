@@ -6,16 +6,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownHeaderTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Text", new MarkdownHeader("Text", 1).Text);
-        }
+        public void TestText() => Assert.Equal("Text", new MarkdownHeader("Text", 1).Text);
 
         [Fact]
-        public void TestInlineElement()
-        {
-            Assert.Equal("Inline element", new MarkdownHeader(new MarkdownText("Inline element"), 1).Text);
-        }
+        public void TestInlineElement() => Assert.Equal("Inline element", new MarkdownHeader(new MarkdownText("Inline element"), 1).Text);
 
         [Fact]
         public void TestLevel()
@@ -29,7 +23,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new MarkdownHeader("Text", 0));
             Assert.Throws<ArgumentOutOfRangeException>(() => new MarkdownHeader(new MarkdownText("Inline element"), 0));
-            
+
             Assert.Throws<ArgumentOutOfRangeException>(() => new MarkdownHeader("Text", 7));
             Assert.Throws<ArgumentOutOfRangeException>(() => new MarkdownHeader(new MarkdownText("Inline element"), 7));
         }

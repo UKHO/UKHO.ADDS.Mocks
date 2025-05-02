@@ -122,7 +122,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 }));
 
             bool TestGeneratedMessage(string message)
-                => secure != message.Contains(nonHour.ToString());
+            {
+                return secure != message.Contains(nonHour.ToString());
+            }
         }
 
         private sealed class TestObjectWithInaccessibleMember

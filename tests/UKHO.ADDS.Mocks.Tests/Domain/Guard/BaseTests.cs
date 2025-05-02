@@ -11,38 +11,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
         protected static bool RandomBoolean => RandomUtils.Current.NextDouble() >= .5;
 
-        protected static string RandomMessage
-        {
-            get
-            {
-                return string.Join(string.Empty, Enumerable
-                    .Range(0, RandomUtils.Current.Next(5, 21))
-                    .Select(i => Alphabet[RandomUtils.Current.Next(Alphabet.Length)]));
-            }
-        }
-
-        protected interface ITestEnumerable<T> : IEnumerable<T>
-        {
-            IEnumerable<T> Items { get; }
-
-            bool Enumerated { get; }
-
-            int EnumerationCount { get; }
-
-            void Reset();
-        }
-
-        protected interface ITestEnumerableWithCount<T> : ITestEnumerable<T>, IReadOnlyCollection<T>
-        {
-            bool CountCalled { get; }
-        }
-
-        protected interface ITestEnumerableWithContains<T> : ITestEnumerable<T>
-        {
-            bool Contains(T item);
-
-            bool ContainsCalled { get; }
-        }
+        protected static string RandomMessage =>
+            string.Join(string.Empty, Enumerable
+                .Range(0, RandomUtils.Current.Next(5, 21))
+                .Select(i => Alphabet[RandomUtils.Current.Next(Alphabet.Length)]));
 
         protected static void Test<T>(
             T? value,
@@ -55,7 +27,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             Test(value, name, nullableBody, testModified, testSecure);
             if (value.HasValue)
+            {
                 Test(value.Value, name, nonNullableBody, testModified, testSecure);
+            }
         }
 
         protected static void Test<T>(
@@ -65,27 +39,31 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             bool testModified = true,
             bool testSecure = true)
         {
-            body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, false, false));
+            body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name));
             if (testModified)
-                body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, true, false));
+            {
+                body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, true));
+            }
 
             if (testSecure)
+            {
                 body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, false, true));
+            }
 
             if (testModified && testSecure)
+            {
                 body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, true, true));
+            }
         }
 
-        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentNullException(argument, testWithoutMessage, null, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
@@ -94,16 +72,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             => ThrowsArgumentException<T, ArgumentNullException>(
                 argument, testWithoutMessage, testGeneratedMessage, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentOutOfRangeException(argument, testWithoutMessage, null, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
@@ -112,16 +88,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             => ThrowsArgumentException<T, ArgumentOutOfRangeException>(
                 argument, testWithoutMessage, testGeneratedMessage, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentException[] ThrowsArgumentException<T>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static ArgumentException[] ThrowsArgumentException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentException(argument, testWithoutMessage, null, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentException[] ThrowsArgumentException<T>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static ArgumentException[] ThrowsArgumentException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
@@ -130,8 +104,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             => ThrowsArgumentException<T, ArgumentException>(
                 argument, testWithoutMessage, testGeneratedMessage, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static TException[] ThrowsArgumentException<TArgument, TException>(
-            Mocks.Guard.Guard.ArgumentInfo<TArgument> argument,
+        protected static TException[] ThrowsArgumentException<TArgument, TException>(Mocks.Guard.Guard.ArgumentInfo<TArgument> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<TArgument>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<TArgument>, string> testWithMessage,
@@ -156,10 +129,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             scope.CheckException(exWithoutMessage);
 
             if (exWithoutMessage is ArgumentOutOfRangeException rangeExWithoutMessage)
+            {
                 Assert.Equal(argument.Secure, rangeExWithoutMessage.ActualValue == null);
+            }
 
             if (testGeneratedMessage != null)
+            {
                 Assert.True(testGeneratedMessage(exWithoutMessage.Message));
+            }
 
             var message = RandomMessage;
             var exWithMessage = Assert.Throws<TException>(
@@ -169,10 +146,14 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             scope.CheckException(exWithMessage);
 
             if (exWithMessage is ArgumentOutOfRangeException rangeExWithMessage)
+            {
                 Assert.Equal(argument.Secure, rangeExWithMessage.ActualValue == null);
+            }
 
             if (!allowMessageMismatch)
+            {
                 Assert.StartsWith(message, exWithMessage.Message);
+            }
 
             if (!isBase)
             {
@@ -184,8 +165,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             return new[] { exWithoutMessage, exWithMessage };
         }
 
-        protected static void ThrowsException<T, TException>(
-            Mocks.Guard.Guard.ArgumentInfo<T> argument,
+        protected static void ThrowsException<T, TException>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false)
@@ -193,16 +173,22 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var ex = Assert.Throws<TException>(() => testWithoutMessage(argument));
             if (ex is ArgumentException argEx)
+            {
                 Assert.Same(argument.Name, argEx.ParamName);
+            }
 
             var message = RandomMessage;
             ex = Assert.Throws<TException>(() => testWithMessage(argument, message));
             argEx = ex as ArgumentException;
             if (argEx != null)
+            {
                 Assert.Same(argument.Name, argEx.ParamName);
+            }
 
             if (!allowMessageMismatch)
+            {
                 Assert.StartsWith(message, ex.Message);
+            }
         }
 
         protected static void CheckAndReset<T>(
@@ -214,7 +200,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             bool? forceEnumerated = null)
         {
             if (enumerable is null)
+            {
                 return;
+            }
 
             var withCount = enumerable as ITestEnumerableWithCount<T>;
             if (withCount != null && countCalled.HasValue)
@@ -223,7 +211,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 Assert.Equal(forceEnumerated ?? !countCalled, enumerable.Enumerated);
 
                 if (countCalled.Value && forceEnumerated != true)
+                {
                     Assert.Equal(0, enumerable.EnumerationCount);
+                }
             }
 
             var withContains = enumerable as ITestEnumerableWithContains<T>;
@@ -233,7 +223,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 Assert.Equal(forceEnumerated ?? !containsCalled, enumerable.Enumerated);
 
                 if (containsCalled.Value && forceEnumerated != true)
+                {
                     Assert.Equal(0, enumerable.EnumerationCount);
+                }
             }
 
             if (withCount is null && withContains is null)
@@ -241,13 +233,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 enumerated = forceEnumerated ?? enumerated;
 
                 if (!enumerated.HasValue && enumerationCount.HasValue)
+                {
                     enumerated = enumerationCount > 0;
+                }
 
                 if (enumerated.HasValue)
+                {
                     Assert.Equal(enumerated, enumerable.Enumerated);
+                }
 
                 if (enumerationCount.HasValue)
+                {
                     Assert.Equal(enumerationCount, enumerable.EnumerationCount);
+                }
             }
 
             enumerable.Reset();
@@ -255,18 +253,43 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             Assert.Equal(0, enumerable.EnumerationCount);
 
             if (withCount != null)
+            {
                 Assert.False(withCount.CountCalled);
+            }
 
             if (withContains != null)
+            {
                 Assert.False(withContains.ContainsCalled);
+            }
+        }
+
+        protected interface ITestEnumerable<T> : IEnumerable<T>
+        {
+            IEnumerable<T> Items { get; }
+
+            bool Enumerated { get; }
+
+            int EnumerationCount { get; }
+
+            void Reset();
+        }
+
+        protected interface ITestEnumerableWithCount<T> : ITestEnumerable<T>, IReadOnlyCollection<T>
+        {
+            bool CountCalled { get; }
+        }
+
+        protected interface ITestEnumerableWithContains<T> : ITestEnumerable<T>
+        {
+            bool ContainsCalled { get; }
+            bool Contains(T item);
         }
 
         protected static class RandomUtils
         {
-            private static readonly Random Seeder = new Random();
+            private static readonly Random Seeder = new();
 
-            [ThreadStatic]
-            private static Random s_current;
+            [ThreadStatic] private static Random s_current;
 
             public static Random Current
             {
@@ -276,7 +299,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     {
                         int seed;
                         lock (Seeder)
+                        {
                             seed = Seeder.Next();
+                        }
 
                         s_current = new Random(seed);
                     }
@@ -297,16 +322,20 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             public Scope(bool doNotTestScoping = false)
             {
                 if (RandomBoolean && !doNotTestScoping)
+                {
                     _scope = Mocks.Guard.Guard.BeginScope((ex, stackTrace) => _lastException = ex);
+                }
             }
+
+            public void Dispose() => _scope?.Dispose();
 
             public void CheckException(Exception exception)
             {
                 if (_scope != null && exception != null)
+                {
                     Assert.Same(_lastException, exception);
+                }
             }
-
-            public void Dispose() => _scope?.Dispose();
         }
     }
 }

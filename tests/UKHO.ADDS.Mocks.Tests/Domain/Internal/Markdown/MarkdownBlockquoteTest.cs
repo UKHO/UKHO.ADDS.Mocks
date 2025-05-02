@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownBlockquoteTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Blockquote", new MarkdownBlockquote("Blockquote").Text);
-        }
+        public void TestText() => Assert.Equal("Blockquote", new MarkdownBlockquote("Blockquote").Text);
 
         [Fact]
         public void TestInlineElement()
@@ -19,9 +16,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestToString()
-        {
-            Assert.Equal($"> Blockquote{Environment.NewLine}", new MarkdownBlockquote("Blockquote").ToString());
-        }
+        public void TestToString() => Assert.Equal($"> Blockquote{Environment.NewLine}", new MarkdownBlockquote("Blockquote").ToString());
     }
 }

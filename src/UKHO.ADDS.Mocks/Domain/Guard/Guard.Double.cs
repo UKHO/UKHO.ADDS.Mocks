@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
@@ -38,7 +36,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.NaN(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -82,7 +80,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.NaN(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -117,7 +115,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message ?? Messages.NotNaN(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -154,7 +152,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message ?? Messages.NotNaN(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -164,7 +162,8 @@ namespace UKHO.ADDS.Mocks.Guard
 
         /// <summary>
         ///     Requires the double-precision floating-point argument to have a value that is either
-        ///     positive infinity ( <see cref="double.PositiveInfinity" />) or negative infinity ( <see cref="double.NegativeInfinity" />).
+        ///     positive infinity ( <see cref="double.PositiveInfinity" />) or negative infinity (
+        ///     <see cref="double.NegativeInfinity" />).
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <param name="message">
@@ -191,7 +190,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.Infinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -238,7 +237,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.Infinity(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -248,7 +247,8 @@ namespace UKHO.ADDS.Mocks.Guard
 
         /// <summary>
         ///     Requires the double-precision floating-point argument to have a value that is neither
-        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity ( <see cref="double.NegativeInfinity" />).
+        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity (
+        ///     <see cref="double.NegativeInfinity" />).
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <param name="message">
@@ -275,7 +275,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message ?? Messages.NotInfinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -284,7 +284,8 @@ namespace UKHO.ADDS.Mocks.Guard
 
         /// <summary>
         ///     Requires the double-precision floating-point argument to have a value that is neither
-        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity ( <see cref="double.NegativeInfinity" />).
+        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity (
+        ///     <see cref="double.NegativeInfinity" />).
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <param name="message">
@@ -311,7 +312,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.NotInfinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -320,7 +321,8 @@ namespace UKHO.ADDS.Mocks.Guard
 
         /// <summary>
         ///     Requires the double-precision floating-point argument to have a value that is neither
-        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity ( <see cref="double.NegativeInfinity" />).
+        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity (
+        ///     <see cref="double.NegativeInfinity" />).
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <param name="message">
@@ -347,7 +349,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message ?? Messages.NotInfinity(a);
                 throw Fail(!a.Modified
-                    ? new ArgumentOutOfRangeException(a.Name, argument.Secure ? null : a.Value as object, m)
+                    ? new ArgumentOutOfRangeException(a.Name, argument.Secure ? null : a.Value, m)
                     : new ArgumentException(m, a.Name));
             }
 
@@ -356,7 +358,8 @@ namespace UKHO.ADDS.Mocks.Guard
 
         /// <summary>
         ///     Requires the double-precision floating-point argument to have a value that is neither
-        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity ( <see cref="double.NegativeInfinity" />).
+        ///     positive infinity ( <see cref="double.PositiveInfinity" />) nor negative infinity (
+        ///     <see cref="double.NegativeInfinity" />).
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <param name="message">
@@ -392,7 +395,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.NotInfinity(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -428,7 +431,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.PositiveInfinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -472,7 +475,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.PositiveInfinity(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -507,7 +510,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message ?? Messages.NotPositiveInfinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -544,7 +547,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message ?? Messages.NotPositiveInfinity(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -580,7 +583,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.NegativeInfinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -624,7 +627,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value) ?? Messages.NegativeInfinity(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -659,7 +662,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message ?? Messages.NotNegativeInfinity(argument);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -696,7 +699,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message ?? Messages.NotNegativeInfinity(argument);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -734,7 +737,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value, other) ?? Messages.Equal(argument, other, delta);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -774,7 +777,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value, other) ?? Messages.Equal(argument, other, delta);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }
@@ -812,7 +815,7 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 var m = message?.Invoke(argument.Value, other) ?? Messages.NotEqual(argument, other, delta);
                 throw Fail(!argument.Modified
-                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value as object, m)
+                    ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : argument.Value, m)
                     : new ArgumentException(m, argument.Name));
             }
 
@@ -852,7 +855,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 {
                     var m = message?.Invoke(value, other) ?? Messages.NotEqual(argument, other, delta);
                     throw Fail(!argument.Modified
-                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value as object, m)
+                        ? new ArgumentOutOfRangeException(argument.Name, argument.Secure ? null : value, m)
                         : new ArgumentException(m, argument.Name));
                 }
             }

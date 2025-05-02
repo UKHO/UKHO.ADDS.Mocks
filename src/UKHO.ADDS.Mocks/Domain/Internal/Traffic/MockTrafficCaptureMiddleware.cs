@@ -6,9 +6,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Traffic
     internal class MockTrafficCaptureMiddleware
     {
         private readonly DashboardService _dashboardService;
-        private readonly RequestDelegate _next;
 
         private readonly List<string> _endpointFilters;
+        private readonly RequestDelegate _next;
 
         public MockTrafficCaptureMiddleware(DashboardService dashboardService, RequestDelegate next)
         {
@@ -53,7 +53,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Traffic
                 await using var responseBuffer = new MemoryStream();
                 context.Response.Body = responseBuffer;
 
-                await _next(context); 
+                await _next(context);
 
                 context.Response.Body.Seek(0, SeekOrigin.Begin);
                 var responseBody = await ReadAllBytesAsync(context.Response.Body);
@@ -62,7 +62,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Traffic
                 var mockResponse = new MockResponse { StatusCode = context.Response.StatusCode, Headers = context.Response.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()), Body = responseBody };
 
                 // Save captured pair — replace with your own handler later
-                var requestResponseModel = new MockRequestResponse() { Request = mockRequest, Response = mockResponse, Timestamp = DateTime.UtcNow };
+                var requestResponseModel = new MockRequestResponse { Request = mockRequest, Response = mockResponse, Timestamp = DateTime.UtcNow };
                 _dashboardService.AddRequestResponse(requestResponseModel);
 
                 // Write the original response body back to client

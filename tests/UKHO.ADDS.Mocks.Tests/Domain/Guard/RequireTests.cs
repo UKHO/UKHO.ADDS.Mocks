@@ -4,8 +4,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 {
     public sealed class RequireTests : BaseTests
     {
-        [ThreadStatic]
-        private static object s_currentValue;
+        [ThreadStatic] private static object s_currentValue;
 
         [Theory(DisplayName = "Require: Default exception")]
         [InlineData(null)]

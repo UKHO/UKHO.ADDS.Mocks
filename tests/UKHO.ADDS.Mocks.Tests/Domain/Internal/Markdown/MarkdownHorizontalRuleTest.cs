@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownHorizontalRuleTest
     {
         [Fact]
-        public void TestDefaultChar()
-        {
-            Assert.Equal('-', new MarkdownHorizontalRule().Char);
-        }
+        public void TestDefaultChar() => Assert.Equal('-', new MarkdownHorizontalRule().Char);
 
         [Fact]
         public void TestCustomChar()
@@ -20,10 +17,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestForbidenChar()
-        {
-            Assert.Throws<ArgumentException>(() => new MarkdownHorizontalRule('a'));
-        }
+        public void TestForbidenChar() => Assert.Throws<ArgumentException>(() => new MarkdownHorizontalRule('a'));
 
         [Fact]
         public void TestToString()

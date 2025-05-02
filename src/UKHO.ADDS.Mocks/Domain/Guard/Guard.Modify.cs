@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace
@@ -19,7 +17,7 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Normalization", "gmod")]
         public static ArgumentInfo<TTarget> Modify<TSource, TTarget>(
             in this ArgumentInfo<TSource> argument, TTarget value)
-            => new ArgumentInfo<TTarget>(value, argument.Name, true, argument.Secure);
+            => new(value, argument.Name, true, argument.Secure);
 
         /// <summary>
         ///     Returns a new argument with the same name and a value that is created using the
@@ -103,7 +101,9 @@ namespace UKHO.ADDS.Mocks.Guard
             where T : class, ICloneable?
         {
             if (!argument.HasValue())
+            {
                 return argument;
+            }
 
             var clone = argument.Value!.Clone() as T;
             return new ArgumentInfo<T>(clone!, argument.Name, argument.Modified, argument.Secure);

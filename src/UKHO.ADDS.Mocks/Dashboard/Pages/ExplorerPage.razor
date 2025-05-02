@@ -48,14 +48,15 @@
 </style>
 
 <div class="scalar-container">
-    <div class="scalar-placeholder @( _iframeVisible ? "hidden" : "")">
+    <div class="scalar-placeholder @(_iframeVisible ? "hidden" : "")">
         Loading Scalar UI...
     </div>
 
     <iframe id="scalarFrame"
             src="/scalar/v1"
             class="@(_iframeVisible ? "visible" : "") scalar-frame"
-            style="height: 0;"></iframe>
+            style="height: 0;">
+    </iframe>
 </div>
 
 

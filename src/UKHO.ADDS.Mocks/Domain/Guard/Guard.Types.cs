@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
@@ -154,7 +152,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public ArgumentInfo<T> Compatible<TTarget>(Func<T, string>? message = null)
             {
                 if (!HasValue() || Value is TTarget value)
+                {
                     return this;
+                }
 
                 var m = message?.Invoke(Value) ?? Messages.Compatible<T, TTarget>(this);
                 throw Fail(new ArgumentException(m, Name));
@@ -213,7 +213,9 @@ namespace UKHO.ADDS.Mocks.Guard
             public ArgumentInfo<TTarget> Cast<TTarget>(Func<T, string>? message = null)
             {
                 if (Value is TTarget value)
-                    return new ArgumentInfo<TTarget>(value, this.Name, this.Modified, this.Secure);
+                {
+                    return new ArgumentInfo<TTarget>(value, Name, Modified, Secure);
+                }
 
                 var m = message?.Invoke(Value) ?? Messages.Compatible<T, TTarget>(this);
                 throw Fail(new ArgumentException(m, Name));
@@ -239,16 +241,18 @@ namespace UKHO.ADDS.Mocks.Guard
                 var isValueType = IsValueType(targetType);
                 var isNullable = !isValueType || targetType.IsGenericType(typeof(Nullable<>));
 
-                Type? type = targetType;
+                var type = targetType;
                 var resultChain = new HashSet<Type>();
                 do
                 {
                     resultChain.Add(type);
                     type = type.GetBaseType();
-                }
-                while (type != null);
+                } while (type != null);
+
                 if (isValueType && isNullable)
+                {
                     resultChain.Add(targetType.GetGenericArguments()[0]);
+                }
 
                 resultChain.TrimExcess();
                 return obj => obj is null ? isNullable : resultChain.Contains(obj.GetType());
@@ -259,15 +263,13 @@ namespace UKHO.ADDS.Mocks.Guard
         private static class TypeInfo
         {
             /// <summary>The locker that synchronizes access to <see cref="CanBeConvertedToDict" />.</summary>
-            private static readonly ReaderWriterLockSlim Locker
-                = new ReaderWriterLockSlim();
+            private static readonly ReaderWriterLockSlim Locker = new();
 
             /// <summary>
             ///     The functions that determine whether a specified object can be converted to the
             ///     type that the function is mapped to.
             /// </summary>
-            private static readonly Dictionary<Type, Func<object, bool>> CanBeConvertedToDict
-                = new Dictionary<Type, Func<object, bool>>();
+            private static readonly Dictionary<Type, Func<object, bool>> CanBeConvertedToDict = new();
 
             /// <summary>
             ///     Determines whether an object can be converted to an instance of the specified type.

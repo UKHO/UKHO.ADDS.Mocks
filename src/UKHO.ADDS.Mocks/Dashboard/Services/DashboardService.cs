@@ -7,9 +7,6 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
     {
         public ObservableCollection<MockRequestResponse> RequestResponses { get; } = [];
 
-        public void AddRequestResponse(MockRequestResponse requestResponse)
-        {
-            RequestResponses.Add(requestResponse);
-        }
+        public void AddRequestResponse(MockRequestResponse requestResponse) => RequestResponses.Add(requestResponse);
     }
 }

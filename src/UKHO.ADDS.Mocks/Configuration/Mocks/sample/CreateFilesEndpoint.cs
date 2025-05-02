@@ -5,8 +5,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 {
     public class CreateFilesEndpoint : ServiceEndpointMock
     {
-        public override void RegisterSingleEndpoint(IEndpointMock endpoint)
-        {
+        public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
             endpoint.MapPost("/files", (HttpRequest request) =>
                 {
                     var state = GetState(request);
@@ -28,6 +27,5 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
                     d.Append(new MarkdownHeader("Creates a file", 3));
                     d.Append(new MarkdownParagraph("Just a demo method, won't actually create anything"));
                 });
-        }
     }
 }

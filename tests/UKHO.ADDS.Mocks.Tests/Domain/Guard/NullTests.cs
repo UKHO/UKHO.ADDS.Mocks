@@ -81,9 +81,12 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             Test();
 
-            void Test() => Mocks.Guard.Guard.NotAllNull(
-                Mocks.Guard.Guard.Argument(() => val1),
-                Mocks.Guard.Guard.Argument(() => val2));
+            void Test()
+            {
+                Mocks.Guard.Guard.NotAllNull(
+                    Mocks.Guard.Guard.Argument(() => val1),
+                    Mocks.Guard.Guard.Argument(() => val2));
+            }
         }
 
         [Theory(DisplayName = "Null: NotAllNull`3")]
@@ -106,10 +109,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             Test();
 
-            void Test() => Mocks.Guard.Guard.NotAllNull(
-                Mocks.Guard.Guard.Argument(() => val1),
-                Mocks.Guard.Guard.Argument(() => val2),
-                Mocks.Guard.Guard.Argument(() => val3));
+            void Test()
+            {
+                Mocks.Guard.Guard.NotAllNull(
+                    Mocks.Guard.Guard.Argument(() => val1),
+                    Mocks.Guard.Guard.Argument(() => val2),
+                    Mocks.Guard.Guard.Argument(() => val3));
+            }
         }
     }
 }

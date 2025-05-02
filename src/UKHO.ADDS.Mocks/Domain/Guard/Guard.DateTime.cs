@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace

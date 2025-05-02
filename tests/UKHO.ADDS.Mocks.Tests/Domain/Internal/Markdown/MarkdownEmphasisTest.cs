@@ -6,10 +6,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
     public class MarkdownEmphasisTest
     {
         [Fact]
-        public void TestText()
-        {
-            Assert.Equal("Emphasis", new MarkdownEmphasis("Emphasis").Text);
-        }
+        public void TestText() => Assert.Equal("Emphasis", new MarkdownEmphasis("Emphasis").Text);
 
         [Fact]
         public void TestTextWithChar()
@@ -19,10 +16,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestTextWithInvalidChar()
-        {
-            Assert.Throws<ArgumentException>(() => new MarkdownEmphasis("Emphasis", 'a'));
-        }
+        public void TestTextWithInvalidChar() => Assert.Throws<ArgumentException>(() => new MarkdownEmphasis("Emphasis", 'a'));
 
         [Fact]
         public void TestInlineElement()
@@ -47,9 +41,6 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Internal.Markdown
         }
 
         [Fact]
-        public void TestToString()
-        {
-            Assert.Equal("*Emphasis*", new MarkdownEmphasis("Emphasis").ToString());
-        }
+        public void TestToString() => Assert.Equal("*Emphasis*", new MarkdownEmphasis("Emphasis").ToString());
     }
 }

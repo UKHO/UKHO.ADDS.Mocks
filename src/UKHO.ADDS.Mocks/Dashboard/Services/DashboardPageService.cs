@@ -4,10 +4,9 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
 {
     public class DashboardPageService
     {
-        private readonly DashboardPage[] _allPages = new[]
+        private readonly DashboardPage[] _allPages =
         {
-            new DashboardPage { Name = "Services", Path = "/", Icon = "\ue88a" },
-            new DashboardPage
+            new DashboardPage { Name = "Services", Path = "/", Icon = "\ue88a" }, new DashboardPage
             {
                 Name = "Explorer",
                 Path = "/_dashboard/explorer",
@@ -26,7 +25,7 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
         };
 
         public IEnumerable<DashboardPage> Pages => _allPages;
-        
+
         public DashboardPage FindCurrent(Uri uri)
         {
             IEnumerable<DashboardPage> Flatten(IEnumerable<DashboardPage> e)
@@ -35,7 +34,7 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
             }
 
             return Flatten(Pages)
-                        .FirstOrDefault(example => example.Path == uri.AbsolutePath || $"/{example.Path}" == uri.AbsolutePath);
+                .FirstOrDefault(example => example.Path == uri.AbsolutePath || $"/{example.Path}" == uri.AbsolutePath);
         }
 
         public string TitleFor(DashboardPage example)
@@ -48,9 +47,6 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
             return "";
         }
 
-        public string DescriptionFor(DashboardPage example)
-        {
-            return example?.Description ?? "";
-        }
+        public string DescriptionFor(DashboardPage example) => example?.Description ?? "";
     }
 }

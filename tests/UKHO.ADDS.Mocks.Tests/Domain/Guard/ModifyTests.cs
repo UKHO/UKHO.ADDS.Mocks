@@ -15,7 +15,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 Assert.False(stringArg.Modified);
 
                 var integerValue = int.Parse(stringValue);
-                var integerArg = Mocks.Guard.Guard.Modify(stringArg, integerValue);
+                var integerArg = stringArg.Modify(integerValue);
                 Assert.Equal(stringArg.Name, integerArg.Name);
                 Assert.Equal(integerValue, integerArg.Value);
                 Assert.Equal(stringArg.Secure, integerArg.Secure);
@@ -30,7 +30,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 var stringValue = 1.ToString();
                 var stringArg = Mocks.Guard.Guard.Argument(() => stringValue, i == 1);
 
-                var integerArg = Mocks.Guard.Guard.Modify(stringArg, s => int.Parse(s));
+                var integerArg = stringArg.Modify(s => int.Parse(s));
                 Assert.Equal(stringArg.Name, integerArg.Name);
                 Assert.Equal(1, integerArg.Value);
                 Assert.True(integerArg.Modified);
@@ -38,7 +38,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
                 var exception = new Exception(RandomMessage);
                 Assert.Same(exception, Assert.Throws<Exception>(()
-                    => Mocks.Guard.Guard.Modify<string, int>(stringArg, s => throw exception)));
+                    => stringArg.Modify<string, int>(s => throw exception)));
             }
         }
 
@@ -49,7 +49,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 2; i++)
             {
                 var stringArg = Mocks.Guard.Guard.Argument(() => stringValue, i == 1);
-                var integerArg = Mocks.Guard.Guard.Wrap(stringArg, s => int.Parse(s));
+                var integerArg = stringArg.Wrap(s => int.Parse(s));
 
                 Assert.Equal(stringArg.Name, integerArg.Name);
                 Assert.Equal(1, integerArg.Value);
@@ -59,8 +59,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 var exception = new Exception(RandomMessage);
                 Assert.DoesNotContain(exception, ThrowsArgumentException(
                     stringArg,
-                    arg => Mocks.Guard.Guard.Wrap<string, int>(arg, s => throw exception),
-                    (arg, message) => Mocks.Guard.Guard.Wrap<string, int>(arg, s => throw exception, s =>
+                    arg => arg.Wrap<string, int>(s => throw exception),
+                    (arg, message) => arg.Wrap<string, int>(s => throw exception, s =>
                     {
                         Assert.Same(stringArg.Value, s);
                         return message;
@@ -79,13 +79,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 var cloneableArg = Mocks.Guard.Guard.Argument(() => cloneable, i == 1);
                 Assert.False(cloneableArg.Modified);
 
-                var cloneArg = Mocks.Guard.Guard.Clone(cloneableArg);
+                var cloneArg = cloneableArg.Clone();
                 Assert.Equal(cloneableArg.Name, cloneArg.Name);
                 Assert.True(cloneArg.Value.IsClone);
                 Assert.Equal(cloneableArg.Modified, cloneArg.Modified);
                 Assert.Equal(cloneableArg.Secure, cloneArg.Secure);
 
-                var modifiedCloneableArg = Mocks.Guard.Guard.Modify(cloneableArg, c => new TestCloneable());
+                var modifiedCloneableArg = cloneableArg.Modify(c => new TestCloneable());
                 Assert.True(modifiedCloneableArg.Modified);
                 Assert.Equal(cloneableArg.Secure, modifiedCloneableArg.Secure);
 

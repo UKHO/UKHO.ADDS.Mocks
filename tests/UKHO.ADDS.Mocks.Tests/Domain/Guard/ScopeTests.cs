@@ -11,124 +11,128 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var validation =
                 (from m in typeof(Mocks.Guard.Guard).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                 where m.Name == nameof(Mocks.Guard.Guard.NotNull)
-                 let g = m.GetGenericArguments()
-                 where g.Length == 1 && g[0].GetGenericParameterConstraints().Length == 0
-                 let p = m.GetParameters()
-                 where p.Length == 2 && p[1].ParameterType == typeof(string)
-                 select m).Single();
+                    where m.Name == nameof(Mocks.Guard.Guard.NotNull)
+                    let g = m.GetGenericArguments()
+                    where g.Length == 1 && g[0].GetGenericParameterConstraints().Length == 0
+                    let p = m.GetParameters()
+                    where p.Length == 2 && p[1].ParameterType == typeof(string)
+                    select m).Single();
 
             Task.WaitAll(
                 Task.Run(Async()),
                 Task.Run(Async()));
 
-            Func<Task> Async() => async () =>
+            Func<Task> Async()
             {
-                // Outer
-                var id = 0;
-                Exception outerIntercepted = null;
-                Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                return async () =>
                 {
-                    Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
-                    id++;
-                    outerIntercepted = ex;
-                });
-
-                var lastId = id;
-                for (var i = 0; i < 5; i++)
-                {
-
-                    Test(ref outerIntercepted);
-                    Assert.Equal(lastId + 1, id);
-                    id--;
-
-                    await Delay();
-
-                    Test(ref outerIntercepted);
-                    Assert.Equal(lastId + 1, id);
-                    id--;
-
-                    await Delay().ConfigureAwait(false);
-
-                    Test(ref outerIntercepted);
-                    Assert.Equal(lastId + 1, id);
-                    id--;
-                }
-
-                // Inner with propagation
-                id = 0;
-                lastId = id;
-                var disposers = new List<Task>();
-                for (var i = 0; i < 5; i++)
-                {
-                    if (i == 3)
-                    {
-                        var nonScope = Mocks.Guard.Guard.BeginScope(null); // Should have no effect.
-                        disposers.Add(Delay().ContinueWith(_ => nonScope.Dispose())); // Test empty disposable.
-                    }
-
-                    Exception innerIntercepted = null;
-                    using (Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                    // Outer
+                    var id = 0;
+                    Exception outerIntercepted = null;
+                    Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
                     {
                         Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
                         id++;
-                        innerIntercepted = ex;
-                    }))
+                        outerIntercepted = ex;
+                    });
+
+                    var lastId = id;
+                    for (var i = 0; i < 5; i++)
                     {
-                        Test(ref innerIntercepted);
-                        Assert.Equal(lastId + 2, id);
-                        id -= 2;
+                        Test(ref outerIntercepted);
+                        Assert.Equal(lastId + 1, id);
+                        id--;
 
                         await Delay();
 
-                        Test(ref innerIntercepted);
-                        Assert.Equal(lastId + 2, id);
-                        id -= 2;
+                        Test(ref outerIntercepted);
+                        Assert.Equal(lastId + 1, id);
+                        id--;
 
                         await Delay().ConfigureAwait(false);
 
-                        Test(ref innerIntercepted);
-                        Assert.Equal(lastId + 2, id);
-                        id -= 2;
+                        Test(ref outerIntercepted);
+                        Assert.Equal(lastId + 1, id);
+                        id--;
                     }
-                }
 
-                // Inner without propagation
-                id = 0;
-                lastId = id;
-                for (var i = 0; i < 5; i++)
-                {
-                    if (i == 3)
-                        Mocks.Guard.Guard.BeginScope(null, false); // Should stop propagation.
-
-                    Exception innerIntercepted = null;
-                    using (Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                    // Inner with propagation
+                    id = 0;
+                    lastId = id;
+                    var disposers = new List<Task>();
+                    for (var i = 0; i < 5; i++)
                     {
-                        Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
-                        id += 3;
-                        innerIntercepted = ex;
-                    }, i >= 3))
-                    {
-                        Test(ref innerIntercepted);
-                        Assert.Equal(lastId + 3, id);
-                        id -= 3;
+                        if (i == 3)
+                        {
+                            var nonScope = Mocks.Guard.Guard.BeginScope(null); // Should have no effect.
+                            disposers.Add(Delay().ContinueWith(_ => nonScope.Dispose())); // Test empty disposable.
+                        }
 
-                        await Delay();
+                        Exception innerIntercepted = null;
+                        using (Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                               {
+                                   Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
+                                   id++;
+                                   innerIntercepted = ex;
+                               }))
+                        {
+                            Test(ref innerIntercepted);
+                            Assert.Equal(lastId + 2, id);
+                            id -= 2;
 
-                        Test(ref innerIntercepted);
-                        Assert.Equal(lastId + 3, id);
-                        id -= 3;
+                            await Delay();
 
-                        await Delay().ConfigureAwait(false);
+                            Test(ref innerIntercepted);
+                            Assert.Equal(lastId + 2, id);
+                            id -= 2;
 
-                        Test(ref innerIntercepted);
-                        Assert.Equal(lastId + 3, id);
-                        id -= 3;
+                            await Delay().ConfigureAwait(false);
+
+                            Test(ref innerIntercepted);
+                            Assert.Equal(lastId + 2, id);
+                            id -= 2;
+                        }
                     }
-                }
 
-                await Task.WhenAll(disposers).ConfigureAwait(false);
-            };
+                    // Inner without propagation
+                    id = 0;
+                    lastId = id;
+                    for (var i = 0; i < 5; i++)
+                    {
+                        if (i == 3)
+                        {
+                            Mocks.Guard.Guard.BeginScope(null, false); // Should stop propagation.
+                        }
+
+                        Exception innerIntercepted = null;
+                        using (Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                               {
+                                   Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
+                                   id += 3;
+                                   innerIntercepted = ex;
+                               }, i >= 3))
+                        {
+                            Test(ref innerIntercepted);
+                            Assert.Equal(lastId + 3, id);
+                            id -= 3;
+
+                            await Delay();
+
+                            Test(ref innerIntercepted);
+                            Assert.Equal(lastId + 3, id);
+                            id -= 3;
+
+                            await Delay().ConfigureAwait(false);
+
+                            Test(ref innerIntercepted);
+                            Assert.Equal(lastId + 3, id);
+                            id -= 3;
+                        }
+                    }
+
+                    await Task.WhenAll(disposers).ConfigureAwait(false);
+                };
+            }
 
             static void Test(ref Exception intercepted)
             {
@@ -143,7 +147,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             }
 
             static Task Delay()
-                => Task.Delay(RandomUtils.Current.Next(10, 20));
+            {
+                return Task.Delay(RandomUtils.Current.Next(10, 20));
+            }
         }
     }
 }

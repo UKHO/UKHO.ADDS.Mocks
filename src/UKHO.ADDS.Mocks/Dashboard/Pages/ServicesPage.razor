@@ -1,7 +1,6 @@
 ﻿@layout DashboardLayout
 @page "/"
 @page "/_dashboard/"
-
 @using UKHO.ADDS.Mocks.Configuration
 @using UKHO.ADDS.Mocks.Domain.Configuration
 @using UKHO.ADDS.Mocks.States
@@ -27,8 +26,10 @@
         var errorBadgeTop = 12;
         var stateLockedBadgeTop = service.HasError ? 47 : 12;
         var overridesBadgeTop = service.HasError
-        ? (isModified ? 82 : 47)
-        : (isModified ? 47 : 12);
+            ? isModified ? 82 : 47
+            : isModified
+                ? 47
+                : 12;
 
         var errorBadgeStyle = $"position: absolute; top: {errorBadgeTop}px; right: 12px; z-index: 1;";
         var stateLockedBadgeStyle = $"position: absolute; top: {stateLockedBadgeTop}px; right: 12px; z-index: 1;";
@@ -39,28 +40,28 @@
             @if (service.HasError)
             {
                 <RadzenBadge Text="Error"
-                Style="@errorBadgeStyle"
-                BadgeStyle="BadgeStyle.Danger" />
+                             Style="@errorBadgeStyle"
+                             BadgeStyle="BadgeStyle.Danger"/>
             }
 
             @* State locked badge *@
             @if (isModified)
             {
                 <RadzenBadge Text="State locked"
-                Style="@stateLockedBadgeStyle"
-                BadgeStyle="BadgeStyle.Danger" />
+                             Style="@stateLockedBadgeStyle"
+                             BadgeStyle="BadgeStyle.Danger"/>
             }
 
             @* Overrides badge *@
             @if (hasOverride)
             {
                 <RadzenBadge Text="Overrides"
-                Style="@overridesBadgeStyle"
-                BadgeStyle="BadgeStyle.Success" />
+                             Style="@overridesBadgeStyle"
+                             BadgeStyle="BadgeStyle.Success"/>
             }
 
             <RadzenCard class="rz-m-2 rz-p-2 rz-shadow-1"
-            Style=@($"border: 1px solid {borderColor};")>
+                        Style=@($"border: 1px solid {borderColor};")>
                 <RadzenText TextStyle="TextStyle.H6" class="rz-mb-2">
                     <strong>@service.Name</strong>
                 </RadzenText>
@@ -70,27 +71,29 @@
                 <RadzenRow RowGap="0">
                     <RadzenColumn SizeSM="12">
                         <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">State</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body2"><b>@currentState</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body2">
+                            <b>@currentState</b>
+                        </RadzenText>
                     </RadzenColumn>
 
                     <RadzenColumn SizeSM="12" class="rz-mt-1">
                         <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">Current state</RadzenText>
                         <RadzenDropDown @bind-Value="_selectedStates[service]"
-                        Data="service.States"
-                        Style="width: 100%"
-                        Placeholder="Select a state" />
+                                        Data="service.States"
+                                        Style="width: 100%"
+                                        Placeholder="Select a state"/>
                     </RadzenColumn>
                 </RadzenRow>
 
                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-mt-2">
                     <RadzenButton Size="ButtonSize.Small"
-                    Variant="Variant.Text"
-                    Text="Reset state"
-                    Click="() => ResetState(service)" />
+                                  Variant="Variant.Text"
+                                  Text="Reset state"
+                                  Click="() => ResetState(service)"/>
                     <RadzenButton Size="ButtonSize.Small"
-                    Variant="Variant.Text"
-                    Text="Set State"
-                    Click="() => SetState(service)" />
+                                  Variant="Variant.Text"
+                                  Text="Set State"
+                                  Click="() => SetState(service)"/>
                 </RadzenStack>
             </RadzenCard>
         </div>
@@ -130,4 +133,5 @@
 
         service.DefaultState = WellKnownState.Default;
     }
+
 }
