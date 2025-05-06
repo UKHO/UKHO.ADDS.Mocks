@@ -14,7 +14,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .UsingPut()
                 .WithHeader("Content-Lengths", new RegexMatcher(".*"))
                 .WithHeader("Content-MD5", new RegexMatcher(".*"))
@@ -30,7 +30,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.BadRequestCorrelationId}{endPoint}")
                 .UsingPut()
         )
@@ -57,7 +57,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.UnauthorizedCorrelationId}{endPoint}")
                 .UsingPut()
         )
@@ -72,7 +72,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.ForbiddenCorrelationId}{endPoint}")
                 .UsingPut()
         )
@@ -87,7 +87,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.PayloadTooLargeCorrelationId}{endPoint}")
                 .UsingPut()
         )
@@ -102,7 +102,7 @@ public void RegisterFragment(WireMockServer server, MockService mockService)
     server
         .Given(
             Request.Create()
-                .WithPath(urlPattern)
+                .WithPath(new RegexMatcher(urlPattern))
                 .UsingPut()
                 .WithHeader(MockConstants.CorrelationIdHeader, $"{MockConstants.TooManyRequestsCorrelationId}{endPoint}")
         )
