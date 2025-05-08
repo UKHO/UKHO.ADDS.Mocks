@@ -43,6 +43,8 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal IEnumerable<StateDefinition> States => _states;
 
+        internal IEnumerable<string> StateNames => _states.Select(x => x.State);
+
         internal IEnumerable<ServiceFragment> ServiceFragments => _serviceFragments;
 
         internal IEnumerable<ServiceFile> ServiceFiles => _serviceFiles;
