@@ -1,0 +1,163 @@
+@page "/_dashboard/explorer"
+@layout DashboardLayout
+
+<style>
+    
+    .scalar-container {
+        position: relative;
+        width: 100%;
+        min-height: 600px; /* or estimated Scalar UI height */
+    }
+
+    .scalar-placeholder,
+    .scalar-frame {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border: none;
+    }
+
+    .scalar-placeholder {
+        padding: 2rem;
+        text-align: center;
+        font-size: 1.2rem;
+        color: #888;
+        background: transparent;
+        z-index: 1;
+        opacity: 1;
+        transition: opacity 0.3s ease-in;
+    }
+
+    .scalar-placeholder.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #scalarFrame {
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+        display: block;
+        border: none;
+        z-index: 2;
+    }
+
+        #scalarFrame.visible {
+            opacity: 1;
+        }
+</style>
+
+<div class="scalar-container">
+    <div class="scalar-placeholder @(_iframeVisible ? "hidden" : "")">
+        Loading Scalar UI...
+    </div>
+
+    <iframe id="scalarFrame"
+            src="/scalar/v1"
+            class="@(_iframeVisible ? "visible" : "") scalar-frame"
+            style="height: 0;">
+    </iframe>
+</div>
+
+
+<script>
+    window.resizeScalarFrame = function () {
+        const iframe = document.getElementById("scalarFrame");
+        if (!iframe) return;
+
+        iframe.addEventListener("load", () => {
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            if (!doc || !doc.body) return;
+
+            // Resize iframe when body changes size
+            const resize = () => {
+                const height = Math.max(
+                    doc.body.scrollHeight,
+                    doc.documentElement.scrollHeight,
+                    doc.body.offsetHeight,
+                    doc.documentElement.offsetHeight
+                );
+
+                iframe.style.height = height + "px";
+                console.log("Iframe resized to:", height);
+            };
+
+            new ResizeObserver(resize).observe(doc.body);
+            resize(); // initial resize
+
+            const observer = new MutationObserver(() => {
+
+                const footer = doc.querySelector(".flex.flex-col.gap-3.p-3.border-t.darklight-reference");
+                if (footer && !footer.dataset.hidden) {
+
+                    const toggleButton = footer.querySelector("button[aria-pressed]");
+
+                    if (toggleButton?.getAttribute("aria-pressed") === "false") {
+                        toggleButton.click();
+                        console.log("Dark theme toggled");
+                    }
+
+                    footer.style.display = "none";
+                    footer.dataset.hidden = "true";
+                    console.log("Footer hidden");
+                }
+
+                const buttons = doc.querySelectorAll("button.show-api-client-button");
+                    buttons.forEach(button => {
+
+                        if (!button.dataset.scrollHookAttached) {
+
+                            button.dataset.scrollHookAttached = "true";
+                            button.addEventListener("click", function () {
+                                // Run AFTER Scalar’s default handling
+                                setTimeout(() => {
+                                    console.log("Scroll-to-top requested");
+                                    window.parent.postMessage({ scrollToTop: true }, "*");
+                                }, 0);
+                            });
+                        }
+                    });
+            });
+
+            observer.observe(doc.body, { childList: true, subtree: true });
+
+            iframe.classList.add("visible");
+            console.log("Iframe visible");
+        });
+    };
+
+    window.scrollToTop = function () {
+        const el = document.querySelector(".rz-body");
+
+        if (el) {
+            el.scrollTo({ top: 0, behavior: "auto" });
+        } else {
+            window.scrollTo({ top: 0, behavior: "auto" });
+        }
+    };
+
+    window.addEventListener("message", (event) => {
+
+        if (event.data?.scrollToTop) {
+            console.log("Scroll-to-top triggered");
+            window.scrollToTop();
+        }
+    });
+</script>
+
+@code {
+    private bool _iframeVisible;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("resizeScalarFrame");
+            await Task.Delay(1500); // Delay for layout/rendering
+            _iframeVisible = true;
+            StateHasChanged();
+        }
+    }
+
+    [Inject] IJSRuntime JS { get; set; } = default!;
+}
