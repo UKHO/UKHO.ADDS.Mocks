@@ -1,0 +1,281 @@
+﻿@page "/_dashboard/traffic/"
+@using System.Net
+@using System.Text
+@using System.Text.Json
+@using Microsoft.AspNetCore.WebUtilities
+@using UKHO.ADDS.Mocks.Dashboard.Services
+@using UKHO.ADDS.Mocks.Domain.Internal.Traffic
+@inject DashboardService DashboardService
+@inject IJSRuntime JS
+
+<HeadContent>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+    <script>
+        window.applyPrismHighlighting = function () {
+            if (window.Prism) {
+                Prism.highlightAll();
+            }
+        };
+    </script>
+    <style>
+        pre[class*="language-"],
+        code[class*="language-"] {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+    </style>
+</HeadContent>
+
+<RadzenRow style="height: calc(100vh - 110px); margin: 0; overflow: hidden;">
+    <!-- LEFT COLUMN -->
+    <RadzenColumn Width="6" style="height: 100%; display: flex; flex-direction: column;">
+        <RadzenDataGrid Data="@DashboardService.RequestResponses" TItem="MockRequestResponse"
+                        Scrollable="true"
+                        AllowSorting="true"
+                        AllowFiltering="true"
+                        Style="flex: 1; min-height: 0;"
+                        SelectionMode="DataGridSelectionMode.Single"
+                        @bind-Value="@selectedItems">
+            <Columns>
+                <RadzenDataGridColumn TItem="MockRequestResponse" Title="Method" Width="100px">
+                    <Template Context="item">
+                        <RadzenBadge Text="@item.Request.Method"
+                                     BadgeStyle="@GetBadgeStyleForMethod(item.Request.Method)"
+                                     Tooltip="HTTP Method"
+                                     Style="cursor: default;"/>
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="MockRequestResponse" Title="Request URL" Width="*">
+                    <Template Context="item">
+                        @item.Request.Path @item.Request.QueryString
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="MockRequestResponse" Title="Status" Width="120px">
+                    <Template Context="item">
+                        <RadzenBadge Text="@item.Response.StatusCode.ToString()"
+                                     BadgeStyle="@GetBadgeStyleForStatus(item.Response.StatusCode)"
+                                     Tooltip="@GetStatusLabel(item.Response.StatusCode)"
+                                     Style="cursor: default;"/>
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="MockRequestResponse" Title="Timestamp" Width="180px">
+                    <Template Context="item">
+                        @item.Timestamp.ToString("g")
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenColumn>
+
+    <!-- RIGHT COLUMN -->
+    <RadzenColumn Width="6" style="height: 100%; display: flex; flex-direction: column; overflow: hidden;">
+        <!-- Request Panel -->
+        <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden; border-bottom: 1px solid #444;">
+            <div style="flex: none; padding: 0.5rem;">
+                @if (SelectedItem != null)
+                {
+                    <p style="margin: 0;">
+                        <RadzenBadge Text="@SelectedItem.Request.Method"
+                                     BadgeStyle="@GetBadgeStyleForMethod(SelectedItem.Request.Method)"
+                                     Style="margin-right: 0.5rem;"/>
+                        @SelectedItem.Request.Path @SelectedItem.Request.QueryString
+                    </p>
+                    <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
+                        @foreach (var header in SelectedItem.Request.Headers)
+                        {
+                            <div>@header.Key: @header.Value</div>
+                        }
+                    </p>
+                }
+                else
+                {
+                    <p>Select a row to view request details</p>
+                }
+            </div>
+            <div style="flex: none; padding: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Request Body</span>
+                @if (SelectedItem != null)
+                {
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Request.Body)))"/>
+                }
+            </div>
+            <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
+                @if (SelectedItem != null)
+                {
+                    @RenderHighlightedContent(SelectedItem.Request.Body)
+                }
+                else
+                {
+                    <div>(no content)</div>
+                }
+            </div>
+        </div>
+
+        <!-- Response Panel -->
+        <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+            <div style="flex: none; padding: 0.5rem;">
+                @if (SelectedItem != null)
+                {
+                    <p style="margin: 0;">
+                        <RadzenBadge Text="@SelectedItem.Response.StatusCode.ToString()"
+                                     BadgeStyle="@GetBadgeStyleForStatus(SelectedItem.Response.StatusCode)"
+                                     Style="margin-right: 0.5rem;"/>
+                        <b>@SelectedItem.Response.StatusCode</b> — @GetStatusLabel(SelectedItem.Response.StatusCode)
+                    </p>
+                    <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
+                        @foreach (var header in SelectedItem.Response.Headers)
+                        {
+                            <div>@header.Key: @header.Value</div>
+                        }
+                    </p>
+                }
+                else
+                {
+                    <p>Select a row to view response details</p>
+                }
+            </div>
+            <div style="flex: none; padding: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Response Body</span>
+                @if (SelectedItem != null)
+                {
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Response.Body)))"/>
+                }
+            </div>
+            <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
+                @if (SelectedItem != null)
+                {
+                    @RenderHighlightedContent(SelectedItem.Response.Body)
+                }
+                else
+                {
+                    <div>(no content)</div>
+                }
+            </div>
+        </div>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    private IList<MockRequestResponse> selectedItems = new List<MockRequestResponse>();
+    private MockRequestResponse? SelectedItem => selectedItems.FirstOrDefault();
+
+    protected override void OnInitialized()
+    {
+        DashboardService.RequestResponses.CollectionChanged += (_, __) => { InvokeAsync(StateHasChanged); };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender || SelectedItem != null)
+        {
+            await JS.InvokeVoidAsync("applyPrismHighlighting");
+        }
+    }
+
+    private async Task CopyToClipboardAsync(string text)
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", text);
+    }
+
+    private string GetBodyText(byte[] data)
+    {
+        return Encoding.UTF8.GetString(data);
+    }
+
+    private RenderFragment RenderHighlightedContent(byte[] data)
+    {
+        return builder =>
+        {
+            var content = Encoding.UTF8.GetString(data);
+            string? detectedLanguage = null;
+            var prettyContent = content;
+
+            if (TryFormatJson(data, out var prettyJson))
+            {
+                detectedLanguage = "json";
+                prettyContent = prettyJson;
+            }
+            else if (IsXml(content))
+            {
+                detectedLanguage = "xml";
+                prettyContent = content;
+            }
+
+            if (detectedLanguage != null)
+            {
+                builder.AddMarkupContent(0, $"<pre><code class=\"language-{detectedLanguage}\">{WebUtility.HtmlEncode(prettyContent)}</code></pre>");
+            }
+            else
+            {
+                builder.AddMarkupContent(1, $"<div style=\"font-size: 0.70rem; line-height: 1.4; font-family: monospace; white-space: pre;\">{WebUtility.HtmlEncode(TruncateUtf8(data, 5000))}</div>");
+            }
+        };
+    }
+
+    private bool TryFormatJson(byte[] data, out string prettyJson)
+    {
+        prettyJson = string.Empty;
+        try
+        {
+            var text = Encoding.UTF8.GetString(data);
+            var parsed = JsonDocument.Parse(text);
+            prettyJson = JsonSerializer.Serialize(parsed, new JsonSerializerOptions { WriteIndented = true });
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool IsXml(string text)
+    {
+        return text.TrimStart().StartsWith("<") && text.Contains(">");
+    }
+
+    private static string TruncateUtf8(byte[] data, int maxLength)
+    {
+        var text = Encoding.UTF8.GetString(data);
+        return text.Length > maxLength ? text[..maxLength] + "... (truncated)" : text;
+    }
+
+    private BadgeStyle GetBadgeStyleForStatus(int statusCode)
+    {
+        return statusCode switch
+        {
+            >= 200 and < 300 => BadgeStyle.Success,
+            >= 300 and < 400 => BadgeStyle.Info,
+            >= 400 and < 500 => BadgeStyle.Warning,
+            >= 500 => BadgeStyle.Danger,
+            _ => BadgeStyle.Secondary
+        };
+    }
+
+    private string GetStatusLabel(int statusCode)
+    {
+        return ReasonPhrases.GetReasonPhrase(statusCode) ?? "Unknown Status";
+    }
+
+    private BadgeStyle GetBadgeStyleForMethod(string method)
+    {
+        return method.ToUpperInvariant() switch
+        {
+            "GET" => BadgeStyle.Success,
+            "POST" => BadgeStyle.Info,
+            "PUT" => BadgeStyle.Warning,
+            "DELETE" => BadgeStyle.Danger,
+            "PATCH" => BadgeStyle.Dark,
+            "OPTIONS" => BadgeStyle.Secondary,
+            "HEAD" => BadgeStyle.Secondary,
+            _ => BadgeStyle.Base
+        };
+    }
+
+}

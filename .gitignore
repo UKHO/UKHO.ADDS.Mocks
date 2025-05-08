@@ -9,6 +9,8 @@
 *.userosscache
 *.sln.docstates
 
+!src/UKHO.ADDS.Mocks.LocalHost/Properties/launchSettings.json
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
