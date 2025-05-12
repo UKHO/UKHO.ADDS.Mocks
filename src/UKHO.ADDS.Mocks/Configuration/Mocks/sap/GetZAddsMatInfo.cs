@@ -24,8 +24,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Append(new MarkdownHeader("Creates a file", 3));
-                    d.Append(new MarkdownParagraph("Just a demo method, won't actually create anything"));
+                    d.Append(new MarkdownHeader("SAP Get z_adds_mat_info  ", 3));
+                    d.Append(new MarkdownParagraph("Get SAP z_adds_mat_info details return 200"));
                 });
     }
 

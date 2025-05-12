@@ -16,7 +16,7 @@ namespace UKHO.ADDS.Mocks
 
             ServiceRegistry.AddDefinition(new ServiceDefinition("scs", "Sales Catalogue Service", []));
 
-            ServiceRegistry.AddDefinition(new ServiceDefinition("sap", "SAP service", []));
+            ServiceRegistry.AddDefinition(new ServiceDefinition("sap", "SAP Service", []));
         }
     }
 }
