@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Infrastructure.Results;
+﻿using System.Collections.Concurrent;
+using UKHO.ADDS.Infrastructure.Results;
 using UKHO.ADDS.Mocks.Domain.Configuration;
 
 namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
@@ -9,12 +10,16 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         private readonly string _name;
         private readonly Type _type;
 
+        private readonly ConcurrentBag<MappingInfo> _mappings;
+
         public ServiceFragment(ServiceDefinition definition, string name, Type type, bool isOverride)
         {
             Definition = definition;
             _name = name;
             _type = type;
             _isOverride = isOverride;
+
+            _mappings = new ConcurrentBag<MappingInfo>();
         }
 
         public string Name => _name;
@@ -29,6 +34,8 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 
         internal ServiceDefinition Definition { get; }
 
+        public IEnumerable<MappingInfo> Mappings => _mappings;
+
         public IResult<IServiceFile> GetFilePath(string fileName)
         {
             var file = Definition.ServiceFiles.SingleOrDefault(f => f.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
@@ -42,5 +49,10 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         }
 
         public IEndpointMock CreateBuilder(RouteGroupBuilder groupBuilder) => new EndpointMockBuilder(groupBuilder, this);
+
+        internal void RecordMapping(string httpMethod, string pattern, string callerType)
+        {
+            _mappings.Add(new MappingInfo(httpMethod, pattern, callerType));
+        }
     }
 }

@@ -6,132 +6,193 @@
 @using UKHO.ADDS.Mocks.States
 @inject NavigationManager NavManager
 
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem;">
-    @foreach (var service in _services)
-    {
-        var rootAddress = NavManager.BaseUri.TrimEnd('/');
-        var fullServiceUrl = $"{rootAddress}/{service.Prefix}";
+<table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4"
+       style="width: 100%; border-collapse: separate; border-spacing: 0;">
+    <thead style="position: sticky; top: 0; background-color: var(--rz-panel-background-color); z-index: 10;">
+        <tr>
+            <th style="width: 50%;">URL Pattern</th>
+            <th style="width: 15%;">HTTP Method(s)</th>
+            <th style="width: 20%;">State</th>
+            <th style="width: 15%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in _services)
+        {
+            var isExpanded = _expandedServices.Contains(service.Name);
+            var toggleIcon = isExpanded ? "expand_less" : "expand_more";
+            var hasStateOverrides = service.StateOverrides.Values.Any(v => v != WellKnownState.Default);
 
-        var currentState = _appliedStates.ContainsKey(service) ? _appliedStates[service] : WellKnownState.Default;
-        var isModified = currentState != WellKnownState.Default;
+            <tr>
+                <td colspan="4" style="background: transparent; border-top: 1px solid var(--rz-border-color); padding-top: 1rem;">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.5rem">
+                        <RadzenButton Icon="@toggleIcon"
+                                      ButtonStyle="ButtonStyle.Light"
+                                      Size="ButtonSize.Small"
+                                      Style="min-width: unset;"
+                                      Click="() => ToggleServiceExpansion(service)" />
 
-        var borderColor = isModified ? "red" : "#444";
-
-        var hasOverride = service.ServiceFragments.Any(f => f.IsOverride);
-
-        var cardOpacity = service.HasError ? "0.5" : "1.0";
-        var pointerEvents = service.HasError ? "none" : "auto";
-        var cursorStyle = service.HasError ? "not-allowed" : "auto";
-
-        var errorBadgeTop = 12;
-        var stateLockedBadgeTop = service.HasError ? 47 : 12;
-        var overridesBadgeTop = service.HasError
-            ? isModified ? 82 : 47
-            : isModified
-                ? 47
-                : 12;
-
-        var errorBadgeStyle = $"position: absolute; top: {errorBadgeTop}px; right: 12px; z-index: 1;";
-        var stateLockedBadgeStyle = $"position: absolute; top: {stateLockedBadgeTop}px; right: 12px; z-index: 1;";
-        var overridesBadgeStyle = $"position: absolute; top: {overridesBadgeTop}px; right: 12px; z-index: 1;";
-
-        <div style="position: relative; opacity: @cardOpacity; pointer-events: @pointerEvents; cursor: @cursorStyle;">
-            @* Error badge *@
-            @if (service.HasError)
-            {
-                <RadzenBadge Text="Error"
-                             Style="@errorBadgeStyle"
-                             BadgeStyle="BadgeStyle.Danger"/>
-            }
-
-            @* State locked badge *@
-            @if (isModified)
-            {
-                <RadzenBadge Text="State locked"
-                             Style="@stateLockedBadgeStyle"
-                             BadgeStyle="BadgeStyle.Danger"/>
-            }
-
-            @* Overrides badge *@
-            @if (hasOverride)
-            {
-                <RadzenBadge Text="Overrides"
-                             Style="@overridesBadgeStyle"
-                             BadgeStyle="BadgeStyle.Success"/>
-            }
-
-            <RadzenCard class="rz-m-2 rz-p-2 rz-shadow-1"
-                        Style=@($"border: 1px solid {borderColor};")>
-                <RadzenText TextStyle="TextStyle.H6" class="rz-mb-2">
-                    <strong>@service.Name</strong>
-                </RadzenText>
-
-                <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">@fullServiceUrl</RadzenText>
-
-                <RadzenRow RowGap="0">
-                    <RadzenColumn SizeSM="12">
-                        <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">State</RadzenText>
-                        <RadzenText TextStyle="TextStyle.Body2">
-                            <b>@currentState</b>
+                        <RadzenText Style="font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem;">
+                            @service.Name
                         </RadzenText>
-                    </RadzenColumn>
 
-                    <RadzenColumn SizeSM="12" class="rz-mt-1">
-                        <RadzenText TextStyle="TextStyle.Caption" class="rz-mb-1">Current state</RadzenText>
-                        <RadzenDropDown @bind-Value="_selectedStates[service]"
-                                        Data="service.StateNames"
-                                        Style="width: 100%"
-                                        Placeholder="Select a state"/>
-                    </RadzenColumn>
-                </RadzenRow>
+                        @if (hasStateOverrides)
+                        {
+                            <RadzenBadge Text="States set" BadgeStyle="BadgeStyle.Danger" class="rz-ml-2" />
+                        }
+                    </RadzenStack>
+                </td>
+            </tr>
 
-                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-mt-2">
-                    <RadzenButton Size="ButtonSize.Small"
-                                  Variant="Variant.Text"
-                                  Text="Reset state"
-                                  Click="() => ResetState(service)"/>
-                    <RadzenButton Size="ButtonSize.Small"
-                                  Variant="Variant.Text"
-                                  Text="Set State"
-                                  Click="() => SetState(service)"/>
-                </RadzenStack>
-            </RadzenCard>
-        </div>
-    }
-</div>
+            @if (isExpanded)
+            {
+                foreach (var fragment in service.ServiceFragments)
+                {
+                    var groupedMappings = fragment.Mappings
+                    .GroupBy(m => m.Pattern)
+                    .OrderBy(g => g.Key);
+
+                    foreach (var group in groupedMappings)
+                    {
+                        var relativePath = $"/{service.Prefix.Trim('/')}{group.Key}";
+                        var isOverride = fragment.IsOverride;
+
+                        var callerType = group.First().CallerType;
+                        var overrideKey = $"interactive/{service.Prefix}/{callerType}";
+                        var currentState = _selectedStates.TryGetValue(overrideKey, out var val)
+                        ? val
+                        : WellKnownState.Default;
+
+                        <tr>
+                            <td>
+                                @relativePath
+                                @if (isOverride)
+                                {
+                                    <RadzenBadge Text="Override" BadgeStyle="BadgeStyle.Success" class="rz-ml-2" />
+                                }
+                            </td>
+                            <td>
+                                @foreach (var method in group
+                               .Select(m => m.HttpMethod)
+                               .Distinct()
+                               .OrderBy(GetMethodSortOrder))
+                                {
+                                    <RadzenBadge Text="@method"
+                                                 BadgeStyle="@GetBadgeStyleForMethod(method)"
+                                                 class="rz-mr-1" />
+                                }
+                            </td>
+                            <td>
+                                <RadzenDropDown @bind-Value="_selectedStates[overrideKey]"
+                                                Data="service.StateNames"
+                                                Style="width: 100%; min-width: 160px;"
+                                                Placeholder="Select a state" />
+                            </td>
+                            <td>
+                                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem">
+                                    <RadzenButton Size="ButtonSize.Small"
+                                                  Variant="Variant.Text"
+                                                  Text="Set"
+                                                  Click="() => SetState(service, callerType)" />
+                                    <RadzenButton Size="ButtonSize.Small"
+                                                  Variant="Variant.Text"
+                                                  Text="Reset"
+                                                  Click="() => ResetState(service, callerType)" />
+                                </RadzenStack>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        }
+    </tbody>
+</table>
 
 @code {
     private List<ServiceDefinition> _services = [];
-    private readonly Dictionary<ServiceDefinition, string> _selectedStates = new();
-    private readonly Dictionary<ServiceDefinition, string> _appliedStates = new();
+    private readonly Dictionary<string, string> _selectedStates = new(); // key = interactive/prefix/callerType
+    private readonly HashSet<string> _expandedServices = new();
 
     protected override void OnInitialized()
     {
         _services = ServiceRegistry.Definitions.ToList();
 
-        foreach (var s in _services)
+        for (var i = 0; i < _services.Count; i++)
         {
-            var initialState = s.DefaultState ?? WellKnownState.Default;
+            var service = _services[i];
 
-            _selectedStates[s] = initialState;
-            _appliedStates[s] = initialState;
+            foreach (var fragment in service.ServiceFragments)
+            {
+                foreach (var mapping in fragment.Mappings)
+                {
+                    var key = $"interactive/{service.Prefix}/{mapping.CallerType}";
+
+                    if (service.StateOverrides.TryGetValue(key, out var overriddenState))
+                    {
+                        _selectedStates[key] = overriddenState;
+                    }
+                    else
+                    {
+                        _selectedStates[key] = WellKnownState.Default;
+                    }
+                }
+            }
+
+            if (i == 0)
+                _expandedServices.Add(service.Name);
         }
     }
 
-    private void SetState(ServiceDefinition service)
+    private void SetState(ServiceDefinition service, string callerType)
     {
-        var selected = _selectedStates[service];
-        _appliedStates[service] = selected;
+        var key = $"interactive/{service.Prefix}/{callerType}";
 
-        service.DefaultState = selected;
+        if (_selectedStates.TryGetValue(key, out var selected))
+        {
+            service.AddStateOverride("interactive", service.Prefix, callerType, selected);
+        }
     }
 
-    private void ResetState(ServiceDefinition service)
+    private void ResetState(ServiceDefinition service, string callerType)
     {
-        _selectedStates[service] = WellKnownState.Default;
-        _appliedStates[service] = WellKnownState.Default;
+        var key = $"interactive/{service.Prefix}/{callerType}";
 
-        service.DefaultState = WellKnownState.Default;
+        _selectedStates[key] = WellKnownState.Default;
+        service.AddStateOverride("interactive", service.Prefix, callerType, WellKnownState.Default);
     }
 
+    private void ToggleServiceExpansion(ServiceDefinition service)
+    {
+        if (_expandedServices.Contains(service.Name))
+            _expandedServices.Remove(service.Name);
+        else
+            _expandedServices.Add(service.Name);
+    }
+
+    private BadgeStyle GetBadgeStyleForMethod(string method)
+    {
+        return method.ToUpperInvariant() switch
+        {
+            "GET" => BadgeStyle.Success,
+            "POST" => BadgeStyle.Info,
+            "PUT" => BadgeStyle.Warning,
+            "DELETE" => BadgeStyle.Danger,
+            "PATCH" => BadgeStyle.Dark,
+            "OPTIONS" => BadgeStyle.Secondary,
+            "HEAD" => BadgeStyle.Secondary,
+            _ => BadgeStyle.Base
+        };
+    }
+
+    private int GetMethodSortOrder(string method)
+    {
+        return method.ToUpperInvariant() switch
+        {
+            "GET" => 0,
+            "POST" => 1,
+            "PUT" => 2,
+            "DELETE" => 3,
+            _ => 4
+        };
+    }
 }

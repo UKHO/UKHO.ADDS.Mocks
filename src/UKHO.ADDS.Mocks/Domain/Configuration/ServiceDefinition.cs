@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
+﻿using System.Collections.Concurrent;
+using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
 using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Domain.Configuration
@@ -12,6 +13,8 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
         private readonly List<ServiceFragment> _serviceFragments;
         private readonly List<StateDefinition> _states;
 
+        private readonly ConcurrentDictionary<string, string> _stateOverrides;
+
         private string? _error;
 
         public ServiceDefinition(string prefix, string name, IEnumerable<StateDefinition> states)
@@ -22,6 +25,8 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
             _serviceFiles = [];
             _serviceFragments = [];
+
+            _stateOverrides = new ConcurrentDictionary<string, string>();
 
             _states.Add(new StateDefinition(WellKnownState.Default, "The default state (whatever your endpoint returns without state)"));
             _states.Add(new StateDefinition(WellKnownState.NotFound, "Returns Not Found (404)"));
@@ -49,14 +54,30 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal IEnumerable<ServiceFile> ServiceFiles => _serviceFiles;
 
-        internal string DefaultState { get; set; } = WellKnownState.Default;
+        internal IReadOnlyDictionary<string, string> StateOverrides => _stateOverrides;
+
+        //internal string DefaultState { get; set; } = WellKnownState.Default;
 
         internal void SetError(string error) => _error = error;
-
 
         internal void AddState(string state, string description) => AddState(new StateDefinition(state, description));
 
         internal void AddState(StateDefinition state) => _states.Insert(0, state);
+
+        internal void AddStateOverride(string sessionId, string prefix, string endpointName, string state)
+        {
+            var key = $"{sessionId}/{prefix}/{endpointName}";
+
+            if (state == WellKnownState.Default)
+            {
+                _stateOverrides.Remove(key, out _);
+            }
+            else
+            {
+                _stateOverrides[key] = state;
+            }
+        }
+
 
         internal void AddServiceMockTypes(IDictionary<string, (Type type, bool isOverride)> serviceMockTypes)
         {

@@ -24,7 +24,7 @@ namespace UKHO.ADDS.Mocks
             IEndpointMock mockBuilder,
             Action<IMarkdownDocument> descriptionBuilder)
         {
-            builder = builder.WithRequiredHeader(mockBuilder, ServiceEndpointMock.HeaderKey, "Set the ADDS Mock state for this request");
+            builder = builder.WithRequiredHeader(mockBuilder, ServiceEndpointMock.PerRequestHeaderKey, "Set the ADDS Mock state for this request");
 
             var fragment = ((EndpointMockBuilder)mockBuilder).Fragment;
 

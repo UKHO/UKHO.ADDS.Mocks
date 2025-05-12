@@ -6,21 +6,38 @@ namespace UKHO.ADDS.Mocks
 {
     public abstract class ServiceEndpointMock
     {
-        internal const string HeaderKey = "x-addsmockstate";
+        internal const string PerRequestHeaderKey = "x-addsmockstate";
+        internal const string PerEndpointHeaderKey = "x-addsmockstateendpoint";
+
         private ServiceDefinition? _definition;
 
         public abstract void RegisterSingleEndpoint(IEndpointMock endpoint);
 
         protected string GetState(HttpRequest request)
         {
-            if (_definition!.DefaultState != WellKnownState.Default)
+            if (_definition == null)
             {
-                return _definition.DefaultState;
+                return WellKnownState.Default;
             }
 
-            if (request.Headers.TryGetValue(HeaderKey, out var value))
+            // Check per-session (developer-set, flows)
+            var sessionId = request.Headers.TryGetValue(PerEndpointHeaderKey, out var sessionHeader)
+                ? sessionHeader.ToString()
+                : "interactive";
+
+            var callerType = GetType().Name;
+            var prefix = _definition.Prefix;
+            var key = $"{sessionId}/{prefix}/{callerType}";
+
+            if (_definition.StateOverrides.TryGetValue(key, out var sessionOverride))
             {
-                return value!;
+                return sessionOverride;
+            }
+
+            // Check per-request (unit tests)
+            if (request.Headers.TryGetValue(PerRequestHeaderKey, out var perRequestValue))
+            {
+                return perRequestValue!;
             }
 
             return WellKnownState.Default;
