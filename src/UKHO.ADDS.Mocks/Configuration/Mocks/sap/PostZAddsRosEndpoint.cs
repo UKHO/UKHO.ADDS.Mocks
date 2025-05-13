@@ -4,7 +4,7 @@ using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
 {
-    public class PostZAaddsRos : ServiceEndpointMock
+    public class PostZAddsRosEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
             endpoint.MapPost("/z_adds_ros.asmx", (HttpRequest request) =>
@@ -22,7 +22,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
                             return Results.File(file.Path, MimeType.Text.Xml);
                         }
 
-                        return Results.NotFound("Could not response xml");
+                        return Results.NotFound("Could not find response.xml");
 
                     default:
                         // Just send default responses
