@@ -8,7 +8,17 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 
         public MultipleMethodsEndpoint()
         {
-            _methods = new[] { HttpMethod.Get.ToString(), HttpMethod.Post.ToString(), HttpMethod.Head.ToString(), HttpMethod.Options.ToString() };
+            _methods = new[]
+            {
+                HttpMethod.Get.ToString(),
+                HttpMethod.Post.ToString(),
+                HttpMethod.Put.ToString(),
+                HttpMethod.Delete.ToString(),
+                HttpMethod.Head.ToString(),
+                HttpMethod.Options.ToString(),
+                HttpMethod.Patch.ToString(),
+                HttpMethod.Trace.ToString(),
+            };
         }
 
         public override void RegisterSingleEndpoint(IEndpointMock endpoint)

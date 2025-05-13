@@ -82,7 +82,7 @@
                                .OrderBy(GetMethodSortOrder))
                                 {
                                     <RadzenBadge Text="@method"
-                                                 BadgeStyle="@GetBadgeStyleForMethod(method)"
+                                                 Style="@GetBadgeColorStyleForMethod(method)"
                                                  class="rz-mr-1" />
                                 }
                             </td>
@@ -173,18 +173,19 @@
             _expandedServices.Add(service.Name);
     }
 
-    private BadgeStyle GetBadgeStyleForMethod(string method)
+    private string GetBadgeColorStyleForMethod(string method)
     {
         return method.ToUpperInvariant() switch
         {
-            "GET" => BadgeStyle.Success,
-            "POST" => BadgeStyle.Info,
-            "PUT" => BadgeStyle.Warning,
-            "DELETE" => BadgeStyle.Danger,
-            "PATCH" => BadgeStyle.Dark,
-            "OPTIONS" => BadgeStyle.Secondary,
-            "HEAD" => BadgeStyle.Secondary,
-            _ => BadgeStyle.Base
+            "GET" => "background-color: #007bff; color: white;",       // Blue
+            "POST" => "background-color: #28a745; color: white;",      // Green
+            "PUT" => "background-color: #fd7e14; color: white;",       // Orange
+            "DELETE" => "background-color: #dc3545; color: white;",    // Red
+            "PATCH" => "background-color: #ffc107; color: black;",     // Yellow
+            "OPTIONS" => "background-color: #6f42c1; color: white;",   // Purple
+            "HEAD" => "background-color: #adb5bd; color: black;",      // Light Gray
+            "TRACE" => "background-color: #adb5bd; color: black;",     // Light Gray
+            _ => "background-color: #e0e0e0; color: black;"            // Default neutral
         };
     }
 
