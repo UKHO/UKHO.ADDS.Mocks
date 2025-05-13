@@ -37,9 +37,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         {
             EnsureNoMappingAndSet();
 
-            var callerType = GetCallerTypeName();
+            var endpointName = GetEndpointName();
 
-            Fragment.RecordMapping("GET", pattern, callerType);
+            Fragment.RecordMapping("GET", pattern, endpointName);
             return _group.MapGet(pattern, handler).WithTags(_tagName);
         }
 
@@ -47,9 +47,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         {
             EnsureNoMappingAndSet();
 
-            var callerType = GetCallerTypeName();
+            var endpointName = GetEndpointName();
 
-            Fragment.RecordMapping("POST", pattern, callerType);
+            Fragment.RecordMapping("POST", pattern, endpointName);
             return _group.MapPost(pattern, handler).WithTags(_tagName);
         }
 
@@ -57,9 +57,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         {
             EnsureNoMappingAndSet();
 
-            var callerType = GetCallerTypeName();
+            var endpointName = GetEndpointName();
 
-            Fragment.RecordMapping("PUT", pattern, callerType);
+            Fragment.RecordMapping("PUT", pattern, endpointName);
             return _group.MapPut(pattern, handler).WithTags(_tagName);
         }
 
@@ -67,9 +67,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         {
             EnsureNoMappingAndSet();
 
-            var callerType = GetCallerTypeName();
+            var endpointName = GetEndpointName();
 
-            Fragment.RecordMapping("PATCH", pattern, callerType);
+            Fragment.RecordMapping("PATCH", pattern, endpointName);
             return _group.MapPatch(pattern, handler).WithTags(_tagName);
         }
 
@@ -77,9 +77,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         {
             EnsureNoMappingAndSet();
 
-            var callerType = GetCallerTypeName();
+            var endpointName = GetEndpointName();
 
-            Fragment.RecordMapping("DELETE", pattern, callerType);
+            Fragment.RecordMapping("DELETE", pattern, endpointName);
             return _group.MapDelete(pattern, handler).WithTags(_tagName);
         }
 
@@ -88,7 +88,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             EnsureNoMappingAndSet();
             var methods = httpMethods.ToList();
 
-            var callerType = GetCallerTypeName();
+            var callerType = GetEndpointName();
 
             foreach (var method in methods)
             {
@@ -123,7 +123,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             return tag;
         }
 
-        private static string GetCallerTypeName()
+        private static string GetEndpointName()
         {
             var stackTrace = new StackTrace();
 
@@ -138,7 +138,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
                 }
             }
 
-            throw new Exception("Could not determine calling type");
+            throw new Exception("Could not determine endpoint name");
         }
     }
 }

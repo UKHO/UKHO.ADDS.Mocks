@@ -50,9 +50,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 
         public IEndpointMock CreateBuilder(RouteGroupBuilder groupBuilder) => new EndpointMockBuilder(groupBuilder, this);
 
-        internal void RecordMapping(string httpMethod, string pattern, string callerType)
+        internal void RecordMapping(string httpMethod, string pattern, string endpointName)
         {
-            _mappings.Add(new MappingInfo(httpMethod, pattern, callerType));
+            _mappings.Add(new MappingInfo(httpMethod, pattern, endpointName));
         }
     }
 }

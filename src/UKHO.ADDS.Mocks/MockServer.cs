@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Radzen;
 using Scalar.AspNetCore;
 using Serilog;
+using Serilog.Events;
 using UKHO.ADDS.Mocks.Dashboard;
 using UKHO.ADDS.Mocks.Dashboard.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
@@ -18,13 +19,36 @@ namespace UKHO.ADDS.Mocks
     {
         public static async Task RunAsync(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateBootstrapLogger();
+
             MockServices.AddServices();
 
             var appContextBase = AppContext.BaseDirectory;
 
             var builder = WebApplication.CreateBuilder(new WebApplicationOptions { Args = args, ContentRootPath = appContextBase });
 
-            builder.Host.UseSerilog((context, services, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
+            var oltpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]!;
+
+            builder.Services.AddSerilog((services, lc) => lc
+                .ReadFrom.Configuration(builder.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext()
+                .WriteTo.OpenTelemetry(o =>
+                {
+                    o.Endpoint = oltpEndpoint;
+                })
+                .WriteTo.Console()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Hosting.Diagnostics", LogEventLevel.Error)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Error)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Error)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+                .MinimumLevel.Override("Azure.Core", LogEventLevel.Fatal)
+                .MinimumLevel.Override("Azure.Storage.Blobs", LogEventLevel.Fatal)
+                .MinimumLevel.Override("Azure.Storage.Queues", LogEventLevel.Warning));
 
             builder.WebHost.UseStaticWebAssets();
 

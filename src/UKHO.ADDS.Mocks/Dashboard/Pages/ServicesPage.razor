@@ -57,7 +57,7 @@
                         var relativePath = $"/{service.Prefix.Trim('/')}{group.Key}";
                         var isOverride = fragment.IsOverride;
 
-                        var callerType = group.First().CallerType;
+                        var callerType = group.First().EndpointName;
                         var overrideKey = $"interactive/{service.Prefix}/{callerType}";
                         var currentState = _selectedStates.TryGetValue(overrideKey, out var val)
                         ? val
@@ -125,7 +125,7 @@
             {
                 foreach (var mapping in fragment.Mappings)
                 {
-                    var key = $"interactive/{service.Prefix}/{mapping.CallerType}";
+                    var key = $"interactive/{service.Prefix}/{mapping.EndpointName}";
 
                     if (service.StateOverrides.TryGetValue(key, out var overriddenState))
                     {
