@@ -10,7 +10,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         private readonly string _name;
         private readonly Type _type;
 
-        private readonly ConcurrentBag<MappingInfo> _mappings;
+        private readonly ConcurrentBag<EndpointMappingInfo> _mappings;
 
         public ServiceFragment(ServiceDefinition definition, string name, Type type, bool isOverride)
         {
@@ -19,7 +19,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             _type = type;
             _isOverride = isOverride;
 
-            _mappings = new ConcurrentBag<MappingInfo>();
+            _mappings = new ConcurrentBag<EndpointMappingInfo>();
         }
 
         public string Name => _name;
@@ -34,7 +34,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 
         internal ServiceDefinition Definition { get; }
 
-        public IEnumerable<MappingInfo> Mappings => _mappings;
+        public IEnumerable<EndpointMappingInfo> Mappings => _mappings;
 
         public IResult<IServiceFile> GetFilePath(string fileName)
         {
@@ -52,7 +52,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 
         internal void RecordMapping(string httpMethod, string pattern, string endpointName)
         {
-            _mappings.Add(new MappingInfo(httpMethod, pattern, endpointName));
+            _mappings.Add(new EndpointMappingInfo(httpMethod, pattern, endpointName));
         }
     }
 }
