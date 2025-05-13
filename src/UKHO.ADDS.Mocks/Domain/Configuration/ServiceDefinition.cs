@@ -56,8 +56,6 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal IReadOnlyDictionary<string, string> StateOverrides => _stateOverrides;
 
-        //internal string DefaultState { get; set; } = WellKnownState.Default;
-
         internal void SetError(string error) => _error = error;
 
         internal void AddState(string state, string description) => AddState(new StateDefinition(state, description));
