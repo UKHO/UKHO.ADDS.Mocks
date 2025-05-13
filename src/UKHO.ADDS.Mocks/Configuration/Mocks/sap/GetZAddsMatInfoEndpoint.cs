@@ -3,7 +3,7 @@ using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
 {
-    public class GetZAddsMatInfo : ServiceEndpointMock
+    public class GetZAddsMatInfoEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
             endpoint.MapGet("/z_adds_mat_info.asmx", (HttpRequest request) =>

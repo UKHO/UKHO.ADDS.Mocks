@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Infrastructure.Results;
+﻿using System.Diagnostics;
+using UKHO.ADDS.Infrastructure.Results;
 
 namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
@@ -35,38 +36,68 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         public RouteHandlerBuilder MapGet(string pattern, Delegate handler)
         {
             EnsureNoMappingAndSet();
+
+            var endpointName = GetEndpointName();
+
+            Fragment.RecordMapping("GET", pattern, endpointName);
             return _group.MapGet(pattern, handler).WithTags(_tagName);
         }
 
         public RouteHandlerBuilder MapPost(string pattern, Delegate handler)
         {
             EnsureNoMappingAndSet();
+
+            var endpointName = GetEndpointName();
+
+            Fragment.RecordMapping("POST", pattern, endpointName);
             return _group.MapPost(pattern, handler).WithTags(_tagName);
         }
 
         public RouteHandlerBuilder MapPut(string pattern, Delegate handler)
         {
             EnsureNoMappingAndSet();
+
+            var endpointName = GetEndpointName();
+
+            Fragment.RecordMapping("PUT", pattern, endpointName);
             return _group.MapPut(pattern, handler).WithTags(_tagName);
         }
 
         public RouteHandlerBuilder MapPatch(string pattern, Delegate handler)
         {
             EnsureNoMappingAndSet();
+
+            var endpointName = GetEndpointName();
+
+            Fragment.RecordMapping("PATCH", pattern, endpointName);
             return _group.MapPatch(pattern, handler).WithTags(_tagName);
         }
 
         public RouteHandlerBuilder MapDelete(string pattern, Delegate handler)
         {
             EnsureNoMappingAndSet();
+
+            var endpointName = GetEndpointName();
+
+            Fragment.RecordMapping("DELETE", pattern, endpointName);
             return _group.MapDelete(pattern, handler).WithTags(_tagName);
         }
 
         public RouteHandlerBuilder MapMethods(string pattern, IEnumerable<string> httpMethods, Delegate handler)
         {
             EnsureNoMappingAndSet();
-            return _group.MapMethods(pattern, httpMethods, handler).WithTags(_tagName);
+            var methods = httpMethods.ToList();
+
+            var callerType = GetEndpointName();
+
+            foreach (var method in methods)
+            {
+                Fragment.RecordMapping(method.ToUpperInvariant(), pattern, callerType);
+            }
+
+            return _group.MapMethods(pattern, methods, handler).WithTags(_tagName);
         }
+
 
         public IResult<IServiceFile> GetFile(string fileName) => Fragment.GetFilePath(fileName);
 
@@ -90,6 +121,24 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             }
 
             return tag;
+        }
+
+        private static string GetEndpointName()
+        {
+            var stackTrace = new StackTrace();
+
+            for (var i = 1; i < stackTrace.FrameCount; i++)
+            {
+                var method = stackTrace.GetFrame(i)?.GetMethod();
+                var declaringType = method?.DeclaringType;
+
+                if (declaringType != null && declaringType != typeof(EndpointMockBuilder) && !declaringType.FullName.StartsWith("System.") && !declaringType.FullName.StartsWith("Microsoft."))
+                {
+                    return declaringType.Name!;
+                }
+            }
+
+            throw new Exception("Could not determine endpoint name");
         }
     }
 }

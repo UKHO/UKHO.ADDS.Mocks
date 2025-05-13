@@ -7,8 +7,13 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
     internal class MappingService
     {
         private readonly IFileSystem _fileSystem;
+        private readonly ILogger<ServiceEndpointMock> _logger;
 
-        public MappingService(IFileSystem fileSystem) => _fileSystem = fileSystem;
+        public MappingService(IFileSystem fileSystem, ILogger<ServiceEndpointMock> logger)
+        {
+            _fileSystem = fileSystem;
+            _logger = logger;
+        }
 
         public Task ApplyDefinitionsAsync(WebApplication app, CancellationToken cancellationToken)
         {
@@ -25,6 +30,8 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                         var serviceMock = (ServiceEndpointMock)Activator.CreateInstance(serviceFragment.Type)!;
 
                         serviceMock.SetDefinition(definition);
+                        serviceMock.SetLogger(_logger);
+
                         serviceMock.RegisterSingleEndpoint(serviceFragment.CreateBuilder(group));
                     }
                 }
