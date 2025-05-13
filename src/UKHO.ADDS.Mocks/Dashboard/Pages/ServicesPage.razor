@@ -65,7 +65,10 @@
 
                         <tr>
                             <td>
-                                @relativePath
+                                <span style="@(service.StateOverrides.TryGetValue(overrideKey, out var overrideVal) && overrideVal != WellKnownState.Default
+                                                 ? "color: red;" : "color: inherit;")">
+                                    @relativePath
+                                </span>
                                 @if (isOverride)
                                 {
                                     <RadzenBadge Text="Override" BadgeStyle="BadgeStyle.Success" class="rz-ml-2" />
