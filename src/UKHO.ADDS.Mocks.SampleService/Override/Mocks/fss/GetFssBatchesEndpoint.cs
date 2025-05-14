@@ -18,7 +18,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss
                             return FssResponseGenerator.ProvideSearchFilterResponse(request);
 
                         default:
-                            // Just send default responses
+                            // Just send default responsesf
                             return WellKnownStateHandler.HandleWellKnownState(state);
                     }
                 })
