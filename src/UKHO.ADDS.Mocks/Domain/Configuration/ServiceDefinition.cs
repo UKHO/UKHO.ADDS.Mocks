@@ -34,6 +34,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             _states.Add(new StateDefinition(WellKnownState.BadRequest, "Returns Bad Request (400)"));
             _states.Add(new StateDefinition(WellKnownState.Conflict, "Returns Conflict (409)"));
             _states.Add(new StateDefinition(WellKnownState.Forbidden, "Returns Forbidden (403)"));
+            _states.Add(new StateDefinition(WellKnownState.UnsupportedMediaType, "Returns Unsupported Media Type (415)"));
             _states.Add(new StateDefinition(WellKnownState.InternalServerError, "Returns Internal Server Error (500)"));
             _states.Add(new StateDefinition(WellKnownState.Unauthorized, "Returns Unauthorized (401)"));
         }

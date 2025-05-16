@@ -12,6 +12,7 @@ namespace UKHO.ADDS.Mocks.States
         public const string NotFound = "notfound";
         public const string NotModified = "notmodified";
         public const string Conflict = "conflict";
+        public const string UnsupportedMediaType = "unsupportedmediatype";
         public const string InternalServerError = "internalservererror";
     }
 }

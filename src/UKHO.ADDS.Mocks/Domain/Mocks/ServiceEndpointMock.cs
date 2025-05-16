@@ -49,7 +49,17 @@ namespace UKHO.ADDS.Mocks
             return WellKnownState.Default;
         }
 
-        internal void SetDefinition(ServiceDefinition definition) => _definition = definition;
+        protected void EchoHeaders(HttpRequest request, HttpResponse response, string[] headers)
+        {
+            foreach (var header in request.Headers
+                         .Where(h => headers.Contains(h.Key, StringComparer.OrdinalIgnoreCase)))
+            {
+                response.Headers[header.Key] = header.Value;
+            }
+        }
+
+
+    internal void SetDefinition(ServiceDefinition definition) => _definition = definition;
 
         internal void SetLogger(ILogger<ServiceEndpointMock> logger) => _logger = logger;
     }
