@@ -1,9 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>UKHO.ADDS.Mocks.Client</PackageId>
+    <Version>1.0.0-alpha.2</Version>
+    <Company>UK Hydrographics</Company>
+    <Authors>UK Hydrographics</Authors>
+    <Description>what this is for</Description>
+    <GenerateAppxPackageOnBuild>true</GenerateAppxPackageOnBuild>
+    
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

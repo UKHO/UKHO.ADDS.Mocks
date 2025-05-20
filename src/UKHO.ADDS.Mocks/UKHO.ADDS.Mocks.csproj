@@ -1,6 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <PackageId>UKHO.ADDS.Mocks</PackageId>
+    <Version>1.0.0-alpha.2.1.0</Version>
+    <Company>UK Hydrographics</Company>
+    <Authors>UK Hydrographics</Authors>
+    <Description>what this is for</Description>
+    <IsPackable>true</IsPackable>
+    <RazorStaticWebAssetsEnabled>true</RazorStaticWebAssetsEnabled>
+    <GenerateAppxPackageOnBuild>true</GenerateAppxPackageOnBuild>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -23,6 +34,14 @@
     <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="wwwroot\**\*">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles\any\any\wwwroot\%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
