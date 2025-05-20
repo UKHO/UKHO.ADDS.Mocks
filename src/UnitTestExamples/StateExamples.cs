@@ -13,7 +13,6 @@ namespace UnitTestExamples
 
         public StateExamples() => _factory = new MockHttpClientFactory();
 
-        [Fact]
         public async Task SetMockToDefaultState()
         {
             var client = _factory.CreateClient();
@@ -26,7 +25,6 @@ namespace UnitTestExamples
             Assert.True(response.StatusCode == HttpStatusCode.OK);
         }
 
-        [Fact]
         public async Task SetMockToUnauthorisedState()
         {
             var client = _factory.CreateClient();
@@ -42,7 +40,6 @@ namespace UnitTestExamples
             Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
         }
 
-        [Fact]
         public async Task SetMockToCustomState()
         {
             var client = _factory.CreateClient();
