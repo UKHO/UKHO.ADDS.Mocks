@@ -14,7 +14,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 {
                     case WellKnownState.Default:
 
-                        return Results.Ok("Healthy");
+                        return Results.Ok("Healthy!");
 
                     default:
                         // Just send default responses
