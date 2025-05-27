@@ -30,7 +30,13 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 switch (state)
                 {
                     case WellKnownState.Default:
-                        var result = new { uri = $"/batch/{batchId}/status" };
+                        var result = new
+                        {
+                            status = new
+                            {
+                                uri = $"/batch/{batchId}/status"
+                            }
+                        };
                         return Results.Accepted("",result);
 
                     case WellKnownState.BadRequest:
