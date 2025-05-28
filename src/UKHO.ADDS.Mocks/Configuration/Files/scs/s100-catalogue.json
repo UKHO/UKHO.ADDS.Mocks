@@ -5,7 +5,7 @@
     "latestUpdateNumber": 0,
     "status": {
       "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusDate": "2024-11-18T11:20:30.45Z"
     }
   },
   {
@@ -14,151 +14,52 @@
     "latestUpdateNumber": 0,
     "status": {
       "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusDate": "2025-03-16T12:21:30.45Z"
     }
   },
   {
     "productName": "101GB005DEVQF",
-    "latestEditionNumber": 1,
+    "latestEditionNumber": 3,
     "latestUpdateNumber": 0,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB005DEVQG",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB005DEVQG",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 1,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB005DEVQG",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 2,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB005DEVQH",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB005DEVRF",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB005DEVRG",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB0032450A",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB0061021A",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB00302045",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB00302454",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB00410100",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB00410300",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB00410400",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "101GB00510110",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "newEdition",
+      "statusDate": "2024-02-29T13:22:30.45Z"
     }
   },
   {
     "productName": "101GB00510210",
-    "latestEditionNumber": 1,
+    "latestEditionNumber": 2,
     "latestUpdateNumber": 0,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "newEdition",
+      "statusDate": "2024-07-16T18:20:30.45Z"
+    }
+  },
+  {
+    "productName": "101FR005DEVQG",
+    "latestEditionNumber": 1,
+    "latestUpdateNumber": 1,
+    "status": {
+      "statusName": "update",
+      "statusDate": "2024-12-31T19:20:30.45Z"
+    }
+  },
+  {
+    "productName": "101GBDT5DEVQG",
+    "latestEditionNumber": 1,
+    "latestUpdateNumber": 2,
+    "status": {
+      "statusName": "update",
+      "statusDate": "2024-02-29T18:21:31.49Z"
+    }
+  },
+  {
+    "productName": "101CA005DEVRF",
+    "latestEditionNumber": 3,
+    "latestUpdateNumber": 2,
+    "status": {
+      "statusName": "cancellation",
+      "statusDate": "2024-12-31T10:21:31.45Z"
     }
   },
   {
@@ -167,34 +68,7 @@
     "latestUpdateNumber": 0,
     "status": {
       "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "102GBTD5N4940W00260",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "102GBTD5N5040W00130",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "102GBTD5N5040W00140",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusDate": "2025-01-02T18:20:30.45Z"
     }
   },
   {
@@ -203,79 +77,52 @@
     "latestUpdateNumber": 0,
     "status": {
       "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusDate": "2025-02-25T18:20:30.45Z"
+    }
+  },
+  {
+    "productName": "102GBTD5N4940W00260",
+    "latestEditionNumber": 2,
+    "latestUpdateNumber": 0,
+    "status": {
+      "statusName": "newEdition",
+      "statusDate": "2025-02-10T18:20:30.45Z"
     }
   },
   {
     "productName": "102GBTD5N5050W00130",
-    "latestEditionNumber": 1,
+    "latestEditionNumber": 3,
     "latestUpdateNumber": 0,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "newEdition",
+      "statusDate": "2025-01-01T18:20:30.45Z"
     }
   },
   {
-    "productName": "102GBTD5N5060W00110",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
+    "productName": "102CA005N5040W00130",
+    "latestEditionNumber": 3,
+    "latestUpdateNumber": 1,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "cancellation",
+      "statusDate": "2024-12-3118:20:30.45Z"
     }
   },
   {
-    "productName": "102GBTD5N5060W00120",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
+    "productName": "102CA005N5040W00140",
+    "latestEditionNumber": 2,
+    "latestUpdateNumber": 1,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "cancellation",
+      "statusDate": "2025-03-09T18:20:30.45Z"
     }
   },
   {
-    "productName": "102GBTD5N5070W00110",
+    "productName": "104GB00_20241103T001500Z_GB3DDZN0_dcf2_20210630_0600_ches_def",
     "latestEditionNumber": 1,
     "latestUpdateNumber": 0,
     "status": {
       "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "102GBTD5N5070W00120",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "102GBTD5N5080W00110",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "102GBTD5N5080W00120",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "104GB00_20241103T001500Z_GB3DDZN0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusDate": "2025-04-11T18:20:30.45Z"
     }
   },
   {
@@ -289,92 +136,47 @@
   },
   {
     "productName": "104GB00_20241103T001500Z_GB3DEVF0_dcf2",
-    "latestEditionNumber": 1,
+    "latestEditionNumber": 3,
     "latestUpdateNumber": 0,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "newEdition",
+      "statusDate": "2025-02-16T18:20:30.45Z"
     }
   },
   {
     "productName": "104GB00_20241103T001500Z_GB3DEVG0_dcf2",
-    "latestEditionNumber": 1,
+    "latestEditionNumber": 4,
     "latestUpdateNumber": 0,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "newEdition",
+      "statusDate": "2025-03-11T18:20:30.45Z"
     }
   },
   {
-    "productName": "104GB00_20241103T001500Z_GB3DEVK0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
+    "productName": "104CA00_20241103T001500Z_GB3DEVK0_dcf2",
+    "latestEditionNumber": 2,
+    "latestUpdateNumber": 1,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "cancellation",
+      "statusDate": "2025-01-16T18:20:30.45Z"
     }
   },
   {
-    "productName": "104GB00_20241103T001500Z_GB3DEVQ0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
+    "productName": "104CA00_20241103T001500Z_GB3DEVQ0_dcf2",
+    "latestEditionNumber": 3,
+    "latestUpdateNumber": 1,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "cancellation",
+      "statusDate": "2025-01-16T18:20:30.45Z"
     }
-  },
-  {
-    "productName": "104GB00_20241103T001500Z_GB3DEVR0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "104GB00_20241103T001500Z_GB3DEVV0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "104GB00_20241103T001500Z_GB3DEVW0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "104GB00_20241103T001500Z_GB3DDZI0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "104GB00_20241103T001500Z_GB3DDZJ0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
+  },  
   {
     "productName": "111GB00_20241217T001500Z_GB3DDZP0_dcf2",
     "latestEditionNumber": 1,
     "latestUpdateNumber": 0,
     "status": {
       "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusDate": "2025-04-18T18:20:30.45Z"
     }
   },
   {
@@ -387,84 +189,39 @@
     }
   },
   {
-    "productName": "111GB00_20241217T001500Z_GB3DEVG0_dcf2",
-    "latestEditionNumber": 1,
+    "productName": "111FR00_20241217T001500Z_GB3DEVG0_dcf2_20210630_0600_ches_def",
+    "latestEditionNumber": 2,
     "latestUpdateNumber": 0,
     "status": {
-      "statusName": "newDataset",
+      "statusName": "newEdition",
+      "statusDate": "2025-01-16T18:20:30.45Z"
+    }
+  },
+  {
+    "productName": "111FR00_20241217T001500Z_GB3DEVK0_dcf2",
+    "latestEditionNumber": 3,
+    "latestUpdateNumber": 0,
+    "status": {
+      "statusName": "newEdition",
       "statusDate": "2023-07-16T18:20:30.45Z"
     }
   },
   {
-    "productName": "111GB00_20241217T001500Z_GB3DEVK0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
+    "productName": "111CA00_20241217T001500Z_GB3DEVQ0_dcf2",
+    "latestEditionNumber": 2,
+    "latestUpdateNumber": 1,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "cancellation",
+      "statusDate": "2025-02-16T18:20:30.45Z"
     }
   },
   {
-    "productName": "111GB00_20241217T001500Z_GB3DEVQ0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
+    "productName": "111CA00_20241217T001500Z_GB3DEVR0_dcf2",
+    "latestEditionNumber": 3,
+    "latestUpdateNumber": 1,
     "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
+      "statusName": "cancellation",
+      "statusDate": "2025-04-16T18:20:30.45Z"
     }
-  },
-  {
-    "productName": "111GB00_20241217T001500Z_GB3DEVR0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "111GB00_20241217T001500Z_GB3DEVV0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "111GB00_20241217T001500Z_GB3DEVW0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "111GB00_20241217T001500Z_GB3DDZI0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "111GB00_20241217T001500Z_GB3DDZJ0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  },
-  {
-    "productName": "111GB00_20241217T001500Z_GB3DDZN0_dcf2",
-    "latestEditionNumber": 1,
-    "latestUpdateNumber": 0,
-    "status": {
-      "statusName": "newDataset",
-      "statusDate": "2023-07-16T18:20:30.45Z"
-    }
-  }
+  }  
 ]
