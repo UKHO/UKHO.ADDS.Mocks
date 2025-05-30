@@ -7,15 +7,21 @@ namespace UKHO.ADDS.Mocks.States
         public static IResult HandleWellKnownState(string state) =>
             state switch
             {
+                WellKnownState.TooManyRequests => Results.StatusCode(StatusCodes.Status429TooManyRequests),
+                WellKnownState.TemporaryRedirect => Results.StatusCode(StatusCodes.Status307TemporaryRedirect),
+                WellKnownState.Gone => Results.StatusCode(StatusCodes.Status410Gone),
+                WellKnownState.RangeNotSatisfiable => Results.StatusCode(StatusCodes.Status416RangeNotSatisfiable),
+                WellKnownState.Forbidden => Results.StatusCode(StatusCodes.Status403Forbidden),
+                WellKnownState.UnsupportedMediaType => Results.StatusCode(StatusCodes.Status415UnsupportedMediaType),
+                WellKnownState.NotModified => Results.StatusCode(StatusCodes.Status304NotModified),
+                WellKnownState.Conflict => Results.Conflict("Conflict occurred"),
+                WellKnownState.NotFound => Results.NotFound("Not found"),
                 WellKnownState.BadRequest => Results.BadRequest("Bad request"),
                 WellKnownState.Unauthorized => Results.Unauthorized(),
-                WellKnownState.Forbidden => Results.StatusCode(403),
-                WellKnownState.NotFound => Results.NotFound("Not found"),
-                WellKnownState.NotModified => Results.StatusCode(304),
-                WellKnownState.Conflict => Results.Conflict("Conflict occurred"),
-                WellKnownState.UnsupportedMediaType => Results.StatusCode(415),
-                WellKnownState.InternalServerError => Results.StatusCode(500),
+                WellKnownState.InternalServerError => Results.InternalServerError(),
+                WellKnownState.ImATeapot => Results.StatusCode(StatusCodes.Status418ImATeapot),
                 _ => Results.NotFound("You must handle the default state in your endpoint")
+
             };
     }
 }

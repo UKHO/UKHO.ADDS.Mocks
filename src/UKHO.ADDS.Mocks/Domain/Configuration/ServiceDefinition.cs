@@ -37,6 +37,11 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             _states.Add(new StateDefinition(WellKnownState.UnsupportedMediaType, "Returns Unsupported Media Type (415)"));
             _states.Add(new StateDefinition(WellKnownState.InternalServerError, "Returns Internal Server Error (500)"));
             _states.Add(new StateDefinition(WellKnownState.Unauthorized, "Returns Unauthorized (401)"));
+            _states.Add(new StateDefinition(WellKnownState.TooManyRequests, "Returns Too Many Requests (429)"));
+            _states.Add(new StateDefinition(WellKnownState.TemporaryRedirect, "Returns Temporary Redirect (307)"));
+            _states.Add(new StateDefinition(WellKnownState.Gone, "Returns Gone (410)"));
+            _states.Add(new StateDefinition(WellKnownState.RangeNotSatisfiable, "Returns Range Not Satisfiable (416)"));
+            _states.Add(new StateDefinition(WellKnownState.ImATeapot, "Returns I am a Teapot (418)"));
         }
 
         public string Prefix => _prefix;

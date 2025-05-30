@@ -14,5 +14,10 @@ namespace UKHO.ADDS.Mocks.States
         public const string Conflict = "conflict";
         public const string UnsupportedMediaType = "unsupportedmediatype";
         public const string InternalServerError = "internalservererror";
+        public const string TooManyRequests = "toomanyrequests";
+        public const string TemporaryRedirect = "temporaryredirect";
+        public const string Gone = "gone";
+        public const string RangeNotSatisfiable = "rangenotsatisfiable";
+        public const string ImATeapot = "imateapot";
     }
 }
