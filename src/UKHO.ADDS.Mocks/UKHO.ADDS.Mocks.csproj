@@ -55,4 +55,8 @@
     <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain\Admin\" />
+  </ItemGroup>
+
 </Project>

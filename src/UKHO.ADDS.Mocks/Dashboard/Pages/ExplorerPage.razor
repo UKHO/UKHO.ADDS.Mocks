@@ -2,7 +2,6 @@
 @layout DashboardLayout
 
 <style>
-    
     .scalar-container {
         position: relative;
         width: 100%;
@@ -29,10 +28,10 @@
         transition: opacity 0.3s ease-in;
     }
 
-    .scalar-placeholder.hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
+        .scalar-placeholder.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
     #scalarFrame {
         opacity: 0;
@@ -59,8 +58,8 @@
     </iframe>
 </div>
 
-
 <script>
+    // Resize the iframe to match its content
     window.resizeScalarFrame = function () {
         const iframe = document.getElementById("scalarFrame");
         if (!iframe) return;
@@ -69,7 +68,6 @@
             const doc = iframe.contentDocument || iframe.contentWindow.document;
             if (!doc || !doc.body) return;
 
-            // Resize iframe when body changes size
             const resize = () => {
                 const height = Math.max(
                     doc.body.scrollHeight,
@@ -77,69 +75,93 @@
                     doc.body.offsetHeight,
                     doc.documentElement.offsetHeight
                 );
-
                 iframe.style.height = height + "px";
-                console.log("Iframe resized to:", height);
             };
 
             new ResizeObserver(resize).observe(doc.body);
-            resize(); // initial resize
+            resize();
 
             const observer = new MutationObserver(() => {
-
+                // Hide Scalar's internal footer
                 const footer = doc.querySelector(".flex.flex-col.gap-3.p-3.border-t.darklight-reference");
                 if (footer && !footer.dataset.hidden) {
-
                     const toggleButton = footer.querySelector("button[aria-pressed]");
-
                     if (toggleButton?.getAttribute("aria-pressed") === "false") {
                         toggleButton.click();
-                        console.log("Dark theme toggled");
                     }
-
                     footer.style.display = "none";
                     footer.dataset.hidden = "true";
-                    console.log("Footer hidden");
                 }
 
-                const buttons = doc.querySelectorAll("button.show-api-client-button");
-                    buttons.forEach(button => {
-
-                        if (!button.dataset.scrollHookAttached) {
-
-                            button.dataset.scrollHookAttached = "true";
-                            button.addEventListener("click", function () {
-                                // Run AFTER Scalar’s default handling
-                                setTimeout(() => {
-                                    console.log("Scroll-to-top requested");
-                                    window.parent.postMessage({ scrollToTop: true }, "*");
-                                }, 0);
-                            });
-                        }
-                    });
+                // Hook up Scalar's API-client buttons to scroll-to-top
+                doc.querySelectorAll("button.show-api-client-button")
+                   .forEach(button => {
+                       if (!button.dataset.scrollHookAttached) {
+                           button.dataset.scrollHookAttached = "true";
+                           button.addEventListener("click", () => {
+                               setTimeout(() => {
+                                   window.parent.postMessage({ scrollToTop: true }, "*");
+                               }, 0);
+                           });
+                       }
+                   });
             });
 
             observer.observe(doc.body, { childList: true, subtree: true });
-
             iframe.classList.add("visible");
-            console.log("Iframe visible");
         });
     };
 
+    // Scroll the main window (or .rz-body container) to top
     window.scrollToTop = function () {
         const el = document.querySelector(".rz-body");
-
-        if (el) {
-            el.scrollTo({ top: 0, behavior: "auto" });
+        if (el && typeof el.scrollTo === "function") {
+            el.scrollTo({ top: 0, behavior: "smooth" });
         } else {
-            window.scrollTo({ top: 0, behavior: "auto" });
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 
-    window.addEventListener("message", (event) => {
+    // Inject a floating "Back to top" button into document.body
+    window.addFloatingScrollToTop = function () {
+        if (document.getElementById("floatingScrollTopBtn")) return;
 
+        const btn = document.createElement("button");
+        btn.id = "floatingScrollTopBtn";
+        btn.title = "Back to top";
+        // Use HTML entity for an up arrow
+        btn.innerHTML = "&uarr;";
+
+        Object.assign(btn.style, {
+            position: "fixed",
+            bottom: "1rem",
+            right: "1rem",
+            zIndex: "9999",
+            background: "#0078D4",
+            border: "none",
+            borderRadius: "50%",
+            width: "3rem",
+            height: "3rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontSize: "1.5rem",
+            cursor: "pointer",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+            transition: "background 0.2s ease-in-out"
+        });
+
+        btn.addEventListener("mouseover", () => btn.style.background = "#005A9E");
+        btn.addEventListener("mouseout",  () => btn.style.background = "#0078D4");
+        btn.addEventListener("click",    () => window.scrollToTop());
+
+        document.body.appendChild(btn);
+    };
+
+    // Listen for messages from the iframe
+    window.addEventListener("message", (event) => {
         if (event.data?.scrollToTop) {
-            console.log("Scroll-to-top triggered");
             window.scrollToTop();
         }
     });
@@ -148,16 +170,22 @@
 @code {
     private bool _iframeVisible;
 
+    [Inject] IJSRuntime JS { get; set; } = default!;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            // 1. Hook up iframe resizing & observers
             await JS.InvokeVoidAsync("resizeScalarFrame");
-            await Task.Delay(1500); // Delay for layout/rendering
+
+            // 2. Inject the floating back-to-top button
+            await JS.InvokeVoidAsync("addFloatingScrollToTop");
+
+            // 3. Delay, then reveal the iframe
+            await Task.Delay(1500);
             _iframeVisible = true;
             StateHasChanged();
         }
     }
-
-    [Inject] IJSRuntime JS { get; set; } = default!;
 }

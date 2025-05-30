@@ -88,11 +88,11 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             EnsureNoMappingAndSet();
             var methods = httpMethods.ToList();
 
-            var callerType = GetEndpointName();
+            var endpointName = GetEndpointName();
 
             foreach (var method in methods)
             {
-                Fragment.RecordMapping(method.ToUpperInvariant(), pattern, callerType);
+                Fragment.RecordMapping(method.ToUpperInvariant(), pattern, endpointName);
             }
 
             return _group.MapMethods(pattern, methods, handler).WithTags(_tagName);
