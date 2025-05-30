@@ -14,6 +14,7 @@ namespace UKHO.ADDS.Mocks.States
                 WellKnownState.Forbidden => Results.StatusCode(StatusCodes.Status403Forbidden),
                 WellKnownState.UnsupportedMediaType => Results.StatusCode(StatusCodes.Status415UnsupportedMediaType),
                 WellKnownState.NotModified => Results.StatusCode(StatusCodes.Status304NotModified),
+                WellKnownState.PayloadTooLarge => Results.StatusCode(StatusCodes.Status413PayloadTooLarge),
                 WellKnownState.Conflict => Results.Conflict("Conflict occurred"),
                 WellKnownState.NotFound => Results.NotFound("Not found"),
                 WellKnownState.BadRequest => Results.BadRequest("Bad request"),
