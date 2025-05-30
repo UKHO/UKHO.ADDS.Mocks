@@ -41,6 +41,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             _states.Add(new StateDefinition(WellKnownState.TemporaryRedirect, "Returns Temporary Redirect (307)"));
             _states.Add(new StateDefinition(WellKnownState.Gone, "Returns Gone (410)"));
             _states.Add(new StateDefinition(WellKnownState.RangeNotSatisfiable, "Returns Range Not Satisfiable (416)"));
+            _states.Add(new StateDefinition(WellKnownState.PayloadTooLarge, "Returns Payload Too Large (413)"));
             _states.Add(new StateDefinition(WellKnownState.ImATeapot, "Returns I am a Teapot (418)"));
         }
 

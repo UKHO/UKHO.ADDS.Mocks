@@ -18,6 +18,7 @@ namespace UKHO.ADDS.Mocks.States
         public const string TemporaryRedirect = "temporaryredirect";
         public const string Gone = "gone";
         public const string RangeNotSatisfiable = "rangenotsatisfiable";
+        public const string PayloadTooLarge = "payloadtoolarge";
         public const string ImATeapot = "imateapot";
     }
 }
