@@ -7,6 +7,7 @@ using Radzen;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
+using UKHO.ADDS.Mocks.Api;
 using UKHO.ADDS.Mocks.Dashboard;
 using UKHO.ADDS.Mocks.Dashboard.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
@@ -96,6 +97,8 @@ namespace UKHO.ADDS.Mocks
 
             app.MapOpenApi();
             app.MapScalarApiReference(o => o.Servers = []);
+
+            app.RegisterAdminApi();
 
             await app.RunAsync();
         }

@@ -5,16 +5,17 @@
 @using UKHO.ADDS.Mocks.Domain.Configuration
 @using UKHO.ADDS.Mocks.States
 @inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
 
 <table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4"
        style="width: 100%; border-collapse: separate; border-spacing: 0;">
     <thead style="position: sticky; top: 0; background-color: var(--rz-panel-background-color); z-index: 10;">
-    <tr>
-        <th style="width: 50%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">URL Pattern</th>
-        <th style="width: 15%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">HTTP Method(s)</th>
-        <th style="width: 20%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">State</th>
-        <th style="width: 15%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">Actions</th>
-    </tr>
+        <tr>
+            <th style="width: 50%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">URL Pattern</th>
+            <th style="width: 15%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">HTTP Method(s)</th>
+            <th style="width: 20%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">State</th>
+            <th style="width: 15%; font-size: 1.15rem; font-weight: 500; padding: 0.4rem 0 0.6rem 1.0rem;">Actions</th>
+        </tr>
     </thead>
 
     <tbody>
@@ -58,8 +59,8 @@
                         var relativePath = $"/{service.Prefix.Trim('/')}{group.Key}";
                         var isOverride = fragment.IsOverride;
 
-                        var callerType = group.First().EndpointName;
-                        var overrideKey = $"interactive/{service.Prefix}/{callerType}";
+                        var endpointName = group.First().EndpointName;
+                        var overrideKey = $"interactive/{service.Prefix}/{endpointName}";
                         var currentState = _selectedStates.TryGetValue(overrideKey, out var val)
                         ? val
                         : WellKnownState.Default;
@@ -67,19 +68,19 @@
                         <tr>
                             <td>
                                 <span style="@(service.StateOverrides.TryGetValue(overrideKey, out var overrideVal) && overrideVal != WellKnownState.Default
-                                                 ? "color: red;" : "color: inherit;")">
-                                    @relativePath
-                                </span>
-                                @if (isOverride)
+                                                                                       ? "color: red;" : "color: inherit;")">
+                    @relativePath
+                </span>
+                @if (isOverride)
                                 {
                                     <RadzenBadge Text="Override" BadgeStyle="BadgeStyle.Success" class="rz-ml-2" />
                                 }
                             </td>
                             <td>
                                 @foreach (var method in group
-                               .Select(m => m.HttpMethod)
-                               .Distinct()
-                               .OrderBy(GetMethodSortOrder))
+                                                .Select(m => m.HttpMethod)
+                                                .Distinct()
+                                                .OrderBy(GetMethodSortOrder))
                                 {
                                     <RadzenBadge Text="@method"
                                                  Style="@GetBadgeColorStyleForMethod(method)"
@@ -97,11 +98,11 @@
                                     <RadzenButton Size="ButtonSize.Small"
                                                   Variant="Variant.Text"
                                                   Text="Set"
-                                                  Click="() => SetState(service, callerType)" />
+                                                  Click="() => SetState(service, endpointName)" />
                                     <RadzenButton Size="ButtonSize.Small"
                                                   Variant="Variant.Text"
                                                   Text="Reset"
-                                                  Click="() => ResetState(service, callerType)" />
+                                                  Click="() => ResetState(service, endpointName)" />
                                 </RadzenStack>
                             </td>
                         </tr>
@@ -114,8 +115,8 @@
 
 @code {
     private List<ServiceDefinition> _services = [];
-    private readonly Dictionary<string, string> _selectedStates = new(); // key = interactive/prefix/callerType
-    private readonly HashSet<string> _expandedServices = new();
+    private readonly Dictionary<string, string> _selectedStates = new(); // key = interactive/prefix/endpointName
+    private readonly HashSet<string> _expandedServices = [];
 
     protected override void OnInitialized()
     {
@@ -143,49 +144,72 @@
             }
 
             if (i == 0)
+            {
                 _expandedServices.Add(service.Name);
+            }
         }
     }
 
-    private void SetState(ServiceDefinition service, string callerType)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var key = $"interactive/{service.Prefix}/{callerType}";
+        if (firstRender)
+        {
+            // If you mouse down outside a dropdown or its panel, hide all panels immediately
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                document.addEventListener('mousedown', function(e) {
+                    if (!e.target.closest('.rz-dropdown') &&
+                        !e.target.closest('.rz-dropdown-panel')) {
+                      document.querySelectorAll('.rz-dropdown-panel')
+                              .forEach(p => p.style.display = 'none');
+                    }
+                });
+            ");
+        }
+    }
+
+    private void SetState(ServiceDefinition service, string endpointName)
+    {
+        var key = $"interactive/{service.Prefix}/{endpointName}";
 
         if (_selectedStates.TryGetValue(key, out var selected))
         {
-            service.AddStateOverride("interactive", service.Prefix, callerType, selected);
+            service.AddStateOverride("interactive", service.Prefix, endpointName, selected);
         }
     }
 
-    private void ResetState(ServiceDefinition service, string callerType)
+    private void ResetState(ServiceDefinition service, string endpointName)
     {
-        var key = $"interactive/{service.Prefix}/{callerType}";
+        var key = $"interactive/{service.Prefix}/{endpointName}";
 
         _selectedStates[key] = WellKnownState.Default;
-        service.AddStateOverride("interactive", service.Prefix, callerType, WellKnownState.Default);
+        service.AddStateOverride("interactive", service.Prefix, endpointName, WellKnownState.Default);
     }
 
     private void ToggleServiceExpansion(ServiceDefinition service)
     {
         if (_expandedServices.Contains(service.Name))
+        {
             _expandedServices.Remove(service.Name);
+        }
         else
+        {
             _expandedServices.Add(service.Name);
+        }
     }
 
     private string GetBadgeColorStyleForMethod(string method)
     {
         return method.ToUpperInvariant() switch
         {
-            "GET" => "background-color: #007bff; color: white;",       // Blue
-            "POST" => "background-color: #28a745; color: white;",      // Green
-            "PUT" => "background-color: #fd7e14; color: white;",       // Orange
-            "DELETE" => "background-color: #dc3545; color: white;",    // Red
-            "PATCH" => "background-color: #ffc107; color: black;",     // Yellow
-            "OPTIONS" => "background-color: #6f42c1; color: white;",   // Purple
-            "HEAD" => "background-color: #adb5bd; color: black;",      // Light Gray
-            "TRACE" => "background-color: #adb5bd; color: black;",     // Light Gray
-            _ => "background-color: #e0e0e0; color: black;"            // Default neutral
+            "GET" => "background-color: #007bff; color: white;",
+            "POST" => "background-color: #28a745; color: white;",
+            "PUT" => "background-color: #fd7e14; color: white;",
+            "DELETE" => "background-color: #dc3545; color: white;",
+            "PATCH" => "background-color: #ffc107; color: black;",
+            "OPTIONS" => "background-color: #6f42c1; color: white;",
+            "HEAD" => "background-color: #adb5bd; color: black;",
+            "TRACE" => "background-color: #adb5bd; color: black;",
+            _ => "background-color: #e0e0e0; color: black;"
         };
     }
 

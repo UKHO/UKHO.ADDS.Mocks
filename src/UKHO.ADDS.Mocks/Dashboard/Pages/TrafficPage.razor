@@ -39,7 +39,7 @@
                         AllowFiltering="true"
                         Style="flex: 1; min-height: 0;"
                         SelectionMode="DataGridSelectionMode.Single"
-                        @bind-Value="@selectedItems">
+                        @bind-Value="@_selectedItems">
             <Columns>
                 <RadzenDataGridColumn TItem="MockRequestResponse" Title="Method" Width="100px">
                     <Template Context="item">
@@ -161,8 +161,8 @@
 </RadzenRow>
 
 @code {
-    private IList<MockRequestResponse> selectedItems = new List<MockRequestResponse>();
-    private MockRequestResponse? SelectedItem => selectedItems.FirstOrDefault();
+    private IList<MockRequestResponse> _selectedItems = new List<MockRequestResponse>();
+    private MockRequestResponse? SelectedItem => _selectedItems.FirstOrDefault();
 
     protected override void OnInitialized()
     {

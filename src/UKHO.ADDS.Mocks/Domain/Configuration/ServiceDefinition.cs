@@ -82,7 +82,6 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             }
         }
 
-
         internal void AddServiceMockTypes(IDictionary<string, (Type type, bool isOverride)> serviceMockTypes)
         {
             foreach (var serviceMockType in serviceMockTypes)
