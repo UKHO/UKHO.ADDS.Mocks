@@ -154,7 +154,7 @@
     {
         if (firstRender)
         {
-            // Anytime you mouse down outside a dropdown or its panel, hide all panels immediately
+            // If you mouse down outside a dropdown or its panel, hide all panels immediately
             await JSRuntime.InvokeVoidAsync("eval", @"
                 document.addEventListener('mousedown', function(e) {
                     if (!e.target.closest('.rz-dropdown') &&

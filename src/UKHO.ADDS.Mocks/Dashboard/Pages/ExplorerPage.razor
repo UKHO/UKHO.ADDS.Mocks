@@ -176,15 +176,13 @@
     {
         if (firstRender)
         {
-            // 1. Hook up iframe resizing & observers
             await JS.InvokeVoidAsync("resizeScalarFrame");
 
-            // 2. Inject the floating back-to-top button
             await JS.InvokeVoidAsync("addFloatingScrollToTop");
 
-            // 3. Delay, then reveal the iframe
             await Task.Delay(1500);
             _iframeVisible = true;
+
             StateHasChanged();
         }
     }
