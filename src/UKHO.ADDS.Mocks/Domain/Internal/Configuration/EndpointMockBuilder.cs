@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using UKHO.ADDS.Infrastructure.Results;
+using UKHO.ADDS.Mocks.Files;
 
 namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
@@ -97,9 +98,6 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 
             return _group.MapMethods(pattern, methods, handler).WithTags(_tagName);
         }
-
-
-        public IResult<IServiceFile> GetFile(string fileName) => Fragment.GetFilePath(fileName);
 
         private void EnsureNoMappingAndSet()
         {

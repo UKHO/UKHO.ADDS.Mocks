@@ -15,11 +15,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
                     {
                         case WellKnownState.Default:
 
-                            var pathResult = endpoint.GetFile("annualfiles.json");
+                            var pathResult = GetFile("annualfiles.json");
 
                             if (pathResult.IsSuccess(out var file))
                             {
-                                return Results.File(file.Path, MimeType.Application.Json);
+                                return Results.File(file.Open(), file.MimeType);
                             }
 
                             return Results.NotFound("Could not find the path in the /files GET method");

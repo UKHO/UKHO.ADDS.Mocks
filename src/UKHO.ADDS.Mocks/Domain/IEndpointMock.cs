@@ -1,4 +1,5 @@
 ﻿using UKHO.ADDS.Infrastructure.Results;
+using UKHO.ADDS.Mocks.Files;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks
@@ -16,7 +17,5 @@ namespace UKHO.ADDS.Mocks
         RouteHandlerBuilder MapDelete(string pattern, Delegate handler);
 
         RouteHandlerBuilder MapMethods(string pattern, IEnumerable<string> httpMethods, Delegate handler);
-
-        IResult<IServiceFile> GetFile(string fileName);
     }
 }

@@ -15,11 +15,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
                 {
                     case WellKnownState.Default:
 
-                        var pathResult = endpoint.GetFile("response.xml");
+                        var pathResult = GetFile("response.xml");
 
                         if (pathResult.IsSuccess(out var file))
                         {
-                            return Results.File(file.Path, MimeType.Text.Xml);
+                            return Results.File(file.Open(), file.MimeType);
                         }
 
                         return Results.NotFound("Could not find response.xml");
