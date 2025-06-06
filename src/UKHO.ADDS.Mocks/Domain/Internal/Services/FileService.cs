@@ -68,16 +68,25 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
         {
             var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
 
+            if (_fileSystem.File.Exists(path))
+            {
+                return Result.Failure<IMockFile>($"File '{fileName}' already exists for mock service '{definition.Name}'.");
+            }
+
             var mockFile = new MockFile(fileName, path, MimeTypeMap.GetMimeType(fileName), 0, false, false);
             _files.Add((definition, mockFile));
 
             return Result.Success<IMockFile>(mockFile);
         }
 
-
         public IResult<IMockFile> CreateFile(ServiceDefinition definition, string fileName, Stream content)
         {
             var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
+
+            if (_fileSystem.File.Exists(path))
+            {
+                return Result.Failure<IMockFile>($"File '{fileName}' already exists for mock service '{definition.Name}'.");
+            }
 
             using var fileStream = _fileSystem.File.Create(path);
             content.CopyTo(fileStream);
@@ -110,6 +119,11 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
             if (!mockFileResult.IsSuccess(out var mockFile))
             {
                 return Result.Failure<IMockFile>($"File '{fileName}' not found for mock service '{definition.Name}'.");
+            }
+
+            if (mockFile.IsReadOnly)
+            {
+                return Result.Failure<IMockFile>($"File '{fileName}' is read-only and cannot be modified.");
             }
 
             var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
