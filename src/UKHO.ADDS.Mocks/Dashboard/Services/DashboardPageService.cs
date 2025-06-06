@@ -21,6 +21,14 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
                 Title = "",
                 Description = "",
                 Icon = "\ue0c6"
+            },
+            new DashboardPage
+            {
+                Name = "Files",
+                Path = "/_dashboard/files",
+                Title = "",
+                Description = "",
+                Icon = "\ue0c6"
             }
         };
 

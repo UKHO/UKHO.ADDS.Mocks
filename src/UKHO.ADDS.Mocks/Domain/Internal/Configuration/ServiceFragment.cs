@@ -1,10 +1,9 @@
 ﻿using System.Collections.Concurrent;
-using UKHO.ADDS.Infrastructure.Results;
 using UKHO.ADDS.Mocks.Domain.Configuration;
 
 namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
 {
-    internal class ServiceFragment
+    internal class ServiceFragment 
     {
         private readonly bool _isOverride;
         private readonly string _name;
@@ -19,7 +18,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
             _type = type;
             _isOverride = isOverride;
 
-            _mappings = new ConcurrentBag<EndpointMappingInfo>();
+            _mappings = [];
         }
 
         public string Name => _name;
@@ -35,18 +34,6 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Configuration
         internal ServiceDefinition Definition { get; }
 
         public IEnumerable<EndpointMappingInfo> Mappings => _mappings;
-
-        public IResult<IServiceFile> GetFilePath(string fileName)
-        {
-            var file = Definition.ServiceFiles.SingleOrDefault(f => f.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
-
-            if (file == null)
-            {
-                return Result.Failure<IServiceFile>($"File '{fileName}' not found for mock service '{Definition.Name}'.");
-            }
-
-            return Result.Success<IServiceFile>(file);
-        }
 
         public IEndpointMock CreateBuilder(RouteGroupBuilder groupBuilder) => new EndpointMockBuilder(groupBuilder, this);
 

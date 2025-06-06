@@ -21,11 +21,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                             switch (productType.ToLowerInvariant())
                             {
                                 case "s100":
-                                    var pathResult = endpoint.GetFile("s100-catalogue.json");
+                                    var pathResult = GetFile("s100-catalogue.json");
 
                                     if (pathResult.IsSuccess(out var file))
                                     {
-                                        return Results.File(file.Path, MimeType.Application.Json);
+                                        return Results.File(file.Open(), file.MimeType);
                                     }
 
                                     response.GetTypedHeaders().LastModified = DateTime.UtcNow;

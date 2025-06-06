@@ -1,11 +1,13 @@
 ﻿@layout DashboardLayout
 @page "/"
 @page "/_dashboard/"
+
 @using UKHO.ADDS.Mocks.Configuration
 @using UKHO.ADDS.Mocks.Domain.Configuration
 @using UKHO.ADDS.Mocks.States
+
 @inject NavigationManager NavManager
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
 <table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4"
        style="width: 100%; border-collapse: separate; border-spacing: 0;">
@@ -155,7 +157,7 @@
         if (firstRender)
         {
             // If you mouse down outside a dropdown or its panel, hide all panels immediately
-            await JSRuntime.InvokeVoidAsync("eval", @"
+            await JsRuntime.InvokeVoidAsync("eval", @"
                 document.addEventListener('mousedown', function(e) {
                     if (!e.target.closest('.rz-dropdown') &&
                         !e.target.closest('.rz-dropdown-panel')) {

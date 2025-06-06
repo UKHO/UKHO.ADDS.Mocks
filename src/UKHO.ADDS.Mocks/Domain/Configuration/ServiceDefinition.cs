@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
+using UKHO.ADDS.Mocks.Domain.Internal.Files;
+using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.Domain.Configuration
@@ -9,7 +11,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
         private readonly string _name;
         private readonly string _prefix;
 
-        private readonly List<ServiceFile> _serviceFiles;
+        private readonly List<MockFile> _serviceFiles;
         private readonly List<ServiceFragment> _serviceFragments;
         private readonly List<StateDefinition> _states;
 
@@ -59,7 +61,7 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
 
         internal IEnumerable<ServiceFragment> ServiceFragments => _serviceFragments;
 
-        internal IEnumerable<ServiceFile> ServiceFiles => _serviceFiles;
+        internal IEnumerable<MockFile> ServiceFiles => _serviceFiles;
 
         internal IReadOnlyDictionary<string, string> StateOverrides => _stateOverrides;
 
@@ -96,7 +98,10 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
         {
             foreach (var serviceFile in serviceFiles)
             {
-                var file = new ServiceFile(serviceFile.Key, serviceFile.Value.path, serviceFile.Value.isOverride);
+                var mimeType = MimeTypeMap.GetMimeType(Path.GetExtension(serviceFile.Value.path));
+                var size = new FileInfo(serviceFile.Value.path).Length;
+
+                var file = new MockFile(serviceFile.Key, serviceFile.Value.path, mimeType, size, serviceFile.Value.isOverride, true);
                 _serviceFiles.Add(file);
             }
         }

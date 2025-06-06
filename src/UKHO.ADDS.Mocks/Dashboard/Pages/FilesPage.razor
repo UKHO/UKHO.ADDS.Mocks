@@ -1,0 +1,156 @@
+﻿@page "/_dashboard/files"
+@using UKHO.ADDS.Mocks.Domain.Configuration
+@using UKHO.ADDS.Mocks.Domain.Internal.Services
+@using UKHO.ADDS.Mocks.Files
+@layout DashboardLayout
+@inject FileService FileService
+@inject IJSRuntime JSRuntime
+
+<h2 class="rz-mb-4">Service Files</h2>
+
+<table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4" style="width: 100%;">
+    <thead style="position: sticky; top: 0; background-color: var(--rz-panel-background-color); z-index: 10;">
+        <tr>
+            <th style="width: 25%;">File Name</th>
+            <th style="width: 15%;">Mime Type</th>
+            <th style="width: 20%;">Size (bytes)</th>
+            <th style="width: 10%;">Override</th>
+            <th style="width: 10%;">Read Only</th>
+            <th style="width: 20%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in _groupedFiles)
+        {
+            var service = group.Key;
+            var isExpanded = _expandedServices.Contains(service.Name);
+            var toggleIcon = isExpanded ? "expand_less" : "expand_more";
+            var hasOverrides = group.Value.Any(f => f.IsOverride);
+
+            <tr>
+                <td colspan="6" style="background: transparent; border-top: 1px solid var(--rz-border-color); padding-top: 1rem;">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.5rem">
+                        <RadzenButton Icon="@toggleIcon"
+                                      ButtonStyle="ButtonStyle.Light"
+                                      Size="ButtonSize.Small"
+                                      Style="min-width: unset;"
+                                      Click="() => ToggleServiceExpansion(service.Name)" />
+                        <RadzenText Style="font-size: 1.15rem; font-weight: 500; margin-bottom: 0.5rem;">
+                            @service.Name
+                        </RadzenText>
+                        @if (hasOverrides)
+                        {
+                            <RadzenBadge Text="Overrides" BadgeStyle="BadgeStyle.Warning" class="rz-ml-2" />
+                        }
+                    </RadzenStack>
+                </td>
+            </tr>
+
+            @if (isExpanded)
+            {
+                foreach (var file in group.Value)
+                {
+                    var readableSize = FormatSize(file.Size);
+                    <tr>
+                        <td>@file.Name</td>
+                        <td>@file.MimeType</td>
+                        <td>
+                            @file.Size.ToString("N0")
+                            @if (!string.IsNullOrEmpty(readableSize))
+                            {
+                                <text> (@readableSize)</text>
+                            }
+                        </td>
+                        <td>
+                            @if (file.IsOverride)
+                            {
+                                <RadzenBadge Text="Yes" BadgeStyle="BadgeStyle.Warning" />
+                            }
+                            else
+                            {
+                                <RadzenBadge Text="No" BadgeStyle="BadgeStyle.Secondary" />
+                            }
+                        </td>
+                        <td>
+                            @if (file.IsReadOnly)
+                            {
+                                <RadzenBadge Text="Yes" BadgeStyle="BadgeStyle.Danger" />
+                            }
+                            else
+                            {
+                                <RadzenBadge Text="No" BadgeStyle="BadgeStyle.Success" />
+                            }
+                        </td>
+                        <td>
+                            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem">
+                                <RadzenButton Size="ButtonSize.Small"
+                                              Variant="Variant.Text"
+                                              Text="Download"
+                                              Icon="download"
+                                              Click="() => DownloadFileAsync(file)" />
+                            </RadzenStack>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    private Dictionary<ServiceDefinition, List<IMockFile>> _groupedFiles = new();
+    private readonly HashSet<string> _expandedServices = [];
+
+    protected override void OnInitialized()
+    {
+        _groupedFiles = FileService.Files
+            .GroupBy(entry => entry.definition)
+            .ToDictionary(g => g.Key, g => g.Select(e => e.file).ToList());
+
+        if (_groupedFiles.Count > 0)
+        {
+            _expandedServices.Add(_groupedFiles.Keys.First().Name);
+        }
+    }
+
+    private void ToggleServiceExpansion(string serviceName)
+    {
+        if (_expandedServices.Contains(serviceName))
+        {
+            _expandedServices.Remove(serviceName);
+        }
+        else
+        {
+            _expandedServices.Add(serviceName);
+        }
+    }
+
+    private async Task DownloadFileAsync(IMockFile file)
+    {
+        using var stream = file.Open();
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        var base64 = Convert.ToBase64String(ms.ToArray());
+        var fileName = file.Name;
+        var mimeType = file.MimeType;
+
+        await JSRuntime.InvokeVoidAsync("downloadFileFromBase64", fileName, mimeType, base64);
+    }
+
+    private string FormatSize(long size)
+    {
+        const long KB = 1024;
+        const long MB = KB * 1024;
+        const long GB = MB * 1024;
+
+        if (size < KB)
+            return string.Empty;
+
+        return size switch
+        {
+            >= GB => $"{size / (double)GB:0.##} GB",
+            >= MB => $"{size / (double)MB:0.##} MB",
+            _ => $"{size / (double)KB:0.##} KB"
+        };
+    }
+}

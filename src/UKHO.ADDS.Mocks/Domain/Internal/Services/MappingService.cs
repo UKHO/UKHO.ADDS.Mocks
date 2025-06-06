@@ -6,12 +6,12 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 {
     internal class MappingService
     {
-        private readonly IFileSystem _fileSystem;
+        private readonly FileService _fileService;
         private readonly ILogger<ServiceEndpointMock> _logger;
 
-        public MappingService(IFileSystem fileSystem, ILogger<ServiceEndpointMock> logger)
+        public MappingService(FileService fileService, ILogger<ServiceEndpointMock> logger)
         {
-            _fileSystem = fileSystem;
+            _fileService = fileService;
             _logger = logger;
         }
 
@@ -29,9 +29,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                     {
                         var serviceMock = (ServiceEndpointMock)Activator.CreateInstance(serviceFragment.Type)!;
 
-                        serviceMock.SetDefinition(definition);
-                        serviceMock.SetLogger(_logger);
-
+                        serviceMock.SetRuntime(definition, _fileService, _logger);
                         serviceMock.RegisterSingleEndpoint(serviceFragment.CreateBuilder(group));
                     }
                 }
@@ -93,6 +91,8 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                 }
             }
 
+            _fileService.Initialize();
+
             return Task.CompletedTask;
         }
 
@@ -100,24 +100,24 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
         {
             var fileDictionary = new Dictionary<string, (string, bool)>();
 
-            if (_fileSystem.Path.Exists(corePath))
+            if (_fileService.FileSystem.Path.Exists(corePath))
             {
-                var coreFiles = _fileSystem.Directory.GetFiles(corePath, queryPattern, SearchOption.AllDirectories);
+                var coreFiles = _fileService.FileSystem.Directory.GetFiles(corePath, queryPattern, SearchOption.AllDirectories);
 
                 foreach (var filePath in coreFiles)
                 {
-                    var name = _fileSystem.Path.GetFileName(filePath);
+                    var name = _fileService.FileSystem.Path.GetFileName(filePath);
                     fileDictionary.Add(name, (filePath, false));
                 }
             }
 
-            if (_fileSystem.Path.Exists(overridePath))
+            if (_fileService.FileSystem.Path.Exists(overridePath))
             {
-                var overrideFiles = _fileSystem.Directory.GetFiles(overridePath, queryPattern, SearchOption.AllDirectories);
+                var overrideFiles = _fileService.FileSystem.Directory.GetFiles(overridePath, queryPattern, SearchOption.AllDirectories);
 
                 foreach (var filePath in overrideFiles)
                 {
-                    var name = _fileSystem.Path.GetFileName(filePath);
+                    var name = _fileService.FileSystem.Path.GetFileName(filePath);
                     fileDictionary[name] = (filePath, true);
                 }
             }
