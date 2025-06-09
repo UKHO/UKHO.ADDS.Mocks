@@ -1,12 +1,14 @@
 ﻿@page "/_dashboard/traffic/"
+
 @using System.Net
 @using System.Text
 @using System.Text.Json
 @using Microsoft.AspNetCore.WebUtilities
 @using UKHO.ADDS.Mocks.Dashboard.Services
 @using UKHO.ADDS.Mocks.Domain.Internal.Traffic
+
 @inject DashboardService DashboardService
-@inject IJSRuntime JS
+@inject IJSRuntime JsRuntime
 
 <HeadContent>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
@@ -173,13 +175,13 @@
     {
         if (firstRender || SelectedItem != null)
         {
-            await JS.InvokeVoidAsync("applyPrismHighlighting");
+            await JsRuntime.InvokeVoidAsync("applyPrismHighlighting");
         }
     }
 
     private async Task CopyToClipboardAsync(string text)
     {
-        await JS.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
     }
 
     private string GetBodyText(byte[] data)

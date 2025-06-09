@@ -17,11 +17,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                     {
                         case WellKnownState.Default:
 
-                            var pathResult = endpoint.GetFile("batchsearchresult.json");
+                            var pathResult = GetFile("batchsearchresult.json");
 
                             if (pathResult.IsSuccess(out var file))
                             {
-                                return Results.File(file.Path, MimeType.Application.Json);
+                                return Results.File(file.Open(), file.MimeType);
                             }
 
                             return Results.NotFound("Could not find the path in the /files GET method");

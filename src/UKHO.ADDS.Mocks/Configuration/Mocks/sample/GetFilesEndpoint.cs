@@ -19,11 +19,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
 
                         case "get-file":
 
-                            var pathResult = endpoint.GetFile("readme.txt");
+                            var pathResult = GetFile("readme.txt");
 
                             if (pathResult.IsSuccess(out var file))
                             {
-                                return Results.File(file.Path, MimeType.Text.Plain);
+                                return Results.File(file.Open(), file.MimeType);
                             }
 
                             return Results.NotFound("Could not find the path in the /files GET method");

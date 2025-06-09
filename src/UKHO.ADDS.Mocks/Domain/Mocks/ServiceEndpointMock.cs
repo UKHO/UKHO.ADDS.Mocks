@@ -1,5 +1,8 @@
-﻿using UKHO.ADDS.Mocks.Domain.Configuration;
+﻿using UKHO.ADDS.Infrastructure.Results;
+using UKHO.ADDS.Mocks.Domain.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Logging;
+using UKHO.ADDS.Mocks.Domain.Internal.Services;
+using UKHO.ADDS.Mocks.Files;
 using UKHO.ADDS.Mocks.States;
 
 // ReSharper disable once CheckNamespace
@@ -12,6 +15,7 @@ namespace UKHO.ADDS.Mocks
 
         private ServiceDefinition? _definition;
         private ILogger<ServiceEndpointMock>? _logger;
+        private FileService _fileService;
 
         public abstract void RegisterSingleEndpoint(IEndpointMock endpoint);
 
@@ -58,9 +62,36 @@ namespace UKHO.ADDS.Mocks
             }
         }
 
+        protected IResult<IMockFile> GetFile(string fileName)
+        {
+            return _fileService.GetFile(_definition!, fileName);
+        }
 
-    internal void SetDefinition(ServiceDefinition definition) => _definition = definition;
+        protected IResult<IMockFile> CreateFile(string fileName)
+        {
+            return _fileService.CreateFile(_definition!, fileName);
+        }
 
-        internal void SetLogger(ILogger<ServiceEndpointMock> logger) => _logger = logger;
+        protected IResult<IMockFile> CreateFile(string fileName, Stream content)
+        {
+            return _fileService.CreateFile(_definition!, fileName, content);
+        }
+
+        protected IResult<IMockFile> AppendFile(string fileName, byte[] content)
+        {
+            return _fileService.AppendFile(_definition!, fileName, content);
+        }
+
+        protected IResult<IMockFile> AppendFile(string fileName, string content)
+        {
+            return _fileService.AppendFile(_definition!, fileName, content);
+        }
+
+        internal void SetRuntime(ServiceDefinition definition, FileService fileService, ILogger<ServiceEndpointMock> logger)
+        {
+            _definition = definition;
+            _fileService = fileService;
+            _logger = logger;
+        }
     }
 }
