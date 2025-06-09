@@ -19,22 +19,27 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
                         case "get-file":
 
-                            var pathResult = endpoint.GetFile("readme.txt");
+                            var pathResult = GetFile("readme.txt");
 
                             if (pathResult.IsSuccess(out var file))
                             {
-                                return Results.File(file.Path, MimeType.Text.Plain);
+                                return Results.File(file.Open(), file.MimeType);
                             }
 
                             return Results.NotFound("Could not find the path in the /files GET method");
 
                         case "get-jpeg":
 
-                            var jpegPathResult = endpoint.GetFile("messier-78.jpg");
+                            var jpegPathResult = GetFile("messier-78.jpg");
 
                             if (jpegPathResult.IsSuccess(out var jpegFile))
                             {
-                                return Results.File(jpegFile.Path, MimeType.Image.Jpeg);
+                                using (var s = jpegFile.Open())
+                                {
+                                    CreateFile("new-file.jpg", s);
+                                }
+                                
+                                return Results.File(jpegFile.Open(), jpegFile.MimeType);
                             }
 
                             return Results.NotFound("Could not find the JPEG path in the /files GET method");

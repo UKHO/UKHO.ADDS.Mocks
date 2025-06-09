@@ -20,6 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Domain\Admin\**" />
+    <Content Remove="Domain\Admin\**" />
+    <EmbeddedResource Remove="Domain\Admin\**" />
+    <None Remove="Domain\Admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -53,10 +60,6 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Domain\Admin\" />
   </ItemGroup>
 
 </Project>
