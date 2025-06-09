@@ -6,7 +6,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
     public class PostZAddsMatInfoEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
-            endpoint.MapPost("/z_adds_mat_info.asmx", (HttpRequest request) =>
+            endpoint.MapPost("/z_adds_mat_info", (HttpRequest request) =>
             {
                 var state = GetState(request);
 
@@ -24,8 +24,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Append(new MarkdownHeader("SAP Get z_adds_mat_info  ", 3));
-                    d.Append(new MarkdownParagraph("Get SAP z_adds_mat_info details return 200"));
+                    d.Append(new MarkdownHeader("SAP Post z_adds_mat_info  ", 3));                   
                 });
     }
 
