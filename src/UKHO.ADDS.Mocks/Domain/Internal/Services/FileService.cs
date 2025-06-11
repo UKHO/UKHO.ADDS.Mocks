@@ -12,16 +12,17 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 {
     internal class FileService
     {
-        const string TempFilePath = "temp";
-
-        private readonly ObservableCollection<(ServiceDefinition definition, IMockFile file)> _files;
-        private readonly IFileSystem _fileSystem;
+        private const string TempFilePath = "temp";
 
         public FileService(IFileSystem fileSystem)
         {
-            _fileSystem = fileSystem;
-            _files = [];
+            FileSystem = fileSystem;
+            Files = [];
         }
+
+        public ObservableCollection<(ServiceDefinition definition, IMockFile file)> Files { get; }
+
+        public IFileSystem FileSystem { get; }
 
         public void Initialize()
         {
@@ -43,38 +44,34 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
             {
                 foreach (var file in definition.ServiceFiles)
                 {
-                    _files.Add((definition, file));
+                    Files.Add((definition, file));
                 }
             }
         }
 
-        public ObservableCollection<(ServiceDefinition definition, IMockFile file)> Files => _files;
-
-        public IFileSystem FileSystem => _fileSystem;
-
         public IResult<IMockFile> GetFile(ServiceDefinition definition, string fileName)
         {
-            var mockFile = _files.SingleOrDefault(f => f.file.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase) && f.definition.Prefix.Equals(definition.Prefix, StringComparison.InvariantCultureIgnoreCase));
+            var mockFile = Files.SingleOrDefault(f => f.file.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase) && f.definition.Prefix.Equals(definition.Prefix, StringComparison.InvariantCultureIgnoreCase));
 
             if (mockFile.file == null)
             {
                 return Result.Failure<IMockFile>($"File '{fileName}' not found for mock service '{definition.Name}'.");
             }
 
-            return Result.Success<IMockFile>(mockFile.file);
+            return Result.Success(mockFile.file);
         }
 
         public IResult<IMockFile> CreateFile(ServiceDefinition definition, string fileName)
         {
             var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
 
-            if (_fileSystem.File.Exists(path))
+            if (FileSystem.File.Exists(path))
             {
                 return Result.Failure<IMockFile>($"File '{fileName}' already exists for mock service '{definition.Name}'.");
             }
 
             var mockFile = new MockFile(fileName, path, MimeTypeMap.GetMimeType(fileName), 0, false, false);
-            _files.Add((definition, mockFile));
+            Files.Add((definition, mockFile));
 
             return Result.Success<IMockFile>(mockFile);
         }
@@ -83,41 +80,46 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
         {
             var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
 
-            if (_fileSystem.File.Exists(path))
+            if (FileSystem.File.Exists(path))
             {
                 return Result.Failure<IMockFile>($"File '{fileName}' already exists for mock service '{definition.Name}'.");
             }
 
-            using var fileStream = _fileSystem.File.Create(path);
+            using var fileStream = FileSystem.File.Create(path);
             content.CopyTo(fileStream);
 
             var mockFile = new MockFile(fileName, path, MimeTypeMap.GetMimeType(fileName), fileStream.Length, false, false);
-            _files.Add((definition, mockFile));
+            Files.Add((definition, mockFile));
 
             return Result.Success<IMockFile>(mockFile);
         }
 
-        public IResult<IMockFile> AppendFile(ServiceDefinition definition, string fileName, byte[] content)
+        public IResult<IMockFile> AppendFile(ServiceDefinition definition, string fileName, byte[] content, bool createIfNotExists)
         {
             using var stream = new MemoryStream(content);
 
-            return AppendFile(definition, fileName, stream);
+            return AppendFile(definition, fileName, stream, createIfNotExists);
         }
 
-        public IResult<IMockFile> AppendFile(ServiceDefinition definition, string fileName, string content)
+        public IResult<IMockFile> AppendFile(ServiceDefinition definition, string fileName, string content, bool createIfNotExists)
         {
             var bytes = Encoding.UTF8.GetBytes(content);
             using var stream = new MemoryStream(bytes);
 
-            return AppendFile(definition, fileName, stream);
+            return AppendFile(definition, fileName, stream, createIfNotExists);
         }
 
-        public IResult<IMockFile> AppendFile(ServiceDefinition definition, string fileName, Stream content)
+        public IResult<IMockFile> AppendFile(ServiceDefinition definition, string fileName, Stream content, bool createIfNotExists)
         {
             var mockFileResult = GetFile(definition, fileName);
 
             if (!mockFileResult.IsSuccess(out var mockFile))
             {
+                if (createIfNotExists)
+                {
+                    return CreateFile(definition, fileName, content);
+                }
+
                 return Result.Failure<IMockFile>($"File '{fileName}' not found for mock service '{definition.Name}'.");
             }
 
@@ -128,7 +130,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
             var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
 
-            using var fileStream = _fileSystem.File.OpenWrite(path);
+            using var fileStream = FileSystem.File.OpenWrite(path);
             fileStream.Seek(0, SeekOrigin.End);
 
             content.CopyTo(fileStream);

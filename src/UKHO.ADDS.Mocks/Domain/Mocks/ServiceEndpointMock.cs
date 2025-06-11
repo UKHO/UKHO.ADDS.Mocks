@@ -77,15 +77,21 @@ namespace UKHO.ADDS.Mocks
             return _fileService.CreateFile(_definition!, fileName, content);
         }
 
-        protected IResult<IMockFile> AppendFile(string fileName, byte[] content)
+        protected IResult<IMockFile> AppendFile(string fileName, byte[] content, bool createIfNotExists = false)
         {
-            return _fileService.AppendFile(_definition!, fileName, content);
+            return _fileService.AppendFile(_definition!, fileName, content, createIfNotExists);
         }
 
-        protected IResult<IMockFile> AppendFile(string fileName, string content)
+        protected IResult<IMockFile> AppendFile(string fileName, string content, bool createIfNotExists = false)
         {
-            return _fileService.AppendFile(_definition!, fileName, content);
+            return _fileService.AppendFile(_definition!, fileName, content, createIfNotExists);
         }
+
+        protected IResult<IMockFile> AppendFile(string fileName, Stream content, bool createIfNotExists = false)
+        {
+            return _fileService.AppendFile(_definition!, fileName, content, createIfNotExists);
+        }
+
 
         internal void SetRuntime(ServiceDefinition definition, FileService fileService, ILogger<ServiceEndpointMock> logger)
         {

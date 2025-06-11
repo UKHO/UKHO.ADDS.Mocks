@@ -12,17 +12,31 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
                 var state = GetState(request);
 
-                var rawRequestBody = new StreamReader(request.Body).ReadToEnd();
-
-                if (string.IsNullOrEmpty(rawRequestBody))
+                if (request.Body.Length == 0)
                 {
                     var errorObj = new
                     {
-                        message = "Body Required with one or more",
+                        message = "Body required with one or more",
                         blockIds = new[]
                           {
                               "00001" 
                           }
+                    };
+
+                    return Results.BadRequest(errorObj);
+                }
+
+                var file = CreateFile(filename, request.Body);
+
+                if (file.IsFailure(out var error))
+                {
+                    var errorObj = new
+                    {
+                        message = error.Message,
+                        blockIds = new[]
+                        {
+                            "00001"
+                        }
                     };
 
                     return Results.BadRequest(errorObj);
@@ -43,7 +57,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                                     new
                                     {
                                         source = "Write Block",
-                                        description = "Invalid batchId."
+                                        description = "Invalid BatchId"
                                     }
                                 }
                         }, statusCode: 400);

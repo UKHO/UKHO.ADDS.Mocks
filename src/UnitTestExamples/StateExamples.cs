@@ -31,7 +31,7 @@ namespace UnitTestExamples
             var request = new HttpRequestMessage(HttpMethod.Get, MockUri);
 
             // Set the mock state for this call only
-            _factory.SetState(WellKnownState.Unauthorized);
+            _factory.SetPerRequestState(WellKnownState.Unauthorized);
 
             var response = await client.SendAsync(request);
 
@@ -46,7 +46,7 @@ namespace UnitTestExamples
             var request = new HttpRequestMessage(HttpMethod.Get, MockUri);
 
             // Set the mock state for this call only
-            _factory.SetState("get-jpeg");
+            _factory.SetPerRequestState("get-jpeg");
 
             var response = await client.SendAsync(request);
 

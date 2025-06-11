@@ -85,6 +85,14 @@ namespace UKHO.ADDS.Mocks.Domain.Configuration
             }
         }
 
+        public void RemoveStateOverride(string sessionId)
+        {
+            foreach (var kvp in _stateOverrides.Where(kvp => kvp.Key.StartsWith(sessionId + "/", StringComparison.OrdinalIgnoreCase)).ToList())
+            {
+                _stateOverrides.TryRemove(kvp.Key, out _);
+            }
+        }
+
         internal void AddServiceMockTypes(IDictionary<string, (Type type, bool isOverride)> serviceMockTypes)
         {
             foreach (var serviceMockType in serviceMockTypes)

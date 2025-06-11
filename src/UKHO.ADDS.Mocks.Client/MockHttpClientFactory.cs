@@ -11,7 +11,7 @@
 
         public HttpClient CreateClient(string name) => new(new HeaderInjectingHandler(StateHeader, () => _state));
 
-        public void SetState(string state) => _state = state;
+        public void SetPerRequestState(string state) => _state = state;
 
         public void ResetState() => _state = DefaultState;
     }
