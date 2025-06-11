@@ -12,12 +12,14 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 {
     internal class FileService
     {
-        private const string TempFilePath = "temp";
+        private readonly string _tempFilePath;
 
         public FileService(IFileSystem fileSystem)
         {
             FileSystem = fileSystem;
             Files = [];
+
+            _tempFilePath = Path.Combine(Path.GetTempPath(), "adds-mock");
         }
 
         public ObservableCollection<(ServiceDefinition definition, IMockFile file)> Files { get; }
@@ -26,9 +28,9 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
         public void Initialize()
         {
-            if (Directory.Exists(TempFilePath))
+            if (Directory.Exists(_tempFilePath))
             {
-                var directoryInfo = new DirectoryInfo(TempFilePath);
+                var directoryInfo = new DirectoryInfo(_tempFilePath);
 
                 foreach (var file in directoryInfo.GetFiles())
                 {
@@ -37,7 +39,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
             }
             else
             {
-                Directory.CreateDirectory(TempFilePath);
+                Directory.CreateDirectory(_tempFilePath);
             }
 
             foreach (var definition in ServiceRegistry.Definitions)
@@ -63,7 +65,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
         public IResult<IMockFile> CreateFile(ServiceDefinition definition, string fileName)
         {
-            var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
+            var path = Path.Combine(_tempFilePath, $"{definition.Prefix}-{fileName}");
 
             if (FileSystem.File.Exists(path))
             {
@@ -78,7 +80,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
         public IResult<IMockFile> CreateFile(ServiceDefinition definition, string fileName, Stream content)
         {
-            var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
+            var path = Path.Combine(_tempFilePath, $"{definition.Prefix}-{fileName}");
 
             if (FileSystem.File.Exists(path))
             {
@@ -128,7 +130,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                 return Result.Failure<IMockFile>($"File '{fileName}' is read-only and cannot be modified.");
             }
 
-            var path = Path.Combine(TempFilePath, $"{definition.Prefix}-{fileName}");
+            var path = Path.Combine(_tempFilePath, $"{definition.Prefix}-{fileName}");
 
             using var fileStream = FileSystem.File.OpenWrite(path);
             fileStream.Seek(0, SeekOrigin.End);
