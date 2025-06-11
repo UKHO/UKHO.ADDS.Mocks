@@ -93,6 +93,8 @@ namespace UKHO.ADDS.Mocks
 
             app.UseMiddleware<MockTrafficCaptureMiddleware>();
 
+            app.UseDeveloperExceptionPage();
+
             await StartApplication(app);
 
             app.MapOpenApi();
