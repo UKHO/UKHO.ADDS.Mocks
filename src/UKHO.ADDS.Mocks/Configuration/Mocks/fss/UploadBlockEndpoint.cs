@@ -12,13 +12,17 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
                 var state = GetState(request);
 
-                var rawRequestBody = new StreamReader(request.Body).ReadToEnd();
-
-                if (string.IsNullOrEmpty(rawRequestBody))
+                if (request.Body.Length == 0)
                 {
-                    return Results.BadRequest("Body required containing filename");
+                    return Results.BadRequest("Body required");
                 }
 
+                var file = AppendFile(filename, request.Body, true);
+
+                if (file.IsFailure(out var error))
+                {
+                    return Results.BadRequest(error.Message);
+                }
 
                 switch (state)
                 {
