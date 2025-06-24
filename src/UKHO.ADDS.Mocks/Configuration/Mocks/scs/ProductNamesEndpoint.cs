@@ -21,36 +21,50 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                 switch (state)
                 {
                     case WellKnownState.Default:
-                    {
-                        switch (productType.ToLowerInvariant())
                         {
-                            case "s100":
-                                var pathResult = GetFile("productnamesresponse.json");
+                            switch (productType.ToLowerInvariant())
+                            {
+                                case "s100":
+                                    var pathResult = GetFile("productnamesresponse.json");
 
-                                if (pathResult.IsSuccess(out var file))
-                                {
-                                    return Results.File(file.Open(), file.MimeType);
-                                }
+                                    if (pathResult.IsSuccess(out var file))
+                                    {
+                                        return Results.File(file.Open(), file.MimeType);
+                                    }
 
-                                return Results.NotFound("Could not find the path in the /files GET method");
+                                    return Results.NotFound("Could not find the path in the /files GET method");
 
-                            default:
-                                return Results.BadRequest("No productType set");
+                                default:
+                                    return Results.BadRequest("No productType set");
+                            }
                         }
-                    }
                     case WellKnownState.BadRequest:
                         return Results.Json(new
                         {
                             correlationId = request.Headers[WellKnownHeader.CorrelationId],
                             errors = new[]
                             {
-                                    new
-                                    {
-                                        source = "Product Names",
-                                        description = "Bad Request."
-                                    }
+                                        new
+                                        {
+                                            source = "Product Names",
+                                            description = "Bad Request."
+                                        }
                                 }
                         }, statusCode: 400);
+
+                    case WellKnownState.Unauthorized:
+                        return Results.Json(new
+                        {
+                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                            details = "Unauthorized."
+                        }, statusCode: 401);
+
+                    case WellKnownState.Forbidden:
+                        return Results.Json(new
+                        {
+                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                            details = "Forbidden."
+                        }, statusCode: 403);
 
                     case WellKnownState.NotFound:
                         return Results.Json(new
