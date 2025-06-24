@@ -1,0 +1,50 @@
+{
+  "productCounts": {
+    "requestedProductCount": 2,
+    "returnedProductCount": 2,
+    "requestedProductsAlreadyUpToDateCount": 0,
+    "requestedProductsNotReturned": []
+  },
+  "products": [
+    {
+      "editionNumber": 11,
+      "productName": "101GB007645NUTS57",
+      "updateNumbers": [
+        0
+      ],
+      "dates": [
+        {
+          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "updateApplicationDate": "2024-07-16T18:20:30.4500000Z",
+          "updateNumber": 0
+        }
+      ],
+      "fileSize": 3456
+    },
+    {
+      "editionNumber": 5,
+      "productName": "101GB007645NUTS58",
+      "updateNumbers": [
+        0,
+        1,
+        2
+      ],
+      "dates": [
+        {
+          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "updateApplicationDate": "2024-07-16T18:20:30.4500000Z",
+          "updateNumber": 0
+        },
+        {
+          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "updateNumber": 1
+        },
+        {
+          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "updateNumber": 2
+        }
+      ],
+      "fileSize": 10368
+    }
+  ]
+}
