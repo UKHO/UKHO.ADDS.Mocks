@@ -26,22 +26,6 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                     return Results.BadRequest(errorObj);
                 }
 
-                var file = CreateFile(filename, request.Body);
-
-                if (file.IsFailure(out var error))
-                {
-                    var errorObj = new
-                    {
-                        message = error.Message,
-                        blockIds = new[]
-                        {
-                            "00001"
-                        }
-                    };
-
-                    return Results.BadRequest(errorObj);
-                }
-
                 switch (state)
                 {
                     case WellKnownState.Default:
