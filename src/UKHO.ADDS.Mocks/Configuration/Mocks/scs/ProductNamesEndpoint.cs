@@ -32,7 +32,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                                         return Results.File(file.Open(), file.MimeType);
                                     }
 
-                                    return Results.NotFound("Could not find the path in the /files GET method");
+                                    return Results.NotFound("Could not find the product names file 'productnamesresponse.json'");
 
                                 default:
                                     return Results.BadRequest("No productType set");
