@@ -36,15 +36,54 @@
           "updateNumber": 0
         },
         {
-          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "issueDate": "2024-07-17T18:20:30.4500000Z",
           "updateNumber": 1
         },
         {
-          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "issueDate": "2024-07-18T18:20:30.4500000Z",
           "updateNumber": 2
         }
       ],
       "fileSize": 10368
+    },
+    {
+      "editionNumber": 1,
+      "productName": "101GB007645NUTS10",
+      "updateNumbers": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "dates": [
+        {
+          "issueDate": "2024-07-16T18:20:30.4500000Z",
+          "updateApplicationDate": "2024-07-16T18:20:30.4500000Z",
+          "updateNumber": 0
+        },
+        {
+          "issueDate": "2024-07-26T18:20:30.4500000Z",
+          "updateNumber": 1
+        },
+        {
+          "issueDate": "2024-07-28T18:20:30.4500000Z",
+          "updateNumber": 2
+        },
+        {
+          "issueDate": "2024-07-29T18:20:30.4500000Z",
+          "updateNumber": 3
+        },
+        {
+          "issueDate": "2024-07-30T18:20:30.4500000Z",
+          "updateNumber": 4
+        }
+      ],
+      "cancellation": {
+        "editionNumber": 0,
+        "updateNumber": 4
+      },
+      "fileSize": 17280
     }
   ]
 }
