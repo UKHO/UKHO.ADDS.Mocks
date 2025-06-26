@@ -22,6 +22,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                             {
                                 case "s100":
 
+                                    response.GetTypedHeaders().LastModified = DateTime.UtcNow;
                                     return ScsResponseGenerator.ProvideProductNamesResponse(request);
 
                                 default:
@@ -43,20 +44,6 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                                     }
                                 }
                             }, statusCode: 400);
-
-                        case WellKnownState.Unauthorized:
-                            return Results.Json(new
-                            {
-                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                                details = "Unauthorized."
-                            }, statusCode: 401);
-
-                        case WellKnownState.Forbidden:
-                            return Results.Json(new
-                            {
-                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                                details = "Forbidden."
-                            }, statusCode: 403);
 
                         case WellKnownState.NotFound:
                             return Results.Json(new
