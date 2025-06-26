@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.Headers;
+﻿using UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator;
+using UKHO.ADDS.Mocks.Headers;
 using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.States;
 
@@ -8,97 +9,88 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
             endpoint.MapPost("/v2/products/{productType}/ProductNames", (string productType, HttpRequest request, HttpResponse response) =>
-            {
-                EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
-                var state = GetState(request);
-
-                var rawRequestBody = new StreamReader(request.Body).ReadToEnd();
-                if (string.IsNullOrEmpty(rawRequestBody))
                 {
-                    return Results.BadRequest("Body required");
-                }
+                    EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
 
-                switch (state)
-                {
-                    case WellKnownState.Default:
+                    var state = GetState(request);
+
+                    switch (state)
+                    {
+                        case WellKnownState.Default:
                         {
                             switch (productType.ToLowerInvariant())
                             {
                                 case "s100":
-                                    var pathResult = GetFile("productnamesresponse.json");
 
-                                    if (pathResult.IsSuccess(out var file))
-                                    {
-                                        return Results.File(file.Open(), file.MimeType);
-                                    }
-
-                                    return Results.NotFound("Could not find the product names file 'productnamesresponse.json'");
+                                    return ScsResponseGenerator.ProvideProductNamesResponse(request);
 
                                 default:
+
                                     return Results.BadRequest("No productType set");
                             }
                         }
-                    case WellKnownState.BadRequest:
-                        return Results.Json(new
-                        {
-                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                            errors = new[]
+
+                        case WellKnownState.BadRequest:
+                            return Results.Json(new
                             {
-                                        new
-                                        {
-                                            source = "Product Names",
-                                            description = "Bad Request."
-                                        }
+                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                errors = new[]
+                                {
+                                    new
+                                    {
+                                        source = "Product Names",
+                                        description = "Bad Request."
+                                    }
                                 }
-                        }, statusCode: 400);
+                            }, statusCode: 400);
 
-                    case WellKnownState.Unauthorized:
-                        return Results.Json(new
-                        {
-                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                            details = "Unauthorized."
-                        }, statusCode: 401);
+                        case WellKnownState.Unauthorized:
+                            return Results.Json(new
+                            {
+                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                details = "Unauthorized."
+                            }, statusCode: 401);
 
-                    case WellKnownState.Forbidden:
-                        return Results.Json(new
-                        {
-                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                            details = "Forbidden."
-                        }, statusCode: 403);
+                        case WellKnownState.Forbidden:
+                            return Results.Json(new
+                            {
+                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                details = "Forbidden."
+                            }, statusCode: 403);
 
-                    case WellKnownState.NotFound:
-                        return Results.Json(new
-                        {
-                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                            details = "Not Found"
-                        }, statusCode: 404);
+                        case WellKnownState.NotFound:
+                            return Results.Json(new
+                            {
+                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                details = "Not Found"
+                            }, statusCode: 404);
 
-                    case WellKnownState.UnsupportedMediaType:
-                        return Results.Json(new
-                        {
-                            type = "https://example.com",
-                            title = "Unsupported Media Type",
-                            status = 415,
-                            traceId = "00-012-0123-01"
-                        }, statusCode: 415);
+                        case WellKnownState.UnsupportedMediaType:
+                            return Results.Json(new
+                            {
+                                type = "https://example.com",
+                                title = "Unsupported Media Type",
+                                status = 415,
+                                traceId = "00-012-0123-01"
+                            }, statusCode: 415);
 
-                    case WellKnownState.InternalServerError:
-                        return Results.Json(new
-                        {
-                            correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                            details = "Internal Server Error"
-                        }, statusCode: 500);
+                        case WellKnownState.InternalServerError:
+                            return Results.Json(new
+                            {
+                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                details = "Internal Server Error"
+                            }, statusCode: 500);
 
-                    default:
-                        // Just send default responses
-                        return WellKnownStateHandler.HandleWellKnownState(state);
-                }
-            })
+                        default:
+                            // Just send default responses
+                            return WellKnownStateHandler.HandleWellKnownState(state);
+                    }
+                })
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Append(new MarkdownHeader("Get Product Names", 3));
-                    d.Append(new MarkdownParagraph("Returns a list of product names for the specified product type. The request body must not be empty. Only 's100' is currently supported."));
+                    d.Append(new MarkdownHeader("Product Names Endpoint", 3));
+                    d.Append(new MarkdownParagraph("This endpoint is used to retrieve product names based on the product type."));
                 });
     }
 }
