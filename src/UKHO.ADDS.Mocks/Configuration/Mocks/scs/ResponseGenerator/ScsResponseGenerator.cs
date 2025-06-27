@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using UKHO.ADDS.Infrastructure.Serialization.Json;
+using UKHO.ADDS.Mocks.Headers;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 {
@@ -47,7 +48,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
             if (string.IsNullOrEmpty(requestBody))
             {
-                return (Results.BadRequest("Request body is required"), requestedProducts);
+                return (CreateBadRequestResponse(request, "Request body is required"), requestedProducts);
             }
 
             try
@@ -58,18 +59,24 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
                     if (productsArray.ValueKind != JsonValueKind.Array)
                     {
-                        return (Results.BadRequest("Request body must be a JSON array of product names."), requestedProducts);
+                        return (CreateBadRequestResponse(request, "Request body must be a JSON array of product names."), requestedProducts);
                     }
 
                     foreach (var product in productsArray.EnumerateArray())
                     {
                         if (product.ValueKind == JsonValueKind.String)
                         {
-                            requestedProducts.Add(product.GetString());
+                            var productString = product.GetString();
+                            if (string.IsNullOrEmpty(productString))
+                            {
+                                return (CreateBadRequestResponse(request, "Empty product name is not allowed."), requestedProducts);
+                            }
+                            
+                            requestedProducts.Add(productString);
                         }
                         else
                         {
-                            return (Results.BadRequest("All items in the array must be strings."), requestedProducts);
+                            return (CreateBadRequestResponse(request, "All items in the array must be strings."), requestedProducts);
                         }
                     }
 
@@ -78,7 +85,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
             }
             catch (JsonException)
             {
-                return (Results.BadRequest("Invalid JSON format."), requestedProducts);
+                return (CreateBadRequestResponse(request, "Invalid JSON format."), requestedProducts);
             }
 
             return (null, requestedProducts);
@@ -175,6 +182,18 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
             productObj["fileSize"] = fileSize;
 
             return productObj;
+        }
+
+        private static IResult CreateBadRequestResponse(HttpRequest requestMessage, string description)
+        {
+            return Results.BadRequest(new
+            {
+                correlationId = requestMessage.Headers[WellKnownHeader.CorrelationId],
+                errors = new[]
+                {
+                    new { source = "Product Names", description }
+                }
+            });
         }
     }
 }
