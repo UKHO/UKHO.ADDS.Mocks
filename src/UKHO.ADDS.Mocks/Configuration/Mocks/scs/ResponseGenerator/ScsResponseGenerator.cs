@@ -62,6 +62,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                         return (CreateBadRequestResponse(request, "Request body must be a JSON array of product names."), requestedProducts);
                     }
 
+                    if (!productsArray.EnumerateArray().Any())
+                    {
+                        return (CreateBadRequestResponse(request, "Empty product name is not allowed."), requestedProducts);
+                    }
+
                     foreach (var product in productsArray.EnumerateArray())
                     {
                         if (product.ValueKind == JsonValueKind.String)
