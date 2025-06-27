@@ -27,7 +27,18 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
 
                                 default:
 
-                                    return Results.BadRequest("No productType set");
+                                    return Results.Json(new
+                                    {
+                                        correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                        errors = new[]
+                                        {
+                                            new
+                                            {
+                                                source = "No productType set",
+                                                description = "Bad Request."
+                                            }
+                                        }
+                                    }, statusCode: 400);
                             }
                         }
 
@@ -44,13 +55,6 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                                     }
                                 }
                             }, statusCode: 400);
-
-                        case WellKnownState.NotFound:
-                            return Results.Json(new
-                            {
-                                correlationId = request.Headers[WellKnownHeader.CorrelationId],
-                                details = "Not Found"
-                            }, statusCode: 404);
 
                         case WellKnownState.UnsupportedMediaType:
                             return Results.Json(new
