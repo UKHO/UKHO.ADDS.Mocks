@@ -1,4 +1,5 @@
-﻿using UKHO.ADDS.Mocks.Headers;
+﻿using UKHO.ADDS.Infrastructure.Serialization.Json;
+using UKHO.ADDS.Mocks.Headers;
 using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.Mime;
 using UKHO.ADDS.Mocks.States;
@@ -8,7 +9,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
     public class GetBasicCatalogueEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
-            endpoint.MapGet("/v2/catalogues/{productType}/basic", (string productType, HttpRequest request, HttpResponse response) =>
+            endpoint.MapGet("/v2/catalogues/{productType}/basic", async (string productType, HttpRequest request, HttpResponse response) =>
                 {
                     EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
 
@@ -25,10 +26,15 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
 
                                     if (pathResult.IsSuccess(out var file))
                                     {
-                                        return Results.File(file.Open(), file.MimeType);
-                                    }
+                                        response.GetTypedHeaders().LastModified = DateTime.UtcNow;
 
-                                    response.GetTypedHeaders().LastModified = DateTime.UtcNow;
+                                        using var stream = file.Open();
+                                        using var reader = new StreamReader(stream);
+                                        var json = await reader.ReadToEndAsync();
+                                        var jsonObject = JsonCodec.Decode<object>(json);
+
+                                        return Results.Json(jsonObject, statusCode: 200, contentType: MimeType.Application.Json);
+                                    }
 
                                     return Results.NotFound("Could not find the path in the /files GET method");
                                 default:
