@@ -13,19 +13,19 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
         /// </summary>
         /// <param name="requestMessage">The HTTP request containing the product names to look up.</param>
         /// <returns>An HTTP result with the product information or an error response.</returns>
-        public static IResult ProvideProductNamesResponse(HttpRequest requestMessage)
+        public static async Task<IResult> ProvideProductNamesResponse(HttpRequest requestMessage)
         {
             try
             {
                 // Parse and validate the request
-                var validationResult = ValidateRequest(requestMessage, out var requestedProducts);
-                if (validationResult != null)
+                var validationResult = await ValidateRequestAsync(requestMessage);
+                if (validationResult.errorResult != null)
                 {
-                    return validationResult;
+                    return validationResult.errorResult;
                 }
 
                 // Generate the response directly as JsonObject
-                var response = GenerateProductNamesResponse(requestedProducts);
+                var response = GenerateProductNamesResponse(validationResult.requestedProducts);
 
                 return Results.Ok(response);
             }
@@ -35,19 +35,19 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
             }
         }
 
-        private static IResult ValidateRequest(HttpRequest request, out List<string> requestedProducts)
+        private static async Task<(IResult errorResult, List<string> requestedProducts)> ValidateRequestAsync(HttpRequest request)
         {
-            requestedProducts = new List<string>();
+            var requestedProducts = new List<string>();
 
             string requestBody;
             using (var reader = new StreamReader(request.Body))
             {
-                requestBody = reader.ReadToEndAsync().Result;
+                requestBody = await reader.ReadToEndAsync();
             }
 
             if (string.IsNullOrEmpty(requestBody))
             {
-                return Results.BadRequest("Request body is required");
+                return (Results.BadRequest("Request body is required"), requestedProducts);
             }
 
             try
@@ -58,7 +58,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
                     if (productsArray.ValueKind != JsonValueKind.Array)
                     {
-                        return Results.BadRequest("Request body must be a JSON array of product names.");
+                        return (Results.BadRequest("Request body must be a JSON array of product names."), requestedProducts);
                     }
 
                     foreach (var product in productsArray.EnumerateArray())
@@ -69,19 +69,19 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                         }
                         else
                         {
-                            return Results.BadRequest("All items in the array must be strings.");
+                            return (Results.BadRequest("All items in the array must be strings."), requestedProducts);
                         }
                     }
 
-                    return null;
+                    return (null, requestedProducts);
                 }
             }
             catch (JsonException)
             {
-                return Results.BadRequest("Invalid JSON format.");
+                return (Results.BadRequest("Invalid JSON format."), requestedProducts);
             }
 
-            return null;
+            return (null, requestedProducts);
         }
 
         private static JsonObject GenerateProductNamesResponse(List<string> requestedProducts)

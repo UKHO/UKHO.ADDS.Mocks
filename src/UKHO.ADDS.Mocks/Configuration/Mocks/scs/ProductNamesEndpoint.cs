@@ -8,7 +8,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
     public class ProductNamesEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
-            endpoint.MapPost("/v2/products/{productType}/ProductNames", (string productType, HttpRequest request, HttpResponse response) =>
+            endpoint.MapPost("/v2/products/{productType}/ProductNames", async (string productType, HttpRequest request, HttpResponse response) =>
                 {
                     EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
 
@@ -23,7 +23,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                                 case "s100":
 
                                     response.GetTypedHeaders().LastModified = DateTime.UtcNow;
-                                    return ScsResponseGenerator.ProvideProductNamesResponse(request);
+                                    return await ScsResponseGenerator.ProvideProductNamesResponse(request);
 
                                 default:
 
