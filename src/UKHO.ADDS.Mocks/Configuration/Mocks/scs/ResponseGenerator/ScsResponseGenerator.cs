@@ -7,27 +7,25 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 {
     public class ScsResponseGenerator
     {
-        private const int MaxAdditionalUpdates = 4;
+        private static readonly int MaxAdditionalUpdates = 4;
+        private static readonly int MinEditionNumber = 1;
+        private static readonly int MaxEditionNumber = 15;
+        private static readonly int MinFileSize = 2000;
+        private static readonly int MaxFileSize = 15000;
+        private static readonly Random RandomInstance = Random.Shared;
 
         /// <summary>
         /// Provides a mock response for product names based on the requested products.
         /// </summary>
-        /// <param name="requestMessage">The HTTP request containing the product names to look up.</param>
-        /// <returns>An HTTP result with the product information or an error response.</returns>
         public static async Task<IResult> ProvideProductNamesResponse(HttpRequest requestMessage)
         {
             try
             {
-                // Parse and validate the request
                 var validationResult = await ValidateRequestAsync(requestMessage);
                 if (validationResult.errorResult != null)
-                {
                     return validationResult.errorResult;
-                }
 
-                // Generate the response directly as JsonObject
                 var response = GenerateProductNamesResponse(validationResult.requestedProducts);
-
                 return Results.Ok(response);
             }
             catch (Exception ex)
@@ -36,74 +34,51 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
             }
         }
 
-        private static async Task<(IResult errorResult, List<string> requestedProducts)> ValidateRequestAsync(HttpRequest request)
+        private static async Task<(IResult? errorResult, List<string> requestedProducts)> ValidateRequestAsync(HttpRequest request)
         {
             var requestedProducts = new List<string>();
 
+            request.EnableBuffering();
             string requestBody;
-            using (var reader = new StreamReader(request.Body))
+            using (var reader = new StreamReader(request.Body, leaveOpen: true))
             {
                 requestBody = await reader.ReadToEndAsync();
+                request.Body.Position = 0;
             }
 
-            if (string.IsNullOrEmpty(requestBody))
-            {
+            if (string.IsNullOrWhiteSpace(requestBody))
                 return (CreateBadRequestResponse(request, "Request body is required"), requestedProducts);
-            }
 
             try
             {
-                if (requestBody.TrimStart().StartsWith("["))
+                using var doc = JsonDocument.Parse(requestBody);
+                if (doc.RootElement.ValueKind != JsonValueKind.Array)
+                    return (CreateBadRequestResponse(request, "Request body must be a JSON array of product names."), requestedProducts);
+
+                foreach (var element in doc.RootElement.EnumerateArray())
                 {
-                    var productsArray = JsonCodec.Decode<JsonElement>(requestBody);
+                    if (element.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(element.GetString()))
+                        return (CreateBadRequestResponse(request, "All items in the array must be non-empty strings."), requestedProducts);
 
-                    if (productsArray.ValueKind != JsonValueKind.Array)
-                    {
-                        return (CreateBadRequestResponse(request, "Request body must be a JSON array of product names."), requestedProducts);
-                    }
-
-                    if (!productsArray.EnumerateArray().Any())
-                    {
-                        return (CreateBadRequestResponse(request, "Empty product name is not allowed."), requestedProducts);
-                    }
-
-                    foreach (var product in productsArray.EnumerateArray())
-                    {
-                        if (product.ValueKind == JsonValueKind.String)
-                        {
-                            var productString = product.GetString();
-                            if (string.IsNullOrEmpty(productString))
-                            {
-                                return (CreateBadRequestResponse(request, "Empty product name is not allowed."), requestedProducts);
-                            }
-                            
-                            requestedProducts.Add(productString);
-                        }
-                        else
-                        {
-                            return (CreateBadRequestResponse(request, "All items in the array must be strings."), requestedProducts);
-                        }
-                    }
-
-                    return (null, requestedProducts);
+                    requestedProducts.Add(element.GetString()!);
                 }
+
+                if (!requestedProducts.Any())
+                    return (CreateBadRequestResponse(request, "Empty product name is not allowed."), requestedProducts);
+
+                return (null, requestedProducts);
             }
             catch (JsonException)
             {
                 return (CreateBadRequestResponse(request, "Invalid JSON format."), requestedProducts);
             }
-
-            return (null, requestedProducts);
         }
 
         private static JsonObject GenerateProductNamesResponse(List<string> requestedProducts)
         {
             var productsArray = new JsonArray();
-
             foreach (var productName in requestedProducts)
-            {
                 productsArray.Add(GenerateProductJson(productName));
-            }
 
             var notReturnedArray = new JsonArray();
 
@@ -122,9 +97,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
         private static JsonObject GenerateProductJson(string productName)
         {
-            var random = Random.Shared;
-            var editionNumber = random.Next(1, 15);
-            var fileSize = random.Next(2000, 15000);
+            var editionNumber = RandomInstance.Next(MinEditionNumber, MaxEditionNumber);
+            var fileSize = RandomInstance.Next(MinFileSize, MaxFileSize);
             var baseDate = DateTime.UtcNow;
 
             var updateNumbersArray = new JsonArray { 0 };
@@ -133,18 +107,17 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                 new JsonObject
                 {
                     ["issueDate"] = baseDate.ToString("o"),
-                    ["updateApplicationDate"] = baseDate.ToString("o"), 
+                    ["updateApplicationDate"] = baseDate.ToString("o"),
                     ["updateNumber"] = 0
                 }
             };
 
             if (productName.StartsWith("101"))
             {
-                var additionalUpdateCount = random.Next(0, MaxAdditionalUpdates);
-                
-                // Generate updates in a more functional way
+                var additionalUpdateCount = RandomInstance.Next(0, MaxAdditionalUpdates);
+
                 var updates = Enumerable.Range(1, 1 + additionalUpdateCount)
-                    .Select(i => 
+                    .Select(i =>
                     {
                         var currentDate = baseDate.AddDays(i * 5);
                         updateNumbersArray.Add(i);
@@ -154,11 +127,9 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                             ["updateNumber"] = i
                         };
                     }).ToList();
-                
+
                 foreach (var update in updates)
-                {
                     datesArray.Add(update);
-                }
             }
 
             var productObj = new JsonObject
@@ -166,16 +137,15 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                 ["editionNumber"] = editionNumber,
                 ["productName"] = productName,
                 ["updateNumbers"] = updateNumbersArray,
-                ["dates"] = datesArray,
+                ["dates"] = datesArray
             };
 
-            if (random.Next(0, 10) < 3)
+            // 30% chance to add cancellation
+            if (RandomInstance.Next(0, 10) < 3)
             {
-                var updateNumber = 0;
-                if (updateNumbersArray.Count > 0)
-                {
-                    updateNumber = updateNumbersArray.Max(node => node.GetValue<int>());
-                }
+                var updateNumber = updateNumbersArray.Count > 0
+                    ? updateNumbersArray.Max(node => node.GetValue<int>())
+                    : 0;
 
                 productObj["cancellation"] = new JsonObject
                 {
@@ -191,9 +161,13 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
         private static IResult CreateBadRequestResponse(HttpRequest requestMessage, string description)
         {
+            var correlationId = requestMessage.Headers.ContainsKey(WellKnownHeader.CorrelationId)
+                ? requestMessage.Headers[WellKnownHeader.CorrelationId].ToString()
+                : string.Empty;
+
             return Results.BadRequest(new
             {
-                correlationId = requestMessage.Headers[WellKnownHeader.CorrelationId],
+                correlationId,
                 errors = new[]
                 {
                     new { source = "Product Names", description }
