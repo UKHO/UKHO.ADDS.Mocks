@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
-using UKHO.ADDS.Infrastructure.Serialization.Json;
 using UKHO.ADDS.Mocks.Headers;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
