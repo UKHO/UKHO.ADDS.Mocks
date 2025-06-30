@@ -1,36 +1,46 @@
-﻿using UKHO.ADDS.Mocks.Headers;
+﻿using UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator;
+using UKHO.ADDS.Mocks.Headers;
 using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.States;
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
 {
-    public class WriteBlockEndpoint : ServiceEndpointMock
+    public class ProductNamesEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
-            endpoint.MapPut("/batch/{batchId}/files/{fileName}", (string batchId, string filename, HttpRequest request, HttpResponse response) =>
+            endpoint.MapPost("/v2/products/{productType}/ProductNames", async (string productType, HttpRequest request, HttpResponse response) =>
             {
                 EchoHeaders(request, response, [WellKnownHeader.CorrelationId]);
+
                 var state = GetState(request);
-
-                if (request.Body.Length == 0)
-                {
-                    var errorObj = new
-                    {
-                        message = "Body required with one or more",
-                        blockIds = new[]
-                          {
-                              "00001" 
-                          }
-                    };
-
-                    return Results.BadRequest(errorObj);
-                }
 
                 switch (state)
                 {
                     case WellKnownState.Default:
+                    {
+                        switch (productType.ToLowerInvariant())
+                        {
+                            case "s100":
 
-                        return Results.NoContent();
+                                response.GetTypedHeaders().LastModified = DateTime.UtcNow;
+                                return await ScsResponseGenerator.ProvideProductNamesResponse(request);
+
+                            default:
+
+                                return Results.Json(new
+                                {
+                                    correlationId = request.Headers[WellKnownHeader.CorrelationId],
+                                    errors = new[]
+                                    {
+                                        new
+                                        {
+                                            source = "No productType set",
+                                            description = "Bad Request."
+                                        }
+                                    }
+                                }, statusCode: 400);
+                        }
+                    }
 
                     case WellKnownState.BadRequest:
                         return Results.Json(new
@@ -40,8 +50,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                             {
                                     new
                                     {
-                                        source = "Write Block",
-                                        description = "Invalid BatchId"
+                                        source = "Product Names",
+                                        description = "Bad Request."
                                     }
                                 }
                         }, statusCode: 400);
@@ -69,8 +79,6 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                             details = "Internal Server Error"
                         }, statusCode: 500);
 
-
-
                     default:
                         // Just send default responses
                         return WellKnownStateHandler.HandleWellKnownState(state);
@@ -79,8 +87,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fss
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
                 {
-                    d.Append(new MarkdownHeader("Write a file block", 3));
-                    d.Append(new MarkdownParagraph("Just returns a 204, won't actually upload anything"));
+                    d.Append(new MarkdownHeader("Product Names Endpoint", 3));
+                    d.Append(new MarkdownParagraph("This endpoint is used to retrieve product names based on the product type."));
                 });
     }
 }

@@ -25,10 +25,9 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
 
                                     if (pathResult.IsSuccess(out var file))
                                     {
+                                        response.GetTypedHeaders().LastModified = DateTime.UtcNow;
                                         return Results.File(file.Open(), file.MimeType);
                                     }
-
-                                    response.GetTypedHeaders().LastModified = DateTime.UtcNow;
 
                                     return Results.NotFound("Could not find the path in the /files GET method");
                                 default:
