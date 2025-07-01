@@ -16,7 +16,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
         /// <summary>
         /// Provides a mock response for product names based on the requested products.
         /// </summary>
-        public static async Task<IResult> ProvideProductNamesResponse(HttpRequest requestMessage)
+        public static async Task<IResult> ProvideProductNamesResponse(HttpRequest requestMessage, string state = "")
         {
             try
             {
@@ -24,7 +24,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                 if (validationResult.errorResult != null)
                     return validationResult.errorResult;
 
-                var response = GenerateProductNamesResponse(validationResult.requestedProducts);
+                var response = GenerateProductNamesResponse(validationResult.requestedProducts, state);
                 return Results.Ok(response);
             }
             catch (Exception ex)
@@ -73,7 +73,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
             }
         }
 
-        private static JsonObject GenerateProductNamesResponse(List<string> requestedProducts)
+        private static JsonObject GenerateProductNamesResponse(List<string> requestedProducts, string state = "")
         {
             var productsArray = new JsonArray();
             foreach (var productName in requestedProducts)
@@ -81,16 +81,33 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
             var notReturnedArray = new JsonArray();
 
+            if (state == "get-missingproducts" && requestedProducts.Count > 0)
+            {
+                var lastProduct = requestedProducts.Last();
+                notReturnedArray.Add(CreateProductNotReturnedObject(lastProduct, "invalidProduct"));
+
+                productsArray.Remove(productsArray.Last());
+            }
+
             return new JsonObject
             {
                 ["productCounts"] = new JsonObject
                 {
                     ["requestedProductCount"] = requestedProducts.Count,
-                    ["returnedProductCount"] = requestedProducts.Count,
+                    ["returnedProductCount"] = requestedProducts.Count - (notReturnedArray.Count > 0 ? 1 : 0),
                     ["requestedProductsAlreadyUpToDateCount"] = 0,
                     ["requestedProductsNotReturned"] = notReturnedArray
                 },
                 ["products"] = productsArray
+            };
+        }
+
+        private static JsonObject CreateProductNotReturnedObject(string productName, string reason)
+        {
+            return new JsonObject
+            {
+                ["productName"] = productName,
+                ["reason"] = reason
             };
         }
 
@@ -102,14 +119,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
             var updateNumbersArray = new JsonArray { 0 };
             var datesArray = new JsonArray
-            {
-                new JsonObject
-                {
-                    ["issueDate"] = baseDate.ToString("o"),
-                    ["updateApplicationDate"] = baseDate.ToString("o"),
-                    ["updateNumber"] = 0
-                }
-            };
+                    {
+                        new JsonObject
+                        {
+                            ["issueDate"] = baseDate.ToString("o"),
+                            ["updateApplicationDate"] = baseDate.ToString("o"),
+                            ["updateNumber"] = 0
+                        }
+                    };
 
             if (productName.StartsWith("101"))
             {
@@ -169,8 +186,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                 correlationId,
                 errors = new[]
                 {
-                    new { source = "Product Names", description }
-                }
+                            new { source = "Product Names", description }
+                        }
             });
         }
     }
