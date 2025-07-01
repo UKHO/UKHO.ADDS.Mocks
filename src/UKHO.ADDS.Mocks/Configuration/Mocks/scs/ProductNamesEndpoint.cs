@@ -42,6 +42,11 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                         }
                     }
 
+                    case "get-invalidproducts":
+
+                        response.GetTypedHeaders().LastModified = DateTime.UtcNow;
+                        return await ScsResponseGenerator.ProvideProductNamesResponse(request, state);
+
                     case WellKnownState.BadRequest:
                         return Results.Json(new
                         {
@@ -89,6 +94,9 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs
                 {
                     d.Append(new MarkdownHeader("Product Names Endpoint", 3));
                     d.Append(new MarkdownParagraph("This endpoint is used to retrieve product names based on the product type."));
+
+                    d.Append(new MarkdownHeader("Try out the get-invalidproducts state!", 3));
+                    d.Append(new MarkdownParagraph("The response mimics a situation where one of the requested products is unavailable. The final item in the request is omitted from the returned list and is instead flagged as 'not returned', along with a reason like 'invalidProduct'."));
                 });
     }
 }
