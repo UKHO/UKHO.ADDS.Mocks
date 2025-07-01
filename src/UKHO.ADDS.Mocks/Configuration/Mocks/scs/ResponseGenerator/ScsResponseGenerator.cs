@@ -119,14 +119,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
             var updateNumbersArray = new JsonArray { 0 };
             var datesArray = new JsonArray
-                    {
-                        new JsonObject
-                        {
-                            ["issueDate"] = baseDate.ToString("o"),
-                            ["updateApplicationDate"] = baseDate.ToString("o"),
-                            ["updateNumber"] = 0
-                        }
-                    };
+            {
+                new JsonObject
+                {
+                    ["issueDate"] = baseDate.ToString("o"),
+                    ["updateApplicationDate"] = baseDate.ToString("o"),
+                    ["updateNumber"] = 0
+                }
+            };
 
             if (productName.StartsWith("101"))
             {
@@ -186,8 +186,8 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
                 correlationId,
                 errors = new[]
                 {
-                            new { source = "Product Names", description }
-                        }
+                    new { source = "Product Names", description }
+                }
             });
         }
     }
