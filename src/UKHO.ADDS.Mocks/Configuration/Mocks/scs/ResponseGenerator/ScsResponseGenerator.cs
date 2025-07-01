@@ -81,7 +81,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.scs.ResponseGenerator
 
             var notReturnedArray = new JsonArray();
 
-            if (state == "get-missingproducts" && requestedProducts.Count > 0)
+            if (state == "get-invalidproducts" && requestedProducts.Count > 0)
             {
                 var lastProduct = requestedProducts.Last();
                 notReturnedArray.Add(CreateProductNotReturnedObject(lastProduct, "invalidProduct"));
