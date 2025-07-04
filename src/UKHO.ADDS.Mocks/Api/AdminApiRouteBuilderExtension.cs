@@ -17,12 +17,12 @@ namespace UKHO.ADDS.Mocks.Api
                 limit ??= int.MaxValue;
                 since ??= DateTime.MinValue;
 
-                var requestResponses = dashboardService.RequestResponses.Where(x => x.Timestamp >= since).TakeLast(limit.Value).Select(RequestResponseModelBuilder.Build);
+                var requestResponses = dashboardService.GetSnapshot().Where(x => x.Timestamp >= since).TakeLast(limit.Value).Select(RequestResponseModelBuilder.Build);
 
                 return requestResponses.ToList();
             });
 
-            adminEndpoint.MapDelete("/requests", (HttpRequest request, DashboardService dashboardService) => { dashboardService.RequestResponses.Clear(); });
+            adminEndpoint.MapDelete("/requests", (HttpRequest request, DashboardService dashboardService) => { dashboardService.Clear(); });
 
             adminEndpoint.MapPost("/states/endpoints/{sessionId}/{servicePrefix}/{endpointName}/{state}", (HttpRequest request, string sessionId, string servicePrefix, string endpointName, string state) =>
             {
