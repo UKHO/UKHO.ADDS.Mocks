@@ -37,8 +37,8 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Files
 
         public bool IsReadOnly => _isReadOnly;
 
-        public Stream Open() => Open(FileMode.Open);
+        public Stream Open() => Open(FileMode.Open, FileAccess.Read, FileShare.Read);
 
-        public Stream Open(FileMode mode) => new FileStream(Path, mode);
+        public Stream Open(FileMode mode, FileAccess access, FileShare share) => new FileStream(Path, mode, access, share);
     }
 }
