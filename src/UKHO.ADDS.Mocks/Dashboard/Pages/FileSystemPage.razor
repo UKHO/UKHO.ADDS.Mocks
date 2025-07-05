@@ -1,5 +1,4 @@
 ﻿@page "/_dashboard/filesystem"
-
 @using UKHO.ADDS.Mocks.Domain.Configuration
 @using UKHO.ADDS.Mocks.Domain.Internal.Services
 @using Zio
@@ -7,14 +6,13 @@
 @inject IJSRuntime JSRuntime
 @layout DashboardLayout
 
-<h2 class="rz-mb-4">File Systems</h2>
+<h2 class="rz-mb-4">File System</h2>
 
 <RadzenSplitter Style="height: 80vh; border: 1px solid var(--rz-border-color);">
     <RadzenSplitterPane Size="25%">
         <RadzenTree Expand="@LoadChildDirectories"
                     Change="@OnNodeSelected"
                     TextProperty="Name"
-                    SelectedValue="@SelectedTreeNode"
                     Style="height: 100%; overflow: auto;">
 
             @foreach (var entry in FileSystemService.FileSystems)
@@ -27,7 +25,7 @@
     </RadzenSplitterPane>
 
     <RadzenSplitterPane Size="75%">
-        <h3 class="rz-mb-4">@CurrentPathDisplay</h3>
+        <h3 class="rz-mb-4">Files in: @CurrentPathDisplay</h3>
         <table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4" style="width: 100%;">
             <thead style="position: sticky; top: 0; background-color: var(--rz-panel-background-color); z-index: 10;">
                 <tr>
@@ -79,11 +77,11 @@
     </RadzenSplitterPane>
 </RadzenSplitter>
 
+
 @code {
     private ServiceDefinition? SelectedService;
     private IFileSystem? SelectedFileSystem;
     private string? SelectedPath;
-    private TreeNodeData? SelectedTreeNode;
     private List<FileItemWrapper>? FilesInSelectedFolder;
 
     private string CurrentPathDisplay =>
@@ -91,24 +89,7 @@
             ? "(None)"
             : $"{SelectedService.Name}:{SelectedPath}";
 
-    protected override void OnInitialized()
-    {
-        if (FileSystemService.FileSystems != null && FileSystemService.FileSystems.Any())
-        {
-            var first = FileSystemService.FileSystems.First();
-
-            // Prepare the root node
-            SelectedTreeNode = new TreeNodeData(first.Key, "/", first.Value);
-
-            // Also set up the service and path so the grid is populated immediately
-            SelectedService = first.Key;
-            SelectedFileSystem = first.Value;
-            SelectedPath = "/";
-
-            LoadFilesInDirectory();
-        }
-    }
-
+    // Dynamic Expand handler for v7.1.3
     private Task LoadChildDirectories(TreeExpandEventArgs args)
     {
         if (args.Value is not TreeNodeData nodeData)
@@ -143,7 +124,6 @@
         if (args.Value is not TreeNodeData nd)
             return;
 
-        SelectedTreeNode = nd;
         SelectedService = nd.ServiceDefinition;
         SelectedFileSystem = nd.FileSystem;
         SelectedPath = nd.Path;
@@ -223,4 +203,5 @@
             return _item.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
         }
     }
+
 }

@@ -50,33 +50,53 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
                 foreach (var file in definition.ServiceFiles)
                 {
-                    var filePath = _hostFileSystem.Path.Combine(_rootPath, definition.Prefix, file.Name);
-                    var directoryPath = _hostFileSystem.Path.GetDirectoryName(filePath);
+                    // 1️⃣ Get the part of file.Path after the service prefix
+                    // Normalize path separators
+                    var normalizedFilePath = file.Path.Replace('\\', '/');
+                    var prefixMarker = "/" + definition.Prefix + "/";
+                    var prefixIndex = normalizedFilePath.IndexOf(prefixMarker, StringComparison.OrdinalIgnoreCase);
 
-                    if (!_hostFileSystem.Directory.Exists(directoryPath))
+                    if (prefixIndex == -1)
                     {
-                        _hostFileSystem.Directory.CreateDirectory(directoryPath);
+                        throw new InvalidOperationException(
+                            $"File path '{file.Path}' does not contain the expected service prefix '{definition.Prefix}'.");
                     }
 
-                    if (_hostFileSystem.File.Exists(filePath))
+                    // Get relative path after the service prefix
+                    var relativeSubPath = normalizedFilePath.Substring(prefixIndex + prefixMarker.Length);
+
+                    // 2️⃣ Compose the full destination path:
+                    // root / prefix / relativeSubPath
+                    var destinationPath = _hostFileSystem.Path.Combine(_rootPath, definition.Prefix, relativeSubPath);
+
+                    // 3️⃣ Ensure the target directory exists
+                    var destinationDirectory = _hostFileSystem.Path.GetDirectoryName(destinationPath);
+                    if (!_hostFileSystem.Directory.Exists(destinationDirectory))
                     {
-                        File.SetAttributes(filePath, FileAttributes.Normal);
-                        _hostFileSystem.File.Delete(filePath);
+                        _hostFileSystem.Directory.CreateDirectory(destinationDirectory);
                     }
 
-                    await using var sourceStream = new FileStream(file.Path, FileMode.Open);
-                    await using var destinationStream = _hostFileSystem.File.Create(filePath);
+                    // 4️⃣ Overwrite existing file if needed
+                    if (_hostFileSystem.File.Exists(destinationPath))
+                    {
+                        File.SetAttributes(destinationPath, FileAttributes.Normal);
+                        _hostFileSystem.File.Delete(destinationPath);
+                    }
 
-                    var attributes = File.GetAttributes(filePath);
-                    attributes |= FileAttributes.ReadOnly;
-
-                    File.SetAttributes(filePath, attributes);
-
+                    // 5️⃣ Copy contents
+                    await using var sourceStream = new FileStream(file.Path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    await using var destinationStream = _hostFileSystem.File.Create(destinationPath);
                     await sourceStream.CopyToAsync(destinationStream, stoppingToken);
+
+                    // 6️⃣ Set read-only
+                    var attributes = File.GetAttributes(destinationPath);
+                    attributes |= FileAttributes.ReadOnly;
+                    File.SetAttributes(destinationPath, attributes);
                 }
 
                 GetFileSystem(definition);
             }
+
         }
 
         public IReadOnlyDictionary<ServiceDefinition, IFileSystem> FileSystems => _fileSystems;
