@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using UKHO.ADDS.Mocks.Guard;
+using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -31,11 +31,11 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void Empty(CollectionOptions emptyOptions, CollectionOptions nonEmptyOptions)
         {
             var empty = GetEnumerable<int>(emptyOptions);
-            var emptyArg = Mocks.Guard.Guard.Argument(() => empty).Empty();
+            var emptyArg = Mocks.Domain.Guard.Guard.Argument(() => empty).Empty();
             CheckAndReset(empty, true, enumerationCount: 0, enumerated: true);
 
             var nonEmpty = GetEnumerable<int>(nonEmptyOptions);
-            var nonEmptyArg = Mocks.Guard.Guard.Argument(() => nonEmpty).NotEmpty();
+            var nonEmptyArg = Mocks.Domain.Guard.Guard.Argument(() => nonEmpty).NotEmpty();
             CheckAndReset(nonEmpty, true, enumerationCount: 1);
 
             if (empty is null)
@@ -73,7 +73,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("A", 1, 2)]
         public void Count(string value, int count, int nonCount)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(value.AsEnumerable(), nameof(value))
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.AsEnumerable(), nameof(value))
                 .Count(count)
                 .NotCount(nonCount);
 
@@ -115,7 +115,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void MinCount(CollectionOptions options, int count, int countOrLess, int greaterThanCount)
         {
             var enumerable = GetEnumerable<int>(options, count);
-            var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable).MinCount(countOrLess);
+            var enumerableArg = Mocks.Domain.Guard.Guard.Argument(() => enumerable).MinCount(countOrLess);
             CheckAndReset(enumerable, true, enumerationCount: countOrLess, enumerated: countOrLess != 0);
 
             if (enumerable is null)
@@ -146,7 +146,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void MaxCount(CollectionOptions options, int count, int countOrMore, int lessThanCount)
         {
             var enumerable = GetEnumerable<int>(options, count);
-            var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable).MaxCount(countOrMore);
+            var enumerableArg = Mocks.Domain.Guard.Guard.Argument(() => enumerable).MaxCount(countOrMore);
             CheckAndReset(enumerable, true, enumerationCount: count, enumerated: countOrMore + 1 != 0);
 
             if (enumerable is null)
@@ -177,7 +177,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void CountInRange(CollectionOptions options, int count, int lessThanCount, int greaterThanCount)
         {
             var enumerable = GetEnumerable<int>(options, count);
-            var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable);
+            var enumerableArg = Mocks.Domain.Guard.Guard.Argument(() => enumerable);
 
             enumerableArg.CountInRange(lessThanCount, count);
             CheckAndReset(enumerable, true, enumerationCount: count, enumerated: count + 1 != 0);
@@ -239,7 +239,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             CollectionOptions options, int count, int? contained, int? nonContained, bool secure)
         {
             var enumerable = GetEnumerable<int?>(options, count);
-            var enumerableArg = Mocks.Guard.Guard.Argument(() => enumerable, secure);
+            var enumerableArg = Mocks.Domain.Guard.Guard.Argument(() => enumerable, secure);
 
             var index = enumerable?.Items.TakeWhile(i => i != contained).Count() ?? RandomNumber;
             var comparer = EqualityComparer<int?>.Default;
@@ -387,13 +387,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var withNullCount = 10;
             var enumerableWithNull = GetEnumerable<string>(optionsWithNull, withNullCount);
-            var enumerableWithNullArg = Mocks.Guard.Guard.Argument(() => enumerableWithNull).ContainsNull();
+            var enumerableWithNullArg = Mocks.Domain.Guard.Guard.Argument(() => enumerableWithNull).ContainsNull();
             var nullIndex = enumerableWithNull?.Items.TakeWhile(s => s != null).Count() ?? RandomNumber;
             CheckAndReset(enumerableWithNull, containsCalled: true, enumerationCount: nullIndex + 1);
 
             var withoutNullCount = optionsWithoutNull.HasFlag(CollectionOptions.Empty) ? 0 : withNullCount;
             var enumerableWithoutNull = GetEnumerable<string>(optionsWithoutNull, withoutNullCount);
-            var enumerableWithoutNullArg = Mocks.Guard.Guard.Argument(() => enumerableWithoutNull).DoesNotContainNull();
+            var enumerableWithoutNullArg = Mocks.Domain.Guard.Guard.Argument(() => enumerableWithoutNull).DoesNotContainNull();
             CheckAndReset(enumerableWithoutNull, containsCalled: true, enumerationCount: withoutNullCount, enumerated: true);
 
             if (enumerableWithNull is null)
@@ -439,13 +439,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var withNullCount = 10;
             var enumerableWithNull = GetEnumerable<int?>(optionsWithNull, withNullCount);
-            var enumerableWithNullArg = Mocks.Guard.Guard.Argument(() => enumerableWithNull).ContainsNull();
+            var enumerableWithNullArg = Mocks.Domain.Guard.Guard.Argument(() => enumerableWithNull).ContainsNull();
             var nullIndex = enumerableWithNull?.Items.TakeWhile(s => s.HasValue).Count() ?? RandomNumber;
             CheckAndReset(enumerableWithNull, containsCalled: true, enumerationCount: nullIndex + 1);
 
             var withoutNullCount = optionsWithoutNull.HasFlag(CollectionOptions.Empty) ? 0 : withNullCount;
             var enumerableWithoutNull = GetEnumerable<int?>(optionsWithoutNull, withoutNullCount);
-            var enumerableWithoutNullArg = Mocks.Guard.Guard.Argument(() => enumerableWithoutNull).DoesNotContainNull();
+            var enumerableWithoutNullArg = Mocks.Domain.Guard.Guard.Argument(() => enumerableWithoutNull).DoesNotContainNull();
             CheckAndReset(enumerableWithoutNull, containsCalled: true, enumerationCount: withoutNullCount, enumerated: true);
 
             if (enumerableWithNull is null)
@@ -492,10 +492,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             var comparer = StringComparer.OrdinalIgnoreCase;
 
             var enumerableWithDuplicate = GetEnumerable<string>(optionsWithDuplicate);
-            var enumerableWithDuplicateArg = Mocks.Guard.Guard.Argument(() => enumerableWithDuplicate);
+            var enumerableWithDuplicateArg = Mocks.Domain.Guard.Guard.Argument(() => enumerableWithDuplicate);
 
             var enumerableWithoutDuplicate = GetEnumerable<string>(optionsWithoutDuplicate);
-            var enumerableWithoutDuplicateArg = Mocks.Guard.Guard.Argument(() => enumerableWithoutDuplicate)
+            var enumerableWithoutDuplicateArg = Mocks.Domain.Guard.Guard.Argument(() => enumerableWithoutDuplicate)
                 .DoesNotContainDuplicate()
                 .DoesNotContainDuplicate(comparer);
 
@@ -512,7 +512,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             // Without Count
             var nonGenericEnumerableWithDuplicate = new ArrayList(enumerableWithDuplicate.ToList()) as IEnumerable;
-            var nonGenericEnumerableWithDuplicateArg = Mocks.Guard.Guard.Argument(() => nonGenericEnumerableWithDuplicate);
+            var nonGenericEnumerableWithDuplicateArg = Mocks.Domain.Guard.Guard.Argument(() => nonGenericEnumerableWithDuplicate);
 
             ThrowsArgumentException(
                 enumerableWithDuplicateArg,
@@ -561,10 +561,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             // With Count
             if (enumerableWithDuplicate is ITestEnumerableWithCount<string> collectionWithDuplicate)
             {
-                var collectionWithDuplicateArg = Mocks.Guard.Guard.Argument(() => collectionWithDuplicate);
+                var collectionWithDuplicateArg = Mocks.Domain.Guard.Guard.Argument(() => collectionWithDuplicate);
 
                 var nonGenericCollectionWithDuplicate = new ArrayList(collectionWithDuplicate.ToList());
-                var nonGenericCollectionWithDuplicateArg = Mocks.Guard.Guard.Argument(() => nonGenericCollectionWithDuplicate);
+                var nonGenericCollectionWithDuplicateArg = Mocks.Domain.Guard.Guard.Argument(() => nonGenericCollectionWithDuplicate);
 
                 ThrowsArgumentException(
                     collectionWithDuplicateArg,
@@ -631,8 +631,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void InCollection(
             CollectionOptions options, int count, int? contained, int? nonContained, bool secure)
         {
-            var containedArg = Mocks.Guard.Guard.Argument(() => contained, secure);
-            var nonContainedArg = Mocks.Guard.Guard.Argument(() => nonContained, secure);
+            var containedArg = Mocks.Domain.Guard.Guard.Argument(() => contained, secure);
+            var nonContainedArg = Mocks.Domain.Guard.Guard.Argument(() => nonContained, secure);
 
             var enumerable = GetEnumerable<int?>(options, count);
             var index = enumerable?.Items.TakeWhile(i => i != contained).Count() ?? RandomNumber;
@@ -799,7 +799,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var containing = containingString?.Split(',');
             var nonContaining = nonContainingString?.Split(',');
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .In(containing)
                 .NotIn(nonContaining);
 
@@ -834,7 +834,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 Throws(arg => arg.NotIn(containing), containing);
             }
 
-            void Throws(Action<Mocks.Guard.Guard.ArgumentInfo<string>> test, string[] tested)
+            void Throws(Action<Mocks.Domain.Guard.Guard.ArgumentInfo<string>> test, string[] tested)
             {
                 var exception = Assert.Throws<ArgumentException>(valueArg.Name, () => test(valueArg));
                 Assert.NotEqual(secure, tested.All(i => exception.Message.Contains(i)));

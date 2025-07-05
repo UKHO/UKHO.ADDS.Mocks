@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -14,19 +14,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(float.NaN, float.PositiveInfinity)]
         public void NaN(float? nan, float? nonNaN)
         {
-            var nullableNaNArg = Mocks.Guard.Guard.Argument(() => nan).NaN();
-            var nullableNonNaNArg = Mocks.Guard.Guard.Argument(() => nonNaN).NotNaN();
+            var nullableNaNArg = Mocks.Domain.Guard.Guard.NaN(Mocks.Domain.Guard.Guard.Argument(() => nan));
+            var nullableNonNaNArg = Mocks.Domain.Guard.Guard.NotNaN(Mocks.Domain.Guard.Guard.Argument(() => nonNaN));
             if (!nan.HasValue)
             {
-                nullableNaNArg.NotNaN();
-                nullableNonNaNArg.NaN();
+                Mocks.Domain.Guard.Guard.NotNaN(nullableNaNArg);
+                Mocks.Domain.Guard.Guard.NaN(nullableNonNaNArg);
                 return;
             }
 
             ThrowsArgumentOutOfRangeException(
                 nullableNonNaNArg,
-                arg => arg.NaN(),
-                (arg, message) => arg.NaN(f =>
+                arg => Mocks.Domain.Guard.Guard.NaN(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NaN(arg, f =>
                 {
                     Assert.Equal(nonNaN, f);
                     return message;
@@ -34,15 +34,15 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 nullableNaNArg,
-                arg => arg.NotNaN(),
-                (arg, message) => arg.NotNaN(message));
+                arg => Mocks.Domain.Guard.Guard.NotNaN(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotNaN(arg, message));
 
-            var nanArg = Mocks.Guard.Guard.Argument(nan.Value, nameof(nan)).NaN();
-            var nonNaNArg = Mocks.Guard.Guard.Argument(nonNaN.Value, nameof(nonNaN)).NotNaN();
+            var nanArg = Mocks.Domain.Guard.Guard.NaN(Mocks.Domain.Guard.Guard.Argument(nan.Value, nameof(nan)));
+            var nonNaNArg = Mocks.Domain.Guard.Guard.NotNaN(Mocks.Domain.Guard.Guard.Argument(nonNaN.Value, nameof(nonNaN)));
             ThrowsArgumentOutOfRangeException(
                 nonNaNArg,
-                arg => arg.NaN(),
-                (arg, message) => arg.NaN(f =>
+                arg => Mocks.Domain.Guard.Guard.NaN(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NaN(arg, f =>
                 {
                     Assert.Equal(nonNaN, f);
                     return message;
@@ -50,8 +50,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 nanArg,
-                arg => arg.NotNaN(),
-                (arg, message) => arg.NotNaN(message));
+                arg => Mocks.Domain.Guard.Guard.NotNaN(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotNaN(arg, message));
         }
 
         [Theory(DisplayName = "Single: Infinity/NotInfinity")]
@@ -66,19 +66,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(float.PositiveInfinity, 1.0f)]
         public void Infinity(float? infinity, float? nonInfinity)
         {
-            var nullableInfinityArg = Mocks.Guard.Guard.Argument(() => infinity).Infinity();
-            var nullableNonInfinityArg = Mocks.Guard.Guard.Argument(() => nonInfinity).NotInfinity();
+            var nullableInfinityArg = Mocks.Domain.Guard.Guard.Infinity(Mocks.Domain.Guard.Guard.Argument(() => infinity));
+            var nullableNonInfinityArg = Mocks.Domain.Guard.Guard.NotInfinity(Mocks.Domain.Guard.Guard.Argument(() => nonInfinity));
             if (!infinity.HasValue)
             {
-                nullableInfinityArg.NotInfinity();
-                nullableNonInfinityArg.Infinity();
+                Mocks.Domain.Guard.Guard.NotInfinity(nullableInfinityArg);
+                Mocks.Domain.Guard.Guard.Infinity(nullableNonInfinityArg);
                 return;
             }
 
             ThrowsArgumentOutOfRangeException(
                 nullableNonInfinityArg,
-                arg => arg.Infinity(),
-                (arg, message) => arg.Infinity(f =>
+                arg => Mocks.Domain.Guard.Guard.Infinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.Infinity(arg, f =>
                 {
                     Assert.Equal(nonInfinity, f);
                     return message;
@@ -86,19 +86,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 nullableInfinityArg,
-                arg => arg.NotInfinity(),
-                (arg, message) => arg.NotInfinity(f =>
+                arg => Mocks.Domain.Guard.Guard.NotInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotInfinity(arg, f =>
                 {
                     Assert.Equal(infinity, f);
                     return message;
                 }));
 
-            var infinityArg = Mocks.Guard.Guard.Argument(infinity.Value, nameof(infinity)).Infinity();
-            var nonInfinityArg = Mocks.Guard.Guard.Argument(nonInfinity.Value, nameof(nonInfinity)).NotInfinity();
+            var infinityArg = Mocks.Domain.Guard.Guard.Infinity(Mocks.Domain.Guard.Guard.Argument(infinity.Value, nameof(infinity)));
+            var nonInfinityArg = Mocks.Domain.Guard.Guard.NotInfinity(Mocks.Domain.Guard.Guard.Argument(nonInfinity.Value, nameof(nonInfinity)));
             ThrowsArgumentOutOfRangeException(
                 nonInfinityArg,
-                arg => arg.Infinity(),
-                (arg, message) => arg.Infinity(f =>
+                arg => Mocks.Domain.Guard.Guard.Infinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.Infinity(arg, f =>
                 {
                     Assert.Equal(nonInfinity, f);
                     return message;
@@ -106,8 +106,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 infinityArg,
-                arg => arg.NotInfinity(),
-                (arg, message) => arg.NotInfinity(f =>
+                arg => Mocks.Domain.Guard.Guard.NotInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotInfinity(arg, f =>
                 {
                     Assert.Equal(infinity, f);
                     return message;
@@ -123,19 +123,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(float.PositiveInfinity, 1.0f)]
         public void PositiveInfinity(float? infinity, float? nonInfinity)
         {
-            var nullableInfinityArg = Mocks.Guard.Guard.Argument(() => infinity).PositiveInfinity();
-            var nullableNonInfinityArg = Mocks.Guard.Guard.Argument(() => nonInfinity).NotPositiveInfinity();
+            var nullableInfinityArg = Mocks.Domain.Guard.Guard.PositiveInfinity(Mocks.Domain.Guard.Guard.Argument(() => infinity));
+            var nullableNonInfinityArg = Mocks.Domain.Guard.Guard.NotPositiveInfinity(Mocks.Domain.Guard.Guard.Argument(() => nonInfinity));
             if (!infinity.HasValue)
             {
-                nullableInfinityArg.NotPositiveInfinity();
-                nullableNonInfinityArg.PositiveInfinity();
+                Mocks.Domain.Guard.Guard.NotPositiveInfinity(nullableInfinityArg);
+                Mocks.Domain.Guard.Guard.PositiveInfinity(nullableNonInfinityArg);
                 return;
             }
 
             ThrowsArgumentOutOfRangeException(
                 nullableNonInfinityArg,
-                arg => arg.PositiveInfinity(),
-                (arg, message) => arg.PositiveInfinity(f =>
+                arg => Mocks.Domain.Guard.Guard.PositiveInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.PositiveInfinity(arg, f =>
                 {
                     Assert.Equal(nonInfinity, f);
                     return message;
@@ -143,15 +143,15 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 nullableInfinityArg,
-                arg => arg.NotPositiveInfinity(),
-                (arg, message) => arg.NotPositiveInfinity(message));
+                arg => Mocks.Domain.Guard.Guard.NotPositiveInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotPositiveInfinity(arg, message));
 
-            var infinityArg = Mocks.Guard.Guard.Argument(infinity.Value, nameof(infinity)).PositiveInfinity();
-            var nonInfinityArg = Mocks.Guard.Guard.Argument(nonInfinity.Value, nameof(nonInfinity)).NotPositiveInfinity();
+            var infinityArg = Mocks.Domain.Guard.Guard.PositiveInfinity(Mocks.Domain.Guard.Guard.Argument(infinity.Value, nameof(infinity)));
+            var nonInfinityArg = Mocks.Domain.Guard.Guard.NotPositiveInfinity(Mocks.Domain.Guard.Guard.Argument(nonInfinity.Value, nameof(nonInfinity)));
             ThrowsArgumentOutOfRangeException(
                 nonInfinityArg,
-                arg => arg.PositiveInfinity(),
-                (arg, message) => arg.PositiveInfinity(f =>
+                arg => Mocks.Domain.Guard.Guard.PositiveInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.PositiveInfinity(arg, f =>
                 {
                     Assert.Equal(nonInfinity, f);
                     return message;
@@ -159,8 +159,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 infinityArg,
-                arg => arg.NotPositiveInfinity(),
-                (arg, message) => arg.NotPositiveInfinity(message));
+                arg => Mocks.Domain.Guard.Guard.NotPositiveInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotPositiveInfinity(arg, message));
         }
 
         [Theory(DisplayName = "Single: NegativeInfinity/NotNegativeInfinity")]
@@ -172,19 +172,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(float.NegativeInfinity, float.PositiveInfinity)]
         public void NegativeInfinity(float? infinity, float? nonInfinity)
         {
-            var nullableInfinityArg = Mocks.Guard.Guard.Argument(() => infinity).NegativeInfinity();
-            var nullableNonInfinityArg = Mocks.Guard.Guard.Argument(() => nonInfinity).NotNegativeInfinity();
+            var nullableInfinityArg = Mocks.Domain.Guard.Guard.NegativeInfinity(Mocks.Domain.Guard.Guard.Argument(() => infinity));
+            var nullableNonInfinityArg = Mocks.Domain.Guard.Guard.NotNegativeInfinity(Mocks.Domain.Guard.Guard.Argument(() => nonInfinity));
             if (!infinity.HasValue)
             {
-                nullableInfinityArg.NotNegativeInfinity();
-                nullableNonInfinityArg.NegativeInfinity();
+                Mocks.Domain.Guard.Guard.NotNegativeInfinity(nullableInfinityArg);
+                Mocks.Domain.Guard.Guard.NegativeInfinity(nullableNonInfinityArg);
                 return;
             }
 
             ThrowsArgumentOutOfRangeException(
                 nullableNonInfinityArg,
-                arg => arg.NegativeInfinity(),
-                (arg, message) => arg.NegativeInfinity(f =>
+                arg => Mocks.Domain.Guard.Guard.NegativeInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NegativeInfinity(arg, f =>
                 {
                     Assert.Equal(nonInfinity, f);
                     return message;
@@ -192,11 +192,11 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             ThrowsArgumentOutOfRangeException(
                 nullableInfinityArg,
-                arg => arg.NotNegativeInfinity(),
-                (arg, message) => arg.NotNegativeInfinity(message));
+                arg => Mocks.Domain.Guard.Guard.NotNegativeInfinity(arg),
+                (arg, message) => Mocks.Domain.Guard.Guard.NotNegativeInfinity(arg, message));
 
-            var infinityArg = Mocks.Guard.Guard.Argument(infinity.Value, nameof(infinity)).NegativeInfinity();
-            var nonInfinityArg = Mocks.Guard.Guard.Argument(nonInfinity.Value, nameof(nonInfinity)).NotNegativeInfinity();
+            var infinityArg = Mocks.Domain.Guard.Guard.NegativeInfinity(Mocks.Domain.Guard.Guard.Argument(infinity.Value, nameof(infinity)));
+            var nonInfinityArg = Mocks.Domain.Guard.Guard.Argument(nonInfinity.Value, nameof(nonInfinity)).NotNegativeInfinity();
             ThrowsArgumentOutOfRangeException(
                 nonInfinityArg,
                 arg => arg.NegativeInfinity(),
@@ -220,7 +220,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             Test(value, nameof(value), NullableTest, NonNullableTest);
 
-            void NullableTest(Mocks.Guard.Guard.ArgumentInfo<float?> nullableValueArg)
+            void NullableTest(Mocks.Domain.Guard.Guard.ArgumentInfo<float?> nullableValueArg)
             {
                 nullableValueArg.Equal(equal, delta).NotEqual(nonEqual, delta);
                 if (!nullableValueArg.HasValue())
@@ -252,7 +252,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     }));
             }
 
-            void NonNullableTest(Mocks.Guard.Guard.ArgumentInfo<float> valueArg)
+            void NonNullableTest(Mocks.Domain.Guard.Guard.ArgumentInfo<float> valueArg)
             {
                 valueArg.Equal(equal, delta).NotEqual(nonEqual, delta);
                 ThrowsArgumentOutOfRangeException(

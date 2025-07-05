@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -11,10 +11,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void KindSpecified(bool testNull)
         {
             var specified = testNull ? default(DateTime?) : DateTime.UtcNow;
-            var nullableSpecifiedArg = Mocks.Guard.Guard.Argument(() => specified).KindSpecified();
+            var nullableSpecifiedArg = Mocks.Domain.Guard.Guard.Argument(() => specified).KindSpecified();
 
             var unspecified = testNull ? default(DateTime?) : default(DateTime);
-            var nullableUnspecifiedArg = Mocks.Guard.Guard.Argument(() => unspecified).KindUnspecified();
+            var nullableUnspecifiedArg = Mocks.Domain.Guard.Guard.Argument(() => unspecified).KindUnspecified();
 
             if (testNull)
             {
@@ -41,8 +41,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var specifiedArg = Mocks.Guard.Guard.Argument(specified.Value, nameof(specified)).KindSpecified();
-            var unspecifiedArg = Mocks.Guard.Guard.Argument(unspecified.Value, nameof(unspecified)).KindUnspecified();
+            var specifiedArg = Mocks.Domain.Guard.Guard.Argument(specified.Value, nameof(specified)).KindSpecified();
+            var unspecifiedArg = Mocks.Domain.Guard.Guard.Argument(unspecified.Value, nameof(unspecified)).KindUnspecified();
             ThrowsArgumentException(
                 specifiedArg,
                 arg => arg.KindUnspecified(),

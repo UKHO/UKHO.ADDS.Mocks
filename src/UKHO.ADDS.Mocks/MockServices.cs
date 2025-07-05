@@ -1,6 +1,6 @@
 ﻿using UKHO.ADDS.Mocks.Configuration;
 using UKHO.ADDS.Mocks.Domain.Configuration;
-using UKHO.ADDS.Mocks.States;
+using UKHO.ADDS.Mocks.Domain.States;
 
 namespace UKHO.ADDS.Mocks
 {

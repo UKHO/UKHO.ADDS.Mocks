@@ -1,6 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 
-namespace UKHO.ADDS.Mocks.States
+namespace UKHO.ADDS.Mocks.Domain.States
 {
     public sealed class StateDefinition
     {

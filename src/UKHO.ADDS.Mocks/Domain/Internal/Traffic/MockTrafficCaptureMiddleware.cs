@@ -1,5 +1,6 @@
 ﻿using UKHO.ADDS.Mocks.Configuration;
 using UKHO.ADDS.Mocks.Dashboard.Services;
+using UKHO.ADDS.Mocks.Domain.Configuration;
 
 namespace UKHO.ADDS.Mocks.Domain.Internal.Traffic
 {

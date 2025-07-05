@@ -1,6 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 
-namespace UKHO.ADDS.Mocks.Mime
+namespace UKHO.ADDS.Mocks.Domain.Mime
 {
     public static partial class MimeType
     {

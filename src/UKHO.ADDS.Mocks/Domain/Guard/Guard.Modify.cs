@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
-using JetBrains.Annotations;
+using UKHO.ADDS.Mocks.Properties;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <content>Provides safe modification functions to normalize arguments.</content>
     public static partial class Guard
@@ -87,8 +86,6 @@ namespace UKHO.ADDS.Mocks.Guard
             }
         }
 
-#if !NETSTANDARD1_0
-
         /// <summary>
         ///     Returns a new argument with the same name and a shallow clone of the original value.
         /// </summary>
@@ -108,7 +105,5 @@ namespace UKHO.ADDS.Mocks.Guard
             var clone = argument.Value!.Clone() as T;
             return new ArgumentInfo<T>(clone!, argument.Name, argument.Modified, argument.Secure);
         }
-
-#endif
     }
 }

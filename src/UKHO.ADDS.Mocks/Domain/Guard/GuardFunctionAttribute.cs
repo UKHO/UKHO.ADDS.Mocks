@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <summary>Marks a target as a function of <see cref="Guard" />.</summary>
     [AttributeUsage(AttributeTargets.Method)]
@@ -42,8 +41,6 @@ namespace UKHO.ADDS.Mocks.Guard
         /// <summary>The priority of a function along its overloads.</summary>
         public int Order { get; }
 
-#if !NETSTANDARD1_0
-
         /// <summary>
         ///     Gets the exposed methods in the specified assembly that are marked with <see cref="GuardFunctionAttribute" />
         /// </summary>
@@ -61,7 +58,5 @@ namespace UKHO.ADDS.Mocks.Guard
             where a != null
             orderby a.Group, m.Name, a.Order
             select new KeyValuePair<MethodInfo, GuardFunctionAttribute>(m, a);
-
-#endif
     }
 }

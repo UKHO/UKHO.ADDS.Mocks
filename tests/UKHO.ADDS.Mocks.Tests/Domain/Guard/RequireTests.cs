@@ -13,7 +13,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void RequireDefaultException<T>(T value)
         {
             s_currentValue = value;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value).Require(true).Require(Success);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value).Require(true).Require(Success);
             if (value == null)
             {
                 valueArg.Require(false).Require(Fail);
@@ -46,7 +46,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void RequireArgumentExceptionWithMessage<T>(T value)
         {
             s_currentValue = value;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value)
                 .Require<TestArgException>(true)
                 .Require<TestArgException>(Success);
 
@@ -85,7 +85,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void RequireArgumentExceptionWithoutMessage<T>(T value)
         {
             s_currentValue = value;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value)
                 .Require<TestArgExceptionNoMessage>(true)
                 .Require<TestArgExceptionNoMessage>(Success);
 
@@ -124,7 +124,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void RequireCommonExceptionWithMessage<T>(T value)
         {
             s_currentValue = value;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value)
                 .Require<TestException>(true)
                 .Require<TestException>(Success);
 
@@ -163,7 +163,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void RequireCommonExceptionWithoutMessage<T>(T value)
         {
             s_currentValue = value;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value)
                 .Require<TestExceptionNoMessage>(true)
                 .Require<TestExceptionNoMessage>(Success);
 
@@ -202,7 +202,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void RequireExceptionWithoutConstructor<T>(T value)
         {
             s_currentValue = value;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value)
                 .Require<TestExceptionNoCtor>(true)
                 .Require<TestExceptionNoCtor>(Success);
 

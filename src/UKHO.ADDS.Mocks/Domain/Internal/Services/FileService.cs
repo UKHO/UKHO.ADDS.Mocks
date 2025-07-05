@@ -2,11 +2,10 @@
 using System.IO.Abstractions;
 using System.Text;
 using UKHO.ADDS.Infrastructure.Results;
-using UKHO.ADDS.Mocks.Configuration;
 using UKHO.ADDS.Mocks.Domain.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Files;
+using UKHO.ADDS.Mocks.Domain.Mime;
 using UKHO.ADDS.Mocks.Files;
-using UKHO.ADDS.Mocks.Mime;
 
 namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 {

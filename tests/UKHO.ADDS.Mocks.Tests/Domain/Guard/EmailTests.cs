@@ -1,5 +1,5 @@
 ﻿using System.Net.Mail;
-using UKHO.ADDS.Mocks.Guard;
+using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -15,7 +15,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void HasHost(string emailString, string host, string nonHost, bool secure)
         {
             var email = emailString is null ? null : new MailAddress(emailString);
-            var emailArgument = Mocks.Guard.Guard.Argument(() => email, secure).HasHost(host).DoesNotHaveHost(nonHost);
+            var emailArgument = Mocks.Domain.Guard.Guard.Argument(() => email, secure).HasHost(host).DoesNotHaveHost(nonHost);
 
             if (email is null)
             {
@@ -66,7 +66,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             string emailString, string hostsString, string nonHostsString, bool hasContains, bool secure)
         {
             var email = emailString is null ? null : new MailAddress(emailString);
-            var emailArg = Mocks.Guard.Guard.Argument(() => email, secure);
+            var emailArg = Mocks.Domain.Guard.Guard.Argument(() => email, secure);
             var hosts = GetHosts(hostsString, hasContains, out var hostsCount);
             var hostIndex = email is null ? RandomNumber : hosts.Items.TakeWhile(h => h != email.Host).Count();
             var nonHosts = GetHosts(nonHostsString, hasContains, out var nonHostsCount);
@@ -136,10 +136,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void HasDisplayName(string stringWithDisplayName, string stringWithoutDisplayName)
         {
             var withDisplayName = stringWithDisplayName is null ? null : new MailAddress(stringWithDisplayName);
-            var withDisplayNameArg = Mocks.Guard.Guard.Argument(() => withDisplayName).HasDisplayName();
+            var withDisplayNameArg = Mocks.Domain.Guard.Guard.Argument(() => withDisplayName).HasDisplayName();
 
             var withoutDisplayName = stringWithoutDisplayName is null ? null : new MailAddress(stringWithoutDisplayName);
-            var withoutDisplayNameArg = Mocks.Guard.Guard.Argument(() => withoutDisplayName).DoesNotHaveDisplayName();
+            var withoutDisplayNameArg = Mocks.Domain.Guard.Guard.Argument(() => withoutDisplayName).DoesNotHaveDisplayName();
 
             if (withDisplayName is null)
             {

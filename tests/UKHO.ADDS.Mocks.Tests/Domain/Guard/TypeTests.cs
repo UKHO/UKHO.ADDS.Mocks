@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -12,16 +12,16 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             for (var i = 0; i < 2; i++)
             {
-                var arg = new Mocks.Guard.Guard.ArgumentInfo<object>(
+                var arg = new Mocks.Domain.Guard.Guard.ArgumentInfo<object>(
                     value, nameof(value), i % 2 == 0, i % 2 != 0);
 
                 var typedArg = arg.Type<string>();
-                Assert.IsType<Mocks.Guard.Guard.ArgumentInfo<string>>(typedArg);
+                Assert.IsType<Mocks.Domain.Guard.Guard.ArgumentInfo<string>>(typedArg);
                 Assert.Equal(arg.Modified, typedArg.Modified);
                 Assert.Equal(arg.Secure, typedArg.Secure);
             }
 
-            var valueArg = Mocks.Guard.Guard.Argument(value as object, nameof(value))
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value as object, nameof(value))
                 .NotType<int>();
 
             if (value is null)
@@ -65,7 +65,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             var stringType = typeof(string);
             var intType = typeof(int);
-            var valueArg = Mocks.Guard.Guard.Argument(value as object, nameof(value))
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value as object, nameof(value))
                 .Type(stringType)
                 .NotType(intType);
 
@@ -104,16 +104,16 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             for (var i = 0; i < 2; i++)
             {
-                var arg = new Mocks.Guard.Guard.ArgumentInfo<object>(
+                var arg = new Mocks.Domain.Guard.Guard.ArgumentInfo<object>(
                     value, nameof(value), i % 2 == 0, i % 2 != 0);
 
                 var typedArg = arg.Type<int?>();
-                Assert.IsType<Mocks.Guard.Guard.ArgumentInfo<int?>>(typedArg);
+                Assert.IsType<Mocks.Domain.Guard.Guard.ArgumentInfo<int?>>(typedArg);
                 Assert.Equal(arg.Modified, typedArg.Modified);
                 Assert.Equal(arg.Secure, typedArg.Secure);
             }
 
-            var valueArg = Mocks.Guard.Guard.Argument(value as object, nameof(value));
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value as object, nameof(value));
             value = valueArg.Type<int?>();
             valueArg.NotType<string>();
 
@@ -174,7 +174,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             var stringType = typeof(string);
             var doubleType = typeof(double);
 
-            var valueArg = Mocks.Guard.Guard.Argument(value as object, nameof(value))
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value as object, nameof(value))
                 .Type(nullableIntType)
                 .NotType(stringType)
                 .NotType(doubleType);
@@ -228,12 +228,12 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             using var memory = new MemoryStream() as Stream;
             var @null = null as Stream;
-            var nullArg = Mocks.Guard.Guard.Argument(() => @null)
+            var nullArg = Mocks.Domain.Guard.Guard.Argument(() => @null)
                 .Compatible<object>()
                 .Compatible<MemoryStream>()
                 .Compatible<string>();
 
-            var memoryArg = Mocks.Guard.Guard.Argument(() => memory)
+            var memoryArg = Mocks.Domain.Guard.Guard.Argument(() => memory)
                 .Compatible<object>()
                 .Compatible<MemoryStream>();
 
@@ -277,7 +277,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             using var stream = new MemoryStream() as Stream;
             var @null = null as Stream;
-            var nullArg = Mocks.Guard.Guard.Argument(() => @null);
+            var nullArg = Mocks.Domain.Guard.Guard.Argument(() => @null);
 
             ThrowsArgumentException(
                 nullArg,
@@ -299,7 +299,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             for (var i = 0; i < 2; i++)
             {
-                var streamArg = Mocks.Guard.Guard.Argument(() => stream, i == 1);
+                var streamArg = Mocks.Domain.Guard.Guard.Argument(() => stream, i == 1);
 
                 var objectCastedArg = streamArg.Cast<object>();
                 Assert.Same(streamArg.Name, objectCastedArg.Name);

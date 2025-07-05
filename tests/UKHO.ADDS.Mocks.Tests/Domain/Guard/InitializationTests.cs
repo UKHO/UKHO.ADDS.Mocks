@@ -7,19 +7,19 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [Fact(DisplayName = "Argument: Uninitialized")]
         public void Uninitialized()
         {
-            var int32Arg = default(Mocks.Guard.Guard.ArgumentInfo<int>);
+            var int32Arg = default(Mocks.Domain.Guard.Guard.ArgumentInfo<int>);
             Assert.Equal(default, int32Arg.Value);
             Assert.Contains(typeof(int).ToString(), int32Arg.Name);
             Assert.False(int32Arg.Modified);
             Assert.False(int32Arg.Secure);
 
-            var nullableInt32Arg = default(Mocks.Guard.Guard.ArgumentInfo<int?>);
+            var nullableInt32Arg = default(Mocks.Domain.Guard.Guard.ArgumentInfo<int?>);
             Assert.Equal(default, nullableInt32Arg.Value);
             Assert.Contains(typeof(int?).ToString(), nullableInt32Arg.Name);
             Assert.False(nullableInt32Arg.Modified);
             Assert.False(nullableInt32Arg.Secure);
 
-            var stringArg = default(Mocks.Guard.Guard.ArgumentInfo<string>);
+            var stringArg = default(Mocks.Domain.Guard.Guard.ArgumentInfo<string>);
             Assert.Equal(default, stringArg.Value);
             Assert.Contains(typeof(string).ToString(), stringArg.Name);
             Assert.False(stringArg.Modified);
@@ -34,9 +34,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             for (var i = 0; i < 3; i++)
             {
-                var arg = i == 0 ? Mocks.Guard.Guard.Argument(() => value)
-                    : i == 1 ? Mocks.Guard.Guard.Argument(() => value)
-                    : Mocks.Guard.Guard.Argument(() => value, true);
+                var arg = i == 0 ? Mocks.Domain.Guard.Guard.Argument(() => value)
+                    : i == 1 ? Mocks.Domain.Guard.Guard.Argument(() => value)
+                    : Mocks.Domain.Guard.Guard.Argument(() => value, true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Equal(nameof(value), arg.Name);
@@ -48,8 +48,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [Fact(DisplayName = "Argument: Validates member expression")]
         public void ValidatesExpression()
         {
-            Assert.Throws<ArgumentNullException>("e", () => Mocks.Guard.Guard.Argument<int>(null));
-            Assert.Throws<ArgumentException>("e", () => Mocks.Guard.Guard.Argument(() => 1));
+            Assert.Throws<ArgumentNullException>("e", () => Mocks.Domain.Guard.Guard.Argument<int>(null));
+            Assert.Throws<ArgumentException>("e", () => Mocks.Domain.Guard.Guard.Argument(() => 1));
         }
 
         [Theory(DisplayName = "Argument: Value and name")]
@@ -60,9 +60,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             for (var i = 0; i < 3; i++)
             {
-                var arg = i == 0 ? Mocks.Guard.Guard.Argument(value, nameof(value))
-                    : i == 1 ? Mocks.Guard.Guard.Argument(value, nameof(value))
-                    : Mocks.Guard.Guard.Argument(value, nameof(value), true);
+                var arg = i == 0 ? Mocks.Domain.Guard.Guard.Argument(value, nameof(value))
+                    : i == 1 ? Mocks.Domain.Guard.Guard.Argument(value, nameof(value))
+                    : Mocks.Domain.Guard.Guard.Argument(value, nameof(value), true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Equal(nameof(value), arg.Name);
@@ -72,15 +72,15 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             for (var i = 0; i < 9; i++)
             {
-                var arg = i == 0 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
-                    : i == 1 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
-                    : i == 2 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true)
-                    : i == 3 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), secure: false)
-                    : i == 4 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
-                    : i == 5 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true)
-                    : i == 6 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), secure: true)
-                    : i == 7 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), false, true)
-                    : new Mocks.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true, true);
+                var arg = i == 0 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
+                    : i == 1 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
+                    : i == 2 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true)
+                    : i == 3 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value), secure: false)
+                    : i == 4 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value))
+                    : i == 5 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true)
+                    : i == 6 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value), secure: true)
+                    : i == 7 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value), false, true)
+                    : new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, nameof(value), true, true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Equal(nameof(value), arg.Name);
@@ -97,9 +97,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         {
             for (var i = 0; i < 3; i++)
             {
-                var arg = i == 0 ? Mocks.Guard.Guard.Argument(value)
-                    : i == 1 ? Mocks.Guard.Guard.Argument(value, secure: false)
-                    : Mocks.Guard.Guard.Argument(value, secure: true);
+                var arg = i == 0 ? Mocks.Domain.Guard.Guard.Argument(value)
+                    : i == 1 ? Mocks.Domain.Guard.Guard.Argument(value, secure: false)
+                    : Mocks.Domain.Guard.Guard.Argument(value, secure: true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Contains(typeof(T).ToString(), arg.Name);
@@ -109,15 +109,15 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             for (var i = 0; i < 9; i++)
             {
-                var arg = i == 0 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null)
-                    : i == 1 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null)
-                    : i == 2 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true)
-                    : i == 3 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, secure: false)
-                    : i == 4 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null)
-                    : i == 5 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true)
-                    : i == 6 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, secure: true)
-                    : i == 7 ? new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, false, true)
-                    : new Mocks.Guard.Guard.ArgumentInfo<T>(value, null, true, true);
+                var arg = i == 0 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null)
+                    : i == 1 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null)
+                    : i == 2 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null, true)
+                    : i == 3 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null, secure: false)
+                    : i == 4 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null)
+                    : i == 5 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null, true)
+                    : i == 6 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null, secure: true)
+                    : i == 7 ? new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null, false, true)
+                    : new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, null, true, true);
 
                 Assert.Equal(value, arg.Value);
                 Assert.Contains(typeof(T).ToString(), arg.Name);
@@ -132,7 +132,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("S")]
         public void ConvertToString<T>(T value)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value);
             if (valueArg.HasValue())
             {
                 Assert.Equal(value.ToString(), valueArg.ToString());
@@ -154,7 +154,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 var hasName = i <= 1;
                 var isSecure = i >= 1;
-                var valueArg = Mocks.Guard.Guard.Argument(value, hasName ? nameof(value) : null, isSecure);
+                var valueArg = Mocks.Domain.Guard.Guard.Argument(value, hasName ? nameof(value) : null, isSecure);
 
                 var display = valueArg.DebuggerDisplay;
                 if (hasName)

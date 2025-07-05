@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -21,10 +21,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void Kind(string absoluteUriString, string relativeUriString)
         {
             var absoluteUri = GetUri(absoluteUriString);
-            var absoluteUriArg = Mocks.Guard.Guard.Argument(() => absoluteUri).Absolute();
+            var absoluteUriArg = Mocks.Domain.Guard.Guard.Argument(() => absoluteUri).Absolute();
 
             var relativeUri = GetUri(relativeUriString);
-            var relativeUriArg = Mocks.Guard.Guard.Argument(() => relativeUri).Relative();
+            var relativeUriArg = Mocks.Domain.Guard.Guard.Argument(() => relativeUri).Relative();
 
             if (absoluteUri == null)
             {
@@ -61,10 +61,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void Scheme(string scheme, string validUriString, string invalidUriString)
         {
             var validUri = GetUri(validUriString);
-            var validUriArg = Mocks.Guard.Guard.Argument(() => validUri).Scheme(scheme);
+            var validUriArg = Mocks.Domain.Guard.Guard.Argument(() => validUri).Scheme(scheme);
 
             var invalidUri = GetUri(invalidUriString);
-            var invalidUriArg = Mocks.Guard.Guard.Argument(() => invalidUri).NotScheme(scheme);
+            var invalidUriArg = Mocks.Domain.Guard.Guard.Argument(() => invalidUri).NotScheme(scheme);
 
             if (validUri == null)
             {
@@ -101,10 +101,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void Http(string validUriString, string invalidUriString)
         {
             var validUri = GetUri(validUriString);
-            var validUriArg = Mocks.Guard.Guard.Argument(() => validUri).Http().Http(false);
+            var validUriArg = Mocks.Domain.Guard.Guard.Argument(() => validUri).Http().Http(false);
 
             var invalidUri = GetUri(invalidUriString);
-            var invalidUriArg = Mocks.Guard.Guard.Argument(() => invalidUri);
+            var invalidUriArg = Mocks.Domain.Guard.Guard.Argument(() => invalidUri);
 
             if (validUri == null)
             {
@@ -129,10 +129,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void HttpOrHttps(string validUriString, string invalidUriString)
         {
             var validUri = GetUri(validUriString);
-            var validUriArg = Mocks.Guard.Guard.Argument(() => validUri).Http().Http(true);
+            var validUriArg = Mocks.Domain.Guard.Guard.Argument(() => validUri).Http().Http(true);
 
             var invalidUri = GetUri(invalidUriString);
-            var invalidUriArg = Mocks.Guard.Guard.Argument(() => invalidUri);
+            var invalidUriArg = Mocks.Domain.Guard.Guard.Argument(() => invalidUri);
 
             if (validUri == null)
             {
@@ -167,10 +167,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void Https(string validUriString, string invalidUriString)
         {
             var validUri = GetUri(validUriString);
-            var validUriArg = Mocks.Guard.Guard.Argument(() => validUri).Https();
+            var validUriArg = Mocks.Domain.Guard.Guard.Argument(() => validUri).Https();
 
             var invalidUri = GetUri(invalidUriString);
-            var invalidUriArg = Mocks.Guard.Guard.Argument(() => invalidUri);
+            var invalidUriArg = Mocks.Domain.Guard.Guard.Argument(() => invalidUri);
 
             if (validUri == null)
             {

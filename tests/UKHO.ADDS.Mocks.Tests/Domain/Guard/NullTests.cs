@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -9,10 +9,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void NullReference()
         {
             var @null = null as string;
-            var nullArg = Mocks.Guard.Guard.Argument(@null).Null();
+            var nullArg = Mocks.Domain.Guard.Guard.Argument(@null).Null();
 
             var nonNull = "A";
-            var nonNullArg = Mocks.Guard.Guard.Argument(nonNull).NotNull();
+            var nonNullArg = Mocks.Domain.Guard.Guard.Argument(nonNull).NotNull();
 
             ThrowsArgumentException(
                 nonNullArg,
@@ -33,7 +33,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void NullValue()
         {
             var @null = null as int?;
-            var nullArg = Mocks.Guard.Guard.Argument(() => @null).Null();
+            var nullArg = Mocks.Domain.Guard.Guard.Argument(() => @null).Null();
             Assert.False(nullArg.HasValue());
 
             ThrowsArgumentNullException(
@@ -44,8 +44,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             var one = 1 as int?;
             for (var i = 0; i < 2; i++)
             {
-                var nullableOneArg = Mocks.Guard.Guard.Argument(() => one, i == 1);
-                Assert.IsType<Mocks.Guard.Guard.ArgumentInfo<int?>>(nullableOneArg);
+                var nullableOneArg = Mocks.Domain.Guard.Guard.Argument(() => one, i == 1);
+                Assert.IsType<Mocks.Domain.Guard.Guard.ArgumentInfo<int?>>(nullableOneArg);
                 Assert.True(nullableOneArg.HasValue());
 
                 ThrowsArgumentException(
@@ -58,7 +58,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     }));
 
                 var oneArg = nullableOneArg.NotNull();
-                Assert.IsType<Mocks.Guard.Guard.ArgumentInfo<int>>(oneArg);
+                Assert.IsType<Mocks.Domain.Guard.Guard.ArgumentInfo<int>>(oneArg);
                 Assert.True(oneArg.HasValue());
                 Assert.Equal(nullableOneArg.Value, oneArg.Value);
                 Assert.Equal(nullableOneArg.Secure, oneArg.Secure);
@@ -83,9 +83,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             void Test()
             {
-                Mocks.Guard.Guard.NotAllNull(
-                    Mocks.Guard.Guard.Argument(() => val1),
-                    Mocks.Guard.Guard.Argument(() => val2));
+                Mocks.Domain.Guard.Guard.NotAllNull(
+                    Mocks.Domain.Guard.Guard.Argument(() => val1),
+                    Mocks.Domain.Guard.Guard.Argument(() => val2));
             }
         }
 
@@ -111,10 +111,10 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             void Test()
             {
-                Mocks.Guard.Guard.NotAllNull(
-                    Mocks.Guard.Guard.Argument(() => val1),
-                    Mocks.Guard.Guard.Argument(() => val2),
-                    Mocks.Guard.Guard.Argument(() => val3));
+                Mocks.Domain.Guard.Guard.NotAllNull(
+                    Mocks.Domain.Guard.Guard.Argument(() => val1),
+                    Mocks.Domain.Guard.Guard.Argument(() => val2),
+                    Mocks.Domain.Guard.Guard.Argument(() => val3));
             }
         }
     }

@@ -1,9 +1,8 @@
 ﻿using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
-using UKHO.ADDS.Mocks.Markdown;
+using UKHO.ADDS.Mocks.Domain.Markdown;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks
+namespace UKHO.ADDS.Mocks.Domain.Mocks
 {
     public static class MetadataExtensions
     {

@@ -1,8 +1,6 @@
-﻿using UKHO.ADDS.Mocks.Domain.Configuration;
-using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.Domain.States;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Configuration
+namespace UKHO.ADDS.Mocks.Domain.Configuration
 {
     public static class ServiceRegistry
     {

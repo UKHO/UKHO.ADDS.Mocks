@@ -1,5 +1,7 @@
-﻿using UKHO.ADDS.Mocks.Markdown;
-using UKHO.ADDS.Mocks.States;
+﻿using UKHO.ADDS.Mocks.Domain;
+using UKHO.ADDS.Mocks.Domain.Markdown;
+using UKHO.ADDS.Mocks.Domain.Mocks;
+using UKHO.ADDS.Mocks.Domain.States;
 
 namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 {

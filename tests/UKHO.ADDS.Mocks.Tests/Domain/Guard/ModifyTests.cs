@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -11,7 +11,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 2; i++)
             {
                 var stringValue = 1.ToString();
-                var stringArg = Mocks.Guard.Guard.Argument(() => stringValue, i == 1);
+                var stringArg = Mocks.Domain.Guard.Guard.Argument(() => stringValue, i == 1);
                 Assert.False(stringArg.Modified);
 
                 var integerValue = int.Parse(stringValue);
@@ -28,7 +28,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             for (var i = 0; i < 2; i++)
             {
                 var stringValue = 1.ToString();
-                var stringArg = Mocks.Guard.Guard.Argument(() => stringValue, i == 1);
+                var stringArg = Mocks.Domain.Guard.Guard.Argument(() => stringValue, i == 1);
 
                 var integerArg = stringArg.Modify(s => int.Parse(s));
                 Assert.Equal(stringArg.Name, integerArg.Name);
@@ -48,7 +48,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             var stringValue = 1.ToString();
             for (var i = 0; i < 2; i++)
             {
-                var stringArg = Mocks.Guard.Guard.Argument(() => stringValue, i == 1);
+                var stringArg = Mocks.Domain.Guard.Guard.Argument(() => stringValue, i == 1);
                 var integerArg = stringArg.Wrap(s => int.Parse(s));
 
                 Assert.Equal(stringArg.Name, integerArg.Name);
@@ -76,7 +76,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             for (var i = 0; i < 2; i++)
             {
-                var cloneableArg = Mocks.Guard.Guard.Argument(() => cloneable, i == 1);
+                var cloneableArg = Mocks.Domain.Guard.Guard.Argument(() => cloneable, i == 1);
                 Assert.False(cloneableArg.Modified);
 
                 var cloneArg = cloneableArg.Clone();

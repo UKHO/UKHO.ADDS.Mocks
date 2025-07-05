@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using UKHO.ADDS.Mocks.Guard;
+using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -10,7 +10,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void InvalidMemberCall()
         {
             var dateTime = DateTime.Now;
-            var dateTimeArg = Mocks.Guard.Guard.Argument(() => dateTime);
+            var dateTimeArg = Mocks.Domain.Guard.Guard.Argument(() => dateTime);
 
             // The final expression is not a member expression.
             Assert.Throws<ArgumentException>(
@@ -25,7 +25,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             // Member cannot be accessed.
             var accessException = new NotSupportedException();
             var obj = new TestObjectWithInaccessibleMember(accessException);
-            var objArg = Mocks.Guard.Guard.Argument(() => obj);
+            var objArg = Mocks.Domain.Guard.Guard.Argument(() => obj);
             var memberException = Assert.Throws<ArgumentException>(
                 "member",
                 () => objArg.Member(o => o.InaccessibleMember, m => { }));
@@ -43,7 +43,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 ? default(DateTime?)
                 : DateTime.Parse(dateTimeString, CultureInfo.InvariantCulture);
 
-            var nullableTimeArg = Mocks.Guard.Guard.Argument(() => nullableDateTime, secure)
+            var nullableTimeArg = Mocks.Domain.Guard.Guard.Argument(() => nullableDateTime, secure)
                 .Member(dt => dt.TimeOfDay.Hours, h => h.Equal(hour))
                 .Member(dt => dt.TimeOfDay.Hours, h => h.Equal(hour), true);
 
@@ -88,7 +88,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var dateTimeArg = Mocks.Guard.Guard.Argument(() => dateTime, secure)
+            var dateTimeArg = Mocks.Domain.Guard.Guard.Argument(() => dateTime, secure)
                 .Member(dt => dt.TimeOfDay.Hours, h => h.Equal(hour))
                 .Member(dt => dt.TimeOfDay.Hours, h => h.Equal(hour), true);
 

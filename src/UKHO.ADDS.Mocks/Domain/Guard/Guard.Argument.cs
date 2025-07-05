@@ -3,10 +3,9 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using JetBrains.Annotations;
+using UKHO.ADDS.Mocks.Properties;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <summary>Validates argument preconditions.</summary>
     /// <content>Contains the argument initialization methods.</content>
@@ -72,7 +71,6 @@ namespace UKHO.ADDS.Mocks.Guard
         [GuardFunction("Extensibility")]
         public static Exception Fail(Exception exception)
         {
-#if !NETSTANDARD1_0
             StackTrace? stackTrace = null;
             for (var scope = Scope.Current; scope != null; scope = scope.Parent)
             {
@@ -85,7 +83,6 @@ namespace UKHO.ADDS.Mocks.Guard
                     break;
                 }
             }
-#endif
 
             return exception;
         }

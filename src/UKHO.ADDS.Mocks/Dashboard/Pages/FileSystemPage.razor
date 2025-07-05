@@ -1,0 +1,212 @@
+﻿@page "/_dashboard/filesystem"
+@using UKHO.ADDS.Mocks.Domain.Configuration
+@using UKHO.ADDS.Mocks.Domain.Files
+@using UKHO.ADDS.Mocks.Domain.Internal.Services
+@inject FileSystemService FileSystemService
+@inject IJSRuntime JSRuntime
+@layout DashboardLayout
+
+<h2 class="rz-mb-4">File System</h2>
+
+<RadzenSplitter Style="height: 80vh; border: 1px solid var(--rz-border-color);">
+    <RadzenSplitterPane Size="25%">
+        <RadzenTree Expand="@LoadChildDirectories"
+                    Change="@OnNodeSelected"
+                    TextProperty="Name"
+                    Style="height: 100%; overflow: auto;">
+
+            @foreach (var entry in FileSystemService.FileSystems)
+            {
+                <RadzenTreeItem Text="@entry.Key.Name"
+                                Value="@(new TreeNodeData(entry.Key, "/", entry.Value))"
+                                HasChildren="true"/>
+            }
+        </RadzenTree>
+    </RadzenSplitterPane>
+
+    <RadzenSplitterPane Size="75%">
+        <h3 class="rz-mb-4">Files in: @CurrentPathDisplay</h3>
+        <table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4" style="width: 100%;">
+            <thead style="position: sticky; top: 0; background-color: var(--rz-panel-background-color); z-index: 10;">
+            <tr>
+                <th style="width: 30%;">File Name</th>
+                <th style="width: 25%;">Size (bytes)</th>
+                <th style="width: 20%;">Read Only</th>
+                <th style="width: 25%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (FilesInSelectedFolder != null)
+            {
+                foreach (var file in FilesInSelectedFolder)
+                {
+                    var readable = FormatSize(file.Size);
+                    <tr>
+                        <td>@file.Name</td>
+                        <td>
+                            @file.Size:N0
+                            @if (!string.IsNullOrEmpty(readable))
+                            {
+                                <text> (@readable)</text>
+                            }
+                        </td>
+                        <td>
+                            @if (file.IsReadOnly)
+                            {
+                                <RadzenBadge Text="Yes" BadgeStyle="BadgeStyle.Danger"/>
+                            }
+                            else
+                            {
+                                <RadzenBadge Text="No" BadgeStyle="BadgeStyle.Success"/>
+                            }
+                        </td>
+                        <td>
+                            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem">
+                                <RadzenButton Size="ButtonSize.Small"
+                                              Variant="Variant.Text"
+                                              Text="Download"
+                                              Icon="download"
+                                              Click="@(() => DownloadFileAsync(file))"/>
+                            </RadzenStack>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </RadzenSplitterPane>
+</RadzenSplitter>
+
+
+@code {
+    private ServiceDefinition? SelectedService;
+    private IFileSystem? SelectedFileSystem;
+    private string? SelectedPath;
+    private List<FileItemWrapper>? FilesInSelectedFolder;
+
+    private string CurrentPathDisplay =>
+        SelectedService == null || SelectedPath == null
+            ? "(None)"
+            : $"{SelectedService.Name}:{SelectedPath}";
+
+    private void OnButtonClickTest()
+    {
+        Console.WriteLine("BUTTON CLICK FIRED!");
+    }
+
+    // Dynamic Expand handler for v7.1.3
+    private Task LoadChildDirectories(TreeExpandEventArgs args)
+    {
+        if (args.Value is not TreeNodeData nodeData)
+            return Task.CompletedTask;
+
+        var children = nodeData.FileSystem
+            .EnumerateItems(new UPath(nodeData.Path), SearchOption.TopDirectoryOnly)
+            .Where(i => i.IsDirectory)
+            .ToList();
+
+        args.Children.Data = children
+            .Select(i => new TreeNodeData(
+                nodeData.ServiceDefinition,
+                PathCombine(nodeData.Path, i.GetName()),
+                nodeData.FileSystem))
+            .ToList<object>();
+
+        args.Children.TextProperty = "Name";
+        args.Children.HasChildren = item =>
+        {
+            var nd = (TreeNodeData)item;
+            return nd.FileSystem
+                .EnumerateItems(new UPath(nd.Path), SearchOption.TopDirectoryOnly)
+                .Any(d => d.IsDirectory);
+        };
+
+        return Task.CompletedTask;
+    }
+
+    private void OnNodeSelected(TreeEventArgs args)
+    {
+        if (args.Value is not TreeNodeData nd)
+            return;
+
+        SelectedService = nd.ServiceDefinition;
+        SelectedFileSystem = nd.FileSystem;
+        SelectedPath = nd.Path;
+        LoadFilesInDirectory();
+    }
+
+    private void LoadFilesInDirectory()
+    {
+        if (SelectedFileSystem == null || SelectedPath == null)
+        {
+            FilesInSelectedFolder = new List<FileItemWrapper>();
+            return;
+        }
+
+        FilesInSelectedFolder = SelectedFileSystem
+            .EnumerateItems(new UPath(SelectedPath), SearchOption.TopDirectoryOnly)
+            .Where(i => !i.IsDirectory)
+            .Select(i => new FileItemWrapper(i))
+            .ToList();
+    }
+
+    private async Task DownloadFileAsync(FileItemWrapper file)
+    {
+        using var s = file.Open();
+        using var ms = new MemoryStream();
+        await s.CopyToAsync(ms);
+        var base64 = Convert.ToBase64String(ms.ToArray());
+        await JSRuntime.InvokeVoidAsync("downloadFileFromBase64", file.Name, file.MimeType, base64);
+    }
+
+    private string FormatSize(long size)
+    {
+        const long KB = 1024;
+        const long MB = KB * 1024;
+        const long GB = MB * 1024;
+
+        if (size < KB)
+            return string.Empty;
+
+        return size switch
+        {
+            >= GB => $"{size / (double)GB:0.##} GB",
+            >= MB => $"{size / (double)MB:0.##} MB",
+            _ => $"{size / (double)KB:0.##} KB"
+        };
+    }
+
+    private string PathCombine(string basePath, string name)
+    {
+        return string.IsNullOrEmpty(basePath) ? "/" + name
+            : basePath.EndsWith("/") ? basePath + name
+            : basePath + "/" + name;
+    }
+
+    public record TreeNodeData(ServiceDefinition ServiceDefinition, string Path, IFileSystem FileSystem)
+    {
+        public string Name => Path == "/" ? ServiceDefinition.Name : Path.Split('/').Last();
+    }
+
+    public class FileItemWrapper
+    {
+        private readonly FileSystemItem _item;
+
+        public FileItemWrapper(FileSystemItem item)
+        {
+            _item = item;
+        }
+
+        public string Name => _item.GetName();
+        public long Size => _item.Length;
+        public FileAttributes Attributes => _item.Attributes;
+        public bool IsReadOnly => (_item.Attributes & FileAttributes.ReadOnly) != 0;
+        public string MimeType => "application/octet-stream";
+
+        public Stream Open()
+        {
+            return _item.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
+        }
+    }
+
+}

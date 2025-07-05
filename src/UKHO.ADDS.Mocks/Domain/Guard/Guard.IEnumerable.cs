@@ -3,10 +3,9 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
+using UKHO.ADDS.Mocks.Properties;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <content>Provides preconditions for <see cref="IEnumerable" /> arguments.</content>
     public static partial class Guard
@@ -883,11 +882,7 @@ namespace UKHO.ADDS.Mocks.Guard
                 var collectionType = typeof(TCollection);
 
                 IEnumerable<MethodInfo> search;
-#if NETSTANDARD1_0
-                search = collectionType.GetTypeInfo().GetDeclaredMethods(name).Where(m => m.IsPublic && !m.IsStatic);
-#else
                 search = collectionType.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => m.Name == name);
-#endif
 
                 var methods = search.Where(m => m.ReturnType == typeof(bool)).ToList();
                 if (methods.Count > 0)

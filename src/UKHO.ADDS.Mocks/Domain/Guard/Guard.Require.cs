@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using JetBrains.Annotations;
+using UKHO.ADDS.Mocks.Properties;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <content>Provides generic preconditions.</content>
     public static partial class Guard

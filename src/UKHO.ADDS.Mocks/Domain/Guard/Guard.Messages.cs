@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Net.Mail;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <content>Provides error messages for the common preconditions.</content>
     public static partial class Guard
@@ -286,7 +285,6 @@ namespace UKHO.ADDS.Mocks.Guard
                 return result;
             }
 
-#if !NETSTANDARD1_0
             public static string EmailHasHost(in ArgumentInfo<MailAddress> argument, string host)
                 => argument.Secure ? Require(argument) : $"{argument.Name} must have the host '{host}'.";
 
@@ -304,7 +302,6 @@ namespace UKHO.ADDS.Mocks.Guard
 
             public static string EmailDoesNotHaveDisplayName(in ArgumentInfo<MailAddress> argument)
                 => $"{argument.Name} cannot have a display name specified.";
-#endif
         }
     }
 }

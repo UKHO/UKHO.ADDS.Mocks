@@ -1,6 +1,8 @@
-﻿using UKHO.ADDS.Mocks.Markdown;
+﻿using UKHO.ADDS.Mocks.Domain;
+using UKHO.ADDS.Mocks.Domain.Markdown;
+using UKHO.ADDS.Mocks.Domain.Mocks;
+using UKHO.ADDS.Mocks.Domain.States;
 using UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss.ResponseGenerator;
-using UKHO.ADDS.Mocks.States;
 
 namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.fss
 {

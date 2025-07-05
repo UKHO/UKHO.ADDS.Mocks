@@ -1,9 +1,6 @@
-﻿#if !NETSTANDARD1_0
+﻿using System.Diagnostics;
 
-using System.Diagnostics;
-
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <content>Provides scoping support.</content>
     public static partial class Guard
@@ -104,5 +101,3 @@ namespace UKHO.ADDS.Mocks.Guard
         }
     }
 }
-
-#endif

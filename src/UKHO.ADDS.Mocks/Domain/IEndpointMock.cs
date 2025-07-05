@@ -1,8 +1,5 @@
-﻿using UKHO.ADDS.Infrastructure.Results;
-using UKHO.ADDS.Mocks.Files;
-
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks
+﻿
+namespace UKHO.ADDS.Mocks.Domain
 {
     public interface IEndpointMock
     {

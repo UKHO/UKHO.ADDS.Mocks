@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using UKHO.ADDS.Mocks.Guard;
+using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -10,8 +10,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void BeginScope()
         {
             var validation =
-                (from m in typeof(Mocks.Guard.Guard).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    where m.Name == nameof(Mocks.Guard.Guard.NotNull)
+                (from m in typeof(Mocks.Domain.Guard.Guard).GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    where m.Name == nameof(Mocks.Domain.Guard.Guard.NotNull)
                     let g = m.GetGenericArguments()
                     where g.Length == 1 && g[0].GetGenericParameterConstraints().Length == 0
                     let p = m.GetParameters()
@@ -29,7 +29,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     // Outer
                     var id = 0;
                     Exception outerIntercepted = null;
-                    Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                    Mocks.Domain.Guard.Guard.BeginScope((ex, stackTrace) =>
                     {
                         Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
                         id++;
@@ -64,12 +64,12 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     {
                         if (i == 3)
                         {
-                            var nonScope = Mocks.Guard.Guard.BeginScope(null); // Should have no effect.
+                            var nonScope = Mocks.Domain.Guard.Guard.BeginScope(null); // Should have no effect.
                             disposers.Add(Delay().ContinueWith(_ => nonScope.Dispose())); // Test empty disposable.
                         }
 
                         Exception innerIntercepted = null;
-                        using (Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                        using (Mocks.Domain.Guard.Guard.BeginScope((ex, stackTrace) =>
                                {
                                    Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
                                    id++;
@@ -101,11 +101,11 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     {
                         if (i == 3)
                         {
-                            Mocks.Guard.Guard.BeginScope(null, false); // Should stop propagation.
+                            Mocks.Domain.Guard.Guard.BeginScope(null, false); // Should stop propagation.
                         }
 
                         Exception innerIntercepted = null;
-                        using (Mocks.Guard.Guard.BeginScope((ex, stackTrace) =>
+                        using (Mocks.Domain.Guard.Guard.BeginScope((ex, stackTrace) =>
                                {
                                    Assert.Same(stackTrace.GetFrame(0).GetMethod(), validation);
                                    id += 3;
@@ -138,7 +138,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 try
                 {
-                    Mocks.Guard.Guard.Argument(null as string, "value").NotNull();
+                    Mocks.Domain.Guard.Guard.Argument(null as string, "value").NotNull();
                 }
                 catch (ArgumentNullException ex)
                 {

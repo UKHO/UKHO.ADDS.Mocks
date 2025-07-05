@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
+using UKHO.ADDS.Mocks.Properties;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <content>Provides preconditions for <see cref="string" /> arguments.</content>
     public static partial class Guard
@@ -956,10 +955,10 @@ namespace UKHO.ADDS.Mocks.Guard
             {
                 StringComparison.CurrentCulture => StringComparer.CurrentCulture,
                 StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
-#if !NETSTANDARD1_0
+
                 StringComparison.InvariantCulture => StringComparer.InvariantCulture,
                 StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
-#endif
+
                 StringComparison.Ordinal => StringComparer.Ordinal,
                 StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,
                 _ => EqualityComparer<string>.Default

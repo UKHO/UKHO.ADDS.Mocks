@@ -1,6 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 
-namespace UKHO.ADDS.Mocks.Headers
+namespace UKHO.ADDS.Mocks.Domain.Headers
 {
     public static class WellKnownHeader
     {

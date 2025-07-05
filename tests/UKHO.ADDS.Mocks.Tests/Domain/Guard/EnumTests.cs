@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -24,8 +24,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(Colors.Red, Colors.All + 1)]
         public void Defined(Colors? defined, Colors? undefined)
         {
-            var nullableDefinedArg = Mocks.Guard.Guard.Argument(() => defined).Defined();
-            var nullableUndefinedArg = Mocks.Guard.Guard.Argument(() => undefined);
+            var nullableDefinedArg = Mocks.Domain.Guard.Guard.Argument(() => defined).Defined();
+            var nullableUndefinedArg = Mocks.Domain.Guard.Guard.Argument(() => undefined);
             if (!defined.HasValue)
             {
                 nullableUndefinedArg.Defined();
@@ -41,8 +41,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var definedArg = Mocks.Guard.Guard.Argument(defined.Value, nameof(defined)).Defined();
-            var undefinedArg = Mocks.Guard.Guard.Argument(undefined.Value, nameof(undefined));
+            var definedArg = Mocks.Domain.Guard.Guard.Argument(defined.Value, nameof(defined)).Defined();
+            var undefinedArg = Mocks.Domain.Guard.Guard.Argument(undefined.Value, nameof(undefined));
             ThrowsArgumentException(
                 undefinedArg,
                 arg => arg.Defined(),
@@ -63,7 +63,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(Colors.Red | Colors.Blue, Colors.Blue, Colors.Green, true)]
         public void HasFlag(Colors? value, Colors setFlags, Colors unsetFlags, bool secure)
         {
-            var nullableValueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var nullableValueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .HasFlag(setFlags)
                 .DoesNotHaveFlag(unsetFlags);
 
@@ -98,7 +98,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var valueArg = Mocks.Guard.Guard.Argument(value.Value, nameof(value), secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.Value, nameof(value), secure)
                 .HasFlag(setFlags)
                 .DoesNotHaveFlag(unsetFlags);
 

@@ -17,7 +17,5 @@ namespace UKHO.ADDS.Mocks.Files
         Stream Open();
 
         Stream Open(FileMode mode);
-
-        
     }
 }

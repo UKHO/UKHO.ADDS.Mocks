@@ -2,11 +2,10 @@
 using UKHO.ADDS.Mocks.Domain.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Logging;
 using UKHO.ADDS.Mocks.Domain.Internal.Services;
+using UKHO.ADDS.Mocks.Domain.States;
 using UKHO.ADDS.Mocks.Files;
-using UKHO.ADDS.Mocks.States;
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks
+namespace UKHO.ADDS.Mocks.Domain.Mocks
 {
     public abstract class ServiceEndpointMock
     {

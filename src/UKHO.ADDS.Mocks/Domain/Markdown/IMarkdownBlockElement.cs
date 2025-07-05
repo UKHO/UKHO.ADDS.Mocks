@@ -1,6 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 
-namespace UKHO.ADDS.Mocks.Markdown
+namespace UKHO.ADDS.Mocks.Domain.Markdown
 {
     /// <summary>
     ///     Markdown block element interface.

@@ -1,4 +1,4 @@
-﻿namespace JetBrains.Annotations
+﻿namespace UKHO.ADDS.Mocks.Properties
 {
     /// <summary>
     ///     Indicates that the marked method is an assertion method, i.e. it halts the control flow

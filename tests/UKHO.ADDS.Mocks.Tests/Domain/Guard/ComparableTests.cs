@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -11,7 +11,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(3, 2, 5)]
         public void Min(int? value, int valueOrLess, int greaterThanValue)
         {
-            var nullableValueArg = Mocks.Guard.Guard.Argument(() => value).Min(valueOrLess);
+            var nullableValueArg = Mocks.Domain.Guard.Guard.Argument(() => value).Min(valueOrLess);
             if (!value.HasValue)
             {
                 nullableValueArg.Min(greaterThanValue);
@@ -28,7 +28,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var valueArg = Mocks.Guard.Guard.Argument(value.Value, nameof(value)).Min(valueOrLess);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.Value, nameof(value)).Min(valueOrLess);
             ThrowsArgumentOutOfRangeException(
                 valueArg,
                 arg => arg.Min(greaterThanValue),
@@ -46,7 +46,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(3, 1, 4)]
         public void GreaterThan(int? value, int lessThanValue, int valueOrGreater)
         {
-            var nullableValueArg = Mocks.Guard.Guard.Argument(() => value).GreaterThan(lessThanValue);
+            var nullableValueArg = Mocks.Domain.Guard.Guard.Argument(() => value).GreaterThan(lessThanValue);
             if (!value.HasValue)
             {
                 nullableValueArg.GreaterThan(valueOrGreater);
@@ -63,7 +63,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var valueArg = Mocks.Guard.Guard.Argument(value.Value, nameof(value)).GreaterThan(lessThanValue);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.Value, nameof(value)).GreaterThan(lessThanValue);
             ThrowsArgumentOutOfRangeException(
                 valueArg,
                 arg => arg.GreaterThan(valueOrGreater),
@@ -81,7 +81,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(3, 4, 1)]
         public void Max(int? value, int valueOrGreater, int lessThanValue)
         {
-            var nullableValueArg = Mocks.Guard.Guard.Argument(() => value).Max(valueOrGreater);
+            var nullableValueArg = Mocks.Domain.Guard.Guard.Argument(() => value).Max(valueOrGreater);
             if (!value.HasValue)
             {
                 nullableValueArg.Max(lessThanValue);
@@ -98,7 +98,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var valueArg = Mocks.Guard.Guard.Argument(value.Value, nameof(value)).Max(valueOrGreater);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.Value, nameof(value)).Max(valueOrGreater);
             ThrowsArgumentOutOfRangeException(
                 valueArg,
                 arg => arg.Max(lessThanValue),
@@ -116,7 +116,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(3, 5, 2)]
         public void LessThan(int? value, int greaterThanValue, int valueOrLess)
         {
-            var nullableValueArg = Mocks.Guard.Guard.Argument(() => value).LessThan(greaterThanValue);
+            var nullableValueArg = Mocks.Domain.Guard.Guard.Argument(() => value).LessThan(greaterThanValue);
             if (!value.HasValue)
             {
                 nullableValueArg.LessThan(valueOrLess);
@@ -133,7 +133,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var valueArg = Mocks.Guard.Guard.Argument(value.Value, nameof(value)).LessThan(greaterThanValue);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.Value, nameof(value)).LessThan(greaterThanValue);
             ThrowsArgumentOutOfRangeException(
                 valueArg,
                 arg => arg.LessThan(valueOrLess),
@@ -151,7 +151,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(3, 1, 5)]
         public void InRange(int? value, int lessThanValue, int greaterThanValue)
         {
-            var nullableValueArg = Mocks.Guard.Guard.Argument(() => value).InRange(lessThanValue, greaterThanValue);
+            var nullableValueArg = Mocks.Domain.Guard.Guard.Argument(() => value).InRange(lessThanValue, greaterThanValue);
             if (!value.HasValue)
             {
                 for (var i = 0; i < 2; i++)
@@ -168,7 +168,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 .InRange(value.Value, value.Value)
                 .InRange(value.Value, greaterThanValue);
 
-            var valueArg = Mocks.Guard.Guard.Argument(value.Value, nameof(value))
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(value.Value, nameof(value))
                 .InRange(lessThanValue, value.Value)
                 .InRange(value.Value, value.Value)
                 .InRange(value.Value, greaterThanValue)
@@ -207,8 +207,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(0, 1)]
         public void Zero(int? zero, int? nonZero)
         {
-            var nullableZeroArg = Mocks.Guard.Guard.Argument(zero).Zero();
-            var nullableNonZeroArg = Mocks.Guard.Guard.Argument(nonZero).NotZero();
+            var nullableZeroArg = Mocks.Domain.Guard.Guard.Argument(zero).Zero();
+            var nullableNonZeroArg = Mocks.Domain.Guard.Guard.Argument(nonZero).NotZero();
             if (!zero.HasValue)
             {
                 nullableZeroArg.NotZero();
@@ -230,8 +230,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 arg => arg.NotZero(),
                 (arg, message) => arg.NotZero(message));
 
-            var zeroArg = Mocks.Guard.Guard.Argument(zero.Value, nameof(zero)).Zero();
-            var nonZeroArg = Mocks.Guard.Guard.Argument(nonZero.Value, nameof(nonZero)).NotZero();
+            var zeroArg = Mocks.Domain.Guard.Guard.Argument(zero.Value, nameof(zero)).Zero();
+            var nonZeroArg = Mocks.Domain.Guard.Guard.Argument(nonZero.Value, nameof(nonZero)).NotZero();
             ThrowsArgumentOutOfRangeException(
                 nonZeroArg,
                 arg => arg.Zero(),
@@ -253,8 +253,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(1, -1)]
         public void Positive(int? positive, int? nonPositive)
         {
-            var nullablePositiveArg = Mocks.Guard.Guard.Argument(() => positive).Positive();
-            var nullableNonPositiveArg = Mocks.Guard.Guard.Argument(() => nonPositive).NotPositive();
+            var nullablePositiveArg = Mocks.Domain.Guard.Guard.Argument(() => positive).Positive();
+            var nullableNonPositiveArg = Mocks.Domain.Guard.Guard.Argument(() => nonPositive).NotPositive();
             if (!positive.HasValue)
             {
                 nullablePositiveArg.NotPositive();
@@ -280,8 +280,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var positiveArg = Mocks.Guard.Guard.Argument(positive.Value, nameof(positive)).Positive();
-            var nonPositiveArg = Mocks.Guard.Guard.Argument(nonPositive.Value, nameof(nonPositive)).NotPositive();
+            var positiveArg = Mocks.Domain.Guard.Guard.Argument(positive.Value, nameof(positive)).Positive();
+            var nonPositiveArg = Mocks.Domain.Guard.Guard.Argument(nonPositive.Value, nameof(nonPositive)).NotPositive();
             ThrowsArgumentOutOfRangeException(
                 nonPositiveArg,
                 arg => arg.Positive(),
@@ -307,8 +307,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(-1, 1)]
         public void Negative(int? negative, int? nonNegative)
         {
-            var nullableNegativeArg = Mocks.Guard.Guard.Argument(() => negative).Negative();
-            var nullableNonNegativeArg = Mocks.Guard.Guard.Argument(() => nonNegative).NotNegative();
+            var nullableNegativeArg = Mocks.Domain.Guard.Guard.Argument(() => negative).Negative();
+            var nullableNonNegativeArg = Mocks.Domain.Guard.Guard.Argument(() => nonNegative).NotNegative();
             if (!negative.HasValue)
             {
                 nullableNegativeArg.NotNegative();
@@ -334,8 +334,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                     return message;
                 }));
 
-            var negativeArg = Mocks.Guard.Guard.Argument(negative.Value, nameof(negative)).Negative();
-            var nonNegativeArg = Mocks.Guard.Guard.Argument(nonNegative.Value, nameof(nonNegative)).NotNegative();
+            var negativeArg = Mocks.Domain.Guard.Guard.Argument(negative.Value, nameof(negative)).Negative();
+            var nonNegativeArg = Mocks.Domain.Guard.Guard.Argument(nonNegative.Value, nameof(nonNegative)).NotNegative();
             ThrowsArgumentOutOfRangeException(
                 nonNegativeArg,
                 arg => arg.Negative(),

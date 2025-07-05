@@ -1,7 +1,7 @@
 ﻿
 
-// ReSharper disable once CheckNamespace
-namespace UKHO.ADDS.Mocks.Guard
+
+namespace UKHO.ADDS.Mocks.Domain.Guard
 {
     /// <summary>Marks a method as a non-guarding utility.</summary>
     /// <remarks>Methods with this attribute are ignored by annotation tests.</remarks>

@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using UKHO.ADDS.Mocks.Guard;
+using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -13,8 +13,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("", "A")]
         public void Empty(string empty, string nonEmpty)
         {
-            var emptyArg = Mocks.Guard.Guard.Argument(() => empty).Empty();
-            var nonEmptyArg = Mocks.Guard.Guard.Argument(() => nonEmpty).NotEmpty();
+            var emptyArg = Mocks.Domain.Guard.Guard.Argument(() => empty).Empty();
+            var nonEmptyArg = Mocks.Domain.Guard.Guard.Argument(() => nonEmpty).NotEmpty();
 
             if (empty is null)
             {
@@ -44,8 +44,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(" ", "A")]
         public void WhiteSpace(string ws, string nonWs)
         {
-            var wsArg = Mocks.Guard.Guard.Argument(() => ws).WhiteSpace();
-            var nonWsArg = Mocks.Guard.Guard.Argument(() => nonWs).NotWhiteSpace().NotWhiteSpace("message");
+            var wsArg = Mocks.Domain.Guard.Guard.Argument(() => ws).WhiteSpace();
+            var nonWsArg = Mocks.Domain.Guard.Guard.Argument(() => nonWs).NotWhiteSpace().NotWhiteSpace("message");
 
             if (ws is null)
             {
@@ -83,7 +83,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("A", 1, 2)]
         public void Length(string value, int length, int nonLength)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value).Length(length).NotLength(nonLength);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value).Length(length).NotLength(nonLength);
 
             if (value is null)
             {
@@ -119,7 +119,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("DEF", 2, 5)]
         public void MinLength(string value, int lengthOrLess, int greaterThanLength)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value).MinLength(lengthOrLess);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value).MinLength(lengthOrLess);
 
             if (value is null)
             {
@@ -145,7 +145,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("DEF", 4, 1)]
         public void MaxLength(string value, int lengthOrMore, int lessThanLength)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value).MaxLength(lengthOrMore);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value).MaxLength(lengthOrMore);
 
             if (value is null)
             {
@@ -172,7 +172,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void LengthInRange(string value, int lessThanLength, int greaterThanLength)
         {
             var length = value?.Length ?? RandomNumber;
-            var valueArg = Mocks.Guard.Guard.Argument(() => value)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value)
                 .LengthInRange(lessThanLength, length)
                 .LengthInRange(length, length)
                 .LengthInRange(length, greaterThanLength)
@@ -214,7 +214,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void EqualWithComparison(
             string value, string equal, string unequal, StringComparison comparison, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .Equal(equal, comparison)
                 .NotEqual(unequal, comparison);
 
@@ -256,7 +256,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void StartsWithWithoutComparison(
             string value, string head, string nonHead, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .StartsWith(head)
                 .DoesNotStartWith(nonHead);
 
@@ -301,7 +301,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void StartsWithWithComparison(
             string value, string head, string nonHead, StringComparison comparison, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .StartsWith(head, comparison)
                 .DoesNotStartWith(nonHead, comparison);
 
@@ -344,7 +344,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void EndsWithWithoutComparison(
             string value, string tail, string nonTail, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .EndsWith(tail)
                 .DoesNotEndWith(nonTail);
 
@@ -386,7 +386,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void EndsWithWithComparison(
             string value, string tail, string nonTail, StringComparison comparison, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure)
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure)
                 .EndsWith(tail, comparison)
                 .DoesNotEndWith(nonTail, comparison);
 
@@ -438,13 +438,13 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             var validRegexWithTimeout = validPattern is null ? null : new Regex(validPattern, RegexOptions.None, MatchTimeout);
             var timeoutRegex = timeoutPattern is null ? null : new Regex(timeoutPattern, RegexOptions.None, MatchTimeout);
 
-            var withMatchArg = Mocks.Guard.Guard.Argument(() => withMatch, secure)
+            var withMatchArg = Mocks.Domain.Guard.Guard.Argument(() => withMatch, secure)
                 .Matches(validPattern)
                 .Matches(validPattern, MatchTimeout)
                 .Matches(validRegexWithoutTimeout)
                 .Matches(validRegexWithTimeout);
 
-            var withoutMatchArg = Mocks.Guard.Guard.Argument(() => withoutMatch, secure)
+            var withoutMatchArg = Mocks.Domain.Guard.Guard.Argument(() => withoutMatch, secure)
                 .DoesNotMatch(validPattern)
                 .DoesNotMatch(validPattern, MatchTimeout)
                 .DoesNotMatch(validRegexWithoutTimeout)
@@ -557,7 +557,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             // Matches - invalid pattern w/o timeout
             ThrowsArgumentException(
-                Mocks.Guard.Guard.Argument(withMatch, "pattern", secure),
+                Mocks.Domain.Guard.Guard.Argument(withMatch, "pattern", secure),
                 arg => arg.Matches(invalidPattern),
                 (arg, message) => arg.Matches(invalidPattern, (s, t) =>
                 {
@@ -570,7 +570,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             // Matches - invalid pattern w/ timeout
             ThrowsArgumentException(
-                Mocks.Guard.Guard.Argument(withMatch, "pattern", secure),
+                Mocks.Domain.Guard.Guard.Argument(withMatch, "pattern", secure),
                 arg => arg.Matches(invalidPattern),
                 (arg, message) => arg.Matches(invalidPattern, MatchTimeout, (s, t) =>
                 {
@@ -631,7 +631,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             // Does not match - invalid pattern w/o timeout
             ThrowsArgumentException(
-                Mocks.Guard.Guard.Argument(withoutMatch, "pattern", secure),
+                Mocks.Domain.Guard.Guard.Argument(withoutMatch, "pattern", secure),
                 arg => arg.DoesNotMatch(invalidPattern),
                 (arg, message) => arg.DoesNotMatch(invalidPattern, (s, t) =>
                 {
@@ -644,7 +644,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
             // Does not match - invalid pattern w/ timeout
             ThrowsArgumentException(
-                Mocks.Guard.Guard.Argument(withoutMatch, "pattern", secure),
+                Mocks.Domain.Guard.Guard.Argument(withoutMatch, "pattern", secure),
                 arg => arg.DoesNotMatch(invalidPattern),
                 (arg, message) => arg.DoesNotMatch(invalidPattern, MatchTimeout, (s, t) =>
                 {

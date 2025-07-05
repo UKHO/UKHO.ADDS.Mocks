@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -10,8 +10,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(0, 1)]
         public void Default(int? @default, int? nonDefault)
         {
-            var nullableDefaultArg = Mocks.Guard.Guard.Argument(() => @default).Default();
-            var nullableNonDefaultArg = Mocks.Guard.Guard.Argument(() => nonDefault).NotDefault();
+            var nullableDefaultArg = Mocks.Domain.Guard.Guard.Argument(() => @default).Default();
+            var nullableNonDefaultArg = Mocks.Domain.Guard.Guard.Argument(() => nonDefault).NotDefault();
             if (!@default.HasValue)
             {
                 nullableDefaultArg.NotDefault();
@@ -33,8 +33,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 arg => arg.NotDefault(),
                 (arg, message) => arg.NotDefault(message));
 
-            var defaultArg = Mocks.Guard.Guard.Argument(@default.Value, nameof(@default)).Default();
-            var nonDefaultArg = Mocks.Guard.Guard.Argument(nonDefault.Value, nameof(nonDefault)).NotDefault();
+            var defaultArg = Mocks.Domain.Guard.Guard.Argument(@default.Value, nameof(@default)).Default();
+            var nonDefaultArg = Mocks.Domain.Guard.Guard.Argument(nonDefault.Value, nameof(nonDefault)).NotDefault();
             ThrowsArgumentException(
                 nonDefaultArg,
                 arg => arg.Default(),
@@ -56,7 +56,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData("AB", "AB", "BC", true)]
         public void EqualWithoutComparer(string value, string equal, string unequal, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure).Equal(equal).NotEqual(unequal);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure).Equal(equal).NotEqual(unequal);
             if (value == null)
             {
                 valueArg.Equal(unequal);
@@ -94,7 +94,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         public void EqualWithComparer(
             string value, string equal, string unequal, StringComparison comparison, bool secure)
         {
-            var valueArg = Mocks.Guard.Guard.Argument(() => value, secure);
+            var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure);
             var comparer = comparison == StringComparison.Ordinal
                 ? StringComparer.Ordinal
                 : StringComparer.OrdinalIgnoreCase;
@@ -147,7 +147,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 nonSame = nonSame;
 #pragma warning restore CS1717 // Assignment made to same variable
 
-                var valueArg = Mocks.Guard.Guard.Argument(() => value, secure);
+                var valueArg = Mocks.Domain.Guard.Guard.Argument(() => value, secure);
                 valueArg
                     .Equal(same)
                     .Equal(nonSame)

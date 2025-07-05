@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -19,8 +19,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         protected static void Test<T>(
             T? value,
             string name,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T?>> nullableBody,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> nonNullableBody,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T?>> nullableBody,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> nonNullableBody,
             bool testModified = true,
             bool testSecure = true)
             where T : struct
@@ -35,79 +35,79 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         protected static void Test<T>(
             T value,
             string name,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> body,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> body,
             bool testModified = true,
             bool testSecure = true)
         {
-            body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name));
+            body(new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, name));
             if (testModified)
             {
-                body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, true));
+                body(new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, name, true));
             }
 
             if (testSecure)
             {
-                body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, false, true));
+                body(new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, name, false, true));
             }
 
             if (testModified && testSecure)
             {
-                body(new Mocks.Guard.Guard.ArgumentInfo<T>(value, name, true, true));
+                body(new Mocks.Domain.Guard.Guard.ArgumentInfo<T>(value, name, true, true));
             }
         }
 
-        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentNullException(argument, testWithoutMessage, null, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+        protected static ArgumentNullException[] ThrowsArgumentNullException<T>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentException<T, ArgumentNullException>(
                 argument, testWithoutMessage, testGeneratedMessage, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentOutOfRangeException(argument, testWithoutMessage, null, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+        protected static ArgumentOutOfRangeException[] ThrowsArgumentOutOfRangeException<T>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentException<T, ArgumentOutOfRangeException>(
                 argument, testWithoutMessage, testGeneratedMessage, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentException[] ThrowsArgumentException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+        protected static ArgumentException[] ThrowsArgumentException<T>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentException(argument, testWithoutMessage, null, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static ArgumentException[] ThrowsArgumentException<T>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+        protected static ArgumentException[] ThrowsArgumentException<T>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             => ThrowsArgumentException<T, ArgumentException>(
                 argument, testWithoutMessage, testGeneratedMessage, testWithMessage, allowMessageMismatch, doNotTestScoping);
 
-        protected static TException[] ThrowsArgumentException<TArgument, TException>(Mocks.Guard.Guard.ArgumentInfo<TArgument> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<TArgument>> testWithoutMessage,
+        protected static TException[] ThrowsArgumentException<TArgument, TException>(Mocks.Domain.Guard.Guard.ArgumentInfo<TArgument> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<TArgument>> testWithoutMessage,
             Func<string, bool> testGeneratedMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<TArgument>, string> testWithMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<TArgument>, string> testWithMessage,
             bool allowMessageMismatch = false,
             bool doNotTestScoping = false)
             where TException : ArgumentException
@@ -165,9 +165,9 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             return new[] { exWithoutMessage, exWithMessage };
         }
 
-        protected static void ThrowsException<T, TException>(Mocks.Guard.Guard.ArgumentInfo<T> argument,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
-            Action<Mocks.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
+        protected static void ThrowsException<T, TException>(Mocks.Domain.Guard.Guard.ArgumentInfo<T> argument,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>> testWithoutMessage,
+            Action<Mocks.Domain.Guard.Guard.ArgumentInfo<T>, string> testWithMessage,
             bool allowMessageMismatch = false)
             where TException : Exception
         {
@@ -323,7 +323,7 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
             {
                 if (RandomBoolean && !doNotTestScoping)
                 {
-                    _scope = Mocks.Guard.Guard.BeginScope((ex, stackTrace) => _lastException = ex);
+                    _scope = Mocks.Domain.Guard.Guard.BeginScope((ex, stackTrace) => _lastException = ex);
                 }
             }
 

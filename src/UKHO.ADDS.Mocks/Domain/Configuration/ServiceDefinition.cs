@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using UKHO.ADDS.Mocks.Domain.Internal.Configuration;
 using UKHO.ADDS.Mocks.Domain.Internal.Files;
-using UKHO.ADDS.Mocks.Mime;
-using UKHO.ADDS.Mocks.States;
+using UKHO.ADDS.Mocks.Domain.Mime;
+using UKHO.ADDS.Mocks.Domain.States;
 
 namespace UKHO.ADDS.Mocks.Domain.Configuration
 {

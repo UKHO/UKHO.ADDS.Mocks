@@ -1,4 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 namespace UKHO.ADDS.Mocks.Api.Models.States
 {
     public class EndpointState

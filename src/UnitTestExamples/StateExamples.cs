@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using UKHO.ADDS.Mocks.Client;
-using UKHO.ADDS.Mocks.States;
+using UKHO.ADDS.Mocks.Domain.States;
 using Xunit;
 
 namespace UnitTestExamples

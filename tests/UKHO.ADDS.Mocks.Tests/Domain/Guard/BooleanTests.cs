@@ -1,4 +1,4 @@
-﻿using UKHO.ADDS.Mocks.Guard;
+﻿using UKHO.ADDS.Mocks.Domain.Guard;
 using Xunit;
 
 namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
@@ -10,8 +10,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
         [InlineData(true, false)]
         public void GuardSupportsBooleans(bool? @true, bool? @false)
         {
-            var nullableTrueArg = Mocks.Guard.Guard.Argument(() => @true).True();
-            var nullableFalseArg = Mocks.Guard.Guard.Argument(() => @false).False();
+            var nullableTrueArg = Mocks.Domain.Guard.Guard.Argument(() => @true).True();
+            var nullableFalseArg = Mocks.Domain.Guard.Guard.Argument(() => @false).False();
             if (!@true.HasValue)
             {
                 nullableTrueArg.False();
@@ -29,8 +29,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
                 arg => arg.False(),
                 (arg, message) => arg.False(message));
 
-            var trueArg = Mocks.Guard.Guard.Argument(@true.Value, nameof(@true)).True();
-            var falseArg = Mocks.Guard.Guard.Argument(@false.Value, nameof(@false)).False();
+            var trueArg = Mocks.Domain.Guard.Guard.Argument(@true.Value, nameof(@true)).True();
+            var falseArg = Mocks.Domain.Guard.Guard.Argument(@false.Value, nameof(@false)).False();
             ThrowsArgumentException(
                 falseArg,
                 arg => arg.True(),
