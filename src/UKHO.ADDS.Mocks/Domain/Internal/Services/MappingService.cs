@@ -7,11 +7,13 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
     internal class MappingService
     {
         private readonly FileService _fileService;
+        private readonly FileSystemService _fileSystemService;
         private readonly ILogger<ServiceEndpointMock> _logger;
 
-        public MappingService(FileService fileService, ILogger<ServiceEndpointMock> logger)
+        public MappingService(FileService fileService, FileSystemService fileSystemService, ILogger<ServiceEndpointMock> logger)
         {
             _fileService = fileService;
+            _fileSystemService = fileSystemService;
             _logger = logger;
         }
 
@@ -29,7 +31,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                     {
                         var serviceMock = (ServiceEndpointMock)Activator.CreateInstance(serviceFragment.Type)!;
 
-                        serviceMock.SetRuntime(definition, _fileService, _logger);
+                        serviceMock.SetRuntime(definition, _fileService, _fileSystemService, _logger);
                         serviceMock.RegisterSingleEndpoint(serviceFragment.CreateBuilder(group));
                     }
                 }
@@ -43,7 +45,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
             return Task.CompletedTask;
         }
 
-        public Task BuildDefinitionsAsync(CancellationToken cancellationToken)
+        public async Task BuildDefinitionsAsync(CancellationToken cancellationToken)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -92,8 +94,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
             }
 
             _fileService.Initialize();
-
-            return Task.CompletedTask;
+            await _fileSystemService.InitializeAsync(cancellationToken);
         }
 
         private IDictionary<string, (string, bool)> CreateFileList(string corePath, string overridePath, string queryPattern)
