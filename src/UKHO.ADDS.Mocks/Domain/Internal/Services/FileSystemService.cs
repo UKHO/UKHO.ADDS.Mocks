@@ -49,6 +49,10 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                     return;
                 }
 
+                // Might not be any static files so create root here
+                var servicePath = Path.Combine(_rootPath, definition.Prefix);
+                _hostFileSystem.Directory.CreateDirectory(servicePath);
+
                 foreach (var file in definition.ServiceFiles)
                 {
                     // Get the part of file.Path after the service prefix
