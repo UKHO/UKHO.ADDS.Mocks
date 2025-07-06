@@ -31,14 +31,15 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
             _rootUPath = UPath.Combine(tempUPath, "adds-mock-fs");
 
-            // Set up directory structure and copy all static files into position
             _rootPath = _hostFileSystem.Path.Combine(tempPath, "adds-mock-fs");
 
+            // Clean out any existing file systems
             if (_hostFileSystem.Directory.Exists(_rootPath))
             {
                 ForceDeleteDirectory(_hostFileSystem, _rootPath);
             }
 
+            // Set up directory structure and copy all static files into position, making sure to include any subdirectories in the source
             _hostFileSystem.Directory.CreateDirectory(_rootPath);
 
             foreach (var definition in ServiceRegistry.Definitions)
@@ -50,7 +51,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
 
                 foreach (var file in definition.ServiceFiles)
                 {
-                    // 1️⃣ Get the part of file.Path after the service prefix
+                    // Get the part of file.Path after the service prefix
                     // Normalize path separators
                     var normalizedFilePath = file.Path.Replace('\\', '/');
                     var prefixMarker = "/" + definition.Prefix + "/";
@@ -65,30 +66,29 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
                     // Get relative path after the service prefix
                     var relativeSubPath = normalizedFilePath.Substring(prefixIndex + prefixMarker.Length);
 
-                    // 2️⃣ Compose the full destination path:
-                    // root / prefix / relativeSubPath
+                    // Compose the full destination path: / root / prefix / relativeSubPath
                     var destinationPath = _hostFileSystem.Path.Combine(_rootPath, definition.Prefix, relativeSubPath);
 
-                    // 3️⃣ Ensure the target directory exists
+                    // Ensure the target directory exists
                     var destinationDirectory = _hostFileSystem.Path.GetDirectoryName(destinationPath);
                     if (!_hostFileSystem.Directory.Exists(destinationDirectory))
                     {
                         _hostFileSystem.Directory.CreateDirectory(destinationDirectory);
                     }
 
-                    // 4️⃣ Overwrite existing file if needed
+                    // Overwrite existing file if needed
                     if (_hostFileSystem.File.Exists(destinationPath))
                     {
                         File.SetAttributes(destinationPath, FileAttributes.Normal);
                         _hostFileSystem.File.Delete(destinationPath);
                     }
 
-                    // 5️⃣ Copy contents
+                    // Copy contents
                     await using var sourceStream = new FileStream(file.Path, FileMode.Open, FileAccess.Read, FileShare.Read);
                     await using var destinationStream = _hostFileSystem.File.Create(destinationPath);
                     await sourceStream.CopyToAsync(destinationStream, stoppingToken);
 
-                    // 6️⃣ Set read-only
+                    // Set read-only
                     var attributes = File.GetAttributes(destinationPath);
                     attributes |= FileAttributes.ReadOnly;
                     File.SetAttributes(destinationPath, attributes);
@@ -120,7 +120,7 @@ namespace UKHO.ADDS.Mocks.Domain.Internal.Services
         }
 
         /// <summary>
-        ///     Translates a Windows-style path into a "/mnt/{drive letter}/..." style path.
+        ///     Translates a Windows-style path into a "/mnt/{drive letter}/..." style path for ZIO
         ///     On Linux, returns the input path unchanged.
         /// </summary>
         /// <param name="path">The path to translate.</param>

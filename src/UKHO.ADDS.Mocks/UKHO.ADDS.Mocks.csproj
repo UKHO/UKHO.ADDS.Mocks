@@ -68,9 +68,4 @@
     <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuration\Mocks\fss6357\" />
-    <Folder Include="Configuration\Mocks\scs6357\" />
-  </ItemGroup>
-
 </Project>

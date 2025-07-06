@@ -12,13 +12,9 @@ namespace UKHO.ADDS.Mocks
 
             ServiceRegistry.AddDefinition(new ServiceDefinition("fss", "FileShare Service", []));
 
-            ServiceRegistry.AddDefinition(new ServiceDefinition("fss6357", "FileShare Service (S63/57)", []));
-
             ServiceRegistry.AddDefinition(new ServiceDefinition("fssmsi", "FileShare Service (MSI)", []));
 
             ServiceRegistry.AddDefinition(new ServiceDefinition("scs", "Sales Catalogue Service", [new StateDefinition("get-invalidproducts", "Gets invalid products")]));
-
-            ServiceRegistry.AddDefinition(new ServiceDefinition("scs6357", "Sales Catalogue Service (S63/57)", []));
 
             ServiceRegistry.AddDefinition(new ServiceDefinition("sap", "SAP Service", []));
         }

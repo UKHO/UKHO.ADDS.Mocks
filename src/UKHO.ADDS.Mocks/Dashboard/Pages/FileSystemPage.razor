@@ -1,6 +1,7 @@
 ﻿@page "/_dashboard/filesystem"
 @using UKHO.ADDS.Mocks.Domain.Configuration
 @using UKHO.ADDS.Mocks.Domain.Internal.Services
+@using UKHO.ADDS.Mocks.Mime
 @using Zio
 @inject FileSystemService FileSystemService
 @inject IJSRuntime JSRuntime
@@ -29,10 +30,11 @@
         <table class="rz-table rz-striped rz-hoverable rz-grid-table rz-mb-4" style="width: 100%;">
             <thead style="position: sticky; top: 0; background-color: var(--rz-panel-background-color); z-index: 10;">
                 <tr>
-                    <th style="width: 30%;">File Name</th>
-                    <th style="width: 25%;">Size (bytes)</th>
-                    <th style="width: 20%;">Read Only</th>
-                    <th style="width: 25%;">Actions</th>
+                    <th style="width: 25%;">File Name</th>
+                    <th style="width: 20%;">Size (bytes)</th>
+                    <th style="width: 15%;">Read Only</th>
+                    <th style="width: 20%;">MIME Type</th>
+                    <th style="width: 20%;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +46,7 @@
                         <tr>
                             <td>@file.Name</td>
                             <td>
-                                @file.Size:N0
+                                @file.Size
                                 @if (!string.IsNullOrEmpty(readable))
                                 {
                                     <text> (@readable)</text>
@@ -61,6 +63,9 @@
                                 }
                             </td>
                             <td>
+                                @file.MimeType
+                            </td>
+                            <td>
                                 <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem">
                                     <RadzenButton Size="ButtonSize.Small"
                                                   Variant="Variant.Text"
@@ -74,6 +79,7 @@
                 }
             </tbody>
         </table>
+
     </RadzenSplitterPane>
 </RadzenSplitter>
 
@@ -196,7 +202,7 @@
         public long Size => _item.Length;
         public FileAttributes Attributes => _item.Attributes;
         public bool IsReadOnly => (_item.Attributes & FileAttributes.ReadOnly) != 0;
-        public string MimeType => "application/octet-stream";
+        public string MimeType => MimeTypeMap.GetMimeType(_item.GetName());
 
         public Stream Open()
         {
