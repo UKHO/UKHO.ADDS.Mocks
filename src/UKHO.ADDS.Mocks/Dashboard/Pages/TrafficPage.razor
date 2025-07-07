@@ -1,5 +1,6 @@
 ﻿@page "/_dashboard/traffic/"
 
+@using System.Collections.ObjectModel
 @using System.Net
 @using System.Text
 @using System.Text.Json
@@ -11,7 +12,7 @@
 @inject IJSRuntime JsRuntime
 
 <HeadContent>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
@@ -35,7 +36,7 @@
 <RadzenRow style="height: calc(100vh - 110px); margin: 0; overflow: hidden;">
     <!-- LEFT COLUMN -->
     <RadzenColumn Width="6" style="height: 100%; display: flex; flex-direction: column;">
-        <RadzenDataGrid Data="@DashboardService.RequestResponses" TItem="MockRequestResponse"
+        <RadzenDataGrid Data="@_requestResponses" TItem="MockRequestResponse"
                         Scrollable="true"
                         AllowSorting="true"
                         AllowFiltering="true"
@@ -62,7 +63,7 @@
                         <RadzenBadge Text="@item.Response.StatusCode.ToString()"
                                      BadgeStyle="@GetBadgeStyleForStatus(item.Response.StatusCode)"
                                      Tooltip="@GetStatusLabel(item.Response.StatusCode)"
-                                     Style="cursor: default;"/>
+                                     Style="cursor: default;" />
                     </Template>
                 </RadzenDataGridColumn>
 
@@ -84,7 +85,7 @@
                 {
                     <p style="margin: 0;">
                         <RadzenBadge Text="@SelectedItem.Request.Method"
-                                     Style="@($"{GetBadgeColorStyleForMethod(SelectedItem.Request.Method)} margin-right: 0.5rem;")"/>
+                                     Style="@($"{GetBadgeColorStyleForMethod(SelectedItem.Request.Method)} margin-right: 0.5rem;")" />
                         @SelectedItem.Request.Path @SelectedItem.Request.QueryString
                     </p>
                     <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
@@ -103,7 +104,7 @@
                 <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Request Body</span>
                 @if (SelectedItem != null)
                 {
-                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Request.Body)))"/>
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Request.Body)))" />
                 }
             </div>
             <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
@@ -126,7 +127,7 @@
                     <p style="margin: 0;">
                         <RadzenBadge Text="@SelectedItem.Response.StatusCode.ToString()"
                                      BadgeStyle="@GetBadgeStyleForStatus(SelectedItem.Response.StatusCode)"
-                                     Style="margin-right: 0.5rem;"/>
+                                     Style="margin-right: 0.5rem;" />
                         <b>@SelectedItem.Response.StatusCode</b> — @GetStatusLabel(SelectedItem.Response.StatusCode)
                     </p>
                     <p style="margin: 0.25rem 0; font-size: 0.7em; font-weight: 400; color: #ccc; max-height: 4rem; overflow-y: auto; white-space: pre-wrap;">
@@ -145,7 +146,7 @@
                 <span style="font-size: 0.85rem; font-weight: 500; color: #ccc;">Response Body</span>
                 @if (SelectedItem != null)
                 {
-                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Response.Body)))"/>
+                    <RadzenButton Text="Copy" Size="ButtonSize.Small" Click="@(() => CopyToClipboardAsync(GetBodyText(SelectedItem.Response.Body)))" />
                 }
             </div>
             <div style="flex: 1; overflow: auto; padding: 0.5rem; background-color: #1e1e1e; color: #dcdcdc; font-family: monospace; font-size: 0.85rem; border: 1px solid #333;">
@@ -163,12 +164,38 @@
 </RadzenRow>
 
 @code {
+    private ObservableCollection<MockRequestResponse> _requestResponses = new();
     private IList<MockRequestResponse> _selectedItems = new List<MockRequestResponse>();
     private MockRequestResponse? SelectedItem => _selectedItems.FirstOrDefault();
 
     protected override void OnInitialized()
     {
-        DashboardService.RequestResponses.CollectionChanged += (_, __) => { InvokeAsync(StateHasChanged); };
+        DashboardService.Updated += OnDashboardServiceUpdated;
+        RefreshFromDashboardService();
+    }
+
+    private void OnDashboardServiceUpdated()
+    {
+        InvokeAsync(() =>
+        {
+            RefreshFromDashboardService();
+            StateHasChanged();
+        });
+    }
+
+    private void RefreshFromDashboardService()
+    {
+        var snapshot = DashboardService.GetSnapshot();
+        _requestResponses.Clear();
+        foreach (var item in snapshot)
+        {
+            _requestResponses.Add(item);
+        }
+    }
+
+    public void Dispose()
+    {
+        DashboardService.Updated -= OnDashboardServiceUpdated;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -267,15 +294,15 @@
     {
         return method.ToUpperInvariant() switch
         {
-            "GET" => "background-color: #007bff; color: white;",       // Blue
-            "POST" => "background-color: #28a745; color: white;",      // Green
-            "PUT" => "background-color: #fd7e14; color: white;",       // Orange
-            "DELETE" => "background-color: #dc3545; color: white;",    // Red
-            "PATCH" => "background-color: #ffc107; color: black;",     // Yellow
-            "OPTIONS" => "background-color: #6f42c1; color: white;",   // Purple
-            "HEAD" => "background-color: #adb5bd; color: black;",      // Light Gray
-            "TRACE" => "background-color: #adb5bd; color: black;",     // Light Gray
-            _ => "background-color: #e0e0e0; color: black;"            // Default neutral
+            "GET" => "background-color: #007bff; color: white;",
+            "POST" => "background-color: #28a745; color: white;",
+            "PUT" => "background-color: #fd7e14; color: white;",
+            "DELETE" => "background-color: #dc3545; color: white;",
+            "PATCH" => "background-color: #ffc107; color: black;",
+            "OPTIONS" => "background-color: #6f42c1; color: white;",
+            "HEAD" => "background-color: #adb5bd; color: black;",
+            "TRACE" => "background-color: #adb5bd; color: black;",
+            _ => "background-color: #e0e0e0; color: black;"
         };
     }
 }
