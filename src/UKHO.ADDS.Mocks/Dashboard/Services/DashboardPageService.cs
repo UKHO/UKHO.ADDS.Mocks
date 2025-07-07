@@ -6,29 +6,33 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
     {
         private readonly DashboardPage[] _allPages =
         {
-            new DashboardPage { Name = "Services", Path = "/", Icon = "\ue88a" }, new DashboardPage
+            new DashboardPage { Name = "Services", Path = "/" }, new DashboardPage
             {
                 Name = "Explorer",
                 Path = "/_dashboard/explorer",
                 Title = "",
-                Description = "",
-                Icon = "\ue0c6"
+                Description = ""
             },
             new DashboardPage
             {
                 Name = "Traffic",
                 Path = "/_dashboard/traffic",
                 Title = "",
-                Description = "",
-                Icon = "\ue0c6"
+                Description = ""
             },
             new DashboardPage
             {
                 Name = "Files",
                 Path = "/_dashboard/files",
                 Title = "",
-                Description = "",
-                Icon = "\ue0c6"
+                Description = ""
+            },
+            new DashboardPage
+            {
+                Name = "File systems",
+                Path = "/_dashboard/filesystem",
+                Title = "",
+                Description = ""
             }
         };
 

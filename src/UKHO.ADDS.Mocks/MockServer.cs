@@ -122,6 +122,8 @@ namespace UKHO.ADDS.Mocks
 
             builder.Services.AddSingleton<MappingService>();
             builder.Services.AddSingleton<FileService>();
+
+            builder.Services.AddSingleton<FileSystemService>();
         }
 
         private static void ConfigureOpenApi(WebApplicationBuilder builder) =>

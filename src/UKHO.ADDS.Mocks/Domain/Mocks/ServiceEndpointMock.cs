@@ -4,6 +4,7 @@ using UKHO.ADDS.Mocks.Domain.Internal.Logging;
 using UKHO.ADDS.Mocks.Domain.Internal.Services;
 using UKHO.ADDS.Mocks.Files;
 using UKHO.ADDS.Mocks.States;
+using Zio;
 
 // ReSharper disable once CheckNamespace
 namespace UKHO.ADDS.Mocks
@@ -16,6 +17,7 @@ namespace UKHO.ADDS.Mocks
         private ServiceDefinition? _definition;
         private ILogger<ServiceEndpointMock>? _logger;
         private FileService _fileService;
+        private FileSystemService _fileSystemService;
 
         public abstract void RegisterSingleEndpoint(IEndpointMock endpoint);
 
@@ -55,48 +57,68 @@ namespace UKHO.ADDS.Mocks
 
         protected void EchoHeaders(HttpRequest request, HttpResponse response, string[] headers)
         {
+            EchoHeaders(request, response, headers, out _);
+        }
+
+        protected void EchoHeaders(HttpRequest request, HttpResponse response, string[] headers, out IDictionary<string, string> headerValues)
+        {
+            headerValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
             foreach (var header in request.Headers
                          .Where(h => headers.Contains(h.Key, StringComparer.OrdinalIgnoreCase)))
             {
                 response.Headers[header.Key] = header.Value;
+                headerValues[header.Key] = header.Value.ToString();
             }
         }
 
+        protected IFileSystem GetFileSystem()
+        {
+            return _fileSystemService.GetFileSystem(_definition);
+        }
+
+        [Obsolete("Use GetFileSystem()")]
         protected IResult<IMockFile> GetFile(string fileName)
         {
             return _fileService.GetFile(_definition!, fileName);
         }
 
+        [Obsolete("Use GetFileSystem()")]
         protected IResult<IMockFile> CreateFile(string fileName)
         {
             return _fileService.CreateFile(_definition!, fileName);
         }
 
+        [Obsolete("Use GetFileSystem()")]
         protected IResult<IMockFile> CreateFile(string fileName, Stream content)
         {
             return _fileService.CreateFile(_definition!, fileName, content);
         }
 
+        [Obsolete("Use GetFileSystem()")]
         protected IResult<IMockFile> AppendFile(string fileName, byte[] content, bool createIfNotExists = false)
         {
             return _fileService.AppendFile(_definition!, fileName, content, createIfNotExists);
         }
 
+        [Obsolete("Use GetFileSystem()")]
         protected IResult<IMockFile> AppendFile(string fileName, string content, bool createIfNotExists = false)
         {
             return _fileService.AppendFile(_definition!, fileName, content, createIfNotExists);
         }
 
+        [Obsolete("Use GetFileSystem()")]
         protected IResult<IMockFile> AppendFile(string fileName, Stream content, bool createIfNotExists = false)
         {
             return _fileService.AppendFile(_definition!, fileName, content, createIfNotExists);
         }
 
 
-        internal void SetRuntime(ServiceDefinition definition, FileService fileService, ILogger<ServiceEndpointMock> logger)
+        internal void SetRuntime(ServiceDefinition definition, FileService fileService, FileSystemService fileSystemService, ILogger<ServiceEndpointMock> logger)
         {
             _definition = definition;
             _fileService = fileService;
+            _fileSystemService = fileSystemService;
             _logger = logger;
         }
     }
