@@ -57,10 +57,18 @@ namespace UKHO.ADDS.Mocks
 
         protected void EchoHeaders(HttpRequest request, HttpResponse response, string[] headers)
         {
+            EchoHeaders(request, response, headers, out _);
+        }
+
+        protected void EchoHeaders(HttpRequest request, HttpResponse response, string[] headers, out IDictionary<string, string> headerValues)
+        {
+            headerValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
             foreach (var header in request.Headers
                          .Where(h => headers.Contains(h.Key, StringComparer.OrdinalIgnoreCase)))
             {
                 response.Headers[header.Key] = header.Value;
+                headerValues[header.Key] = header.Value.ToString();
             }
         }
 
