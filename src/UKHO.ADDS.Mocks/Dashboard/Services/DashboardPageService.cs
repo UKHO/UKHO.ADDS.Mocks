@@ -22,13 +22,6 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
             },
             new DashboardPage
             {
-                Name = "Files",
-                Path = "/_dashboard/files",
-                Title = "",
-                Description = ""
-            },
-            new DashboardPage
-            {
                 Name = "File systems",
                 Path = "/_dashboard/filesystem",
                 Title = "",
