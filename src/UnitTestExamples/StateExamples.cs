@@ -25,6 +25,21 @@ namespace UnitTestExamples
             Assert.True(response.StatusCode == HttpStatusCode.OK);
         }
 
+        public async Task SetStatePerTest()
+        {
+            // Note - scope is in a using block to ensure it is disposed of after the test, so that the state is reset
+            await using var scope = new StateScope(_factory);
+
+            await scope.SetState("sample", "GetFilesEndpoint", WellKnownState.BadRequest);
+
+            var client = _factory.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, MockUri);
+            var response = await client.SendAsync(request);
+
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
         public async Task SetMockToUnauthorisedState()
         {
             var client = _factory.CreateClient();
