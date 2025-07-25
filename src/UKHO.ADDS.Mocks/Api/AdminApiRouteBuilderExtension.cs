@@ -2,6 +2,7 @@
 using UKHO.ADDS.Mocks.Configuration;
 using UKHO.ADDS.Mocks.Dashboard.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Services;
+using UKHO.ADDS.Mocks.Mime;
 
 namespace UKHO.ADDS.Mocks.Api
 {
@@ -46,7 +47,7 @@ namespace UKHO.ADDS.Mocks.Api
                 return Results.Ok();
             });
 
-            adminEndpoint.MapGet("/files/{servicePrefix}/{filename}", (HttpRequest request, string servicePrefix, string filename, FileService fileService) =>
+            adminEndpoint.MapGet("/files/{servicePrefix}/{**filename}", (HttpRequest request, string servicePrefix, string filename, FileSystemService fileService) =>
             {
                 var definition = ServiceRegistry.Definitions.FirstOrDefault(d => d.Prefix.Equals(servicePrefix, StringComparison.InvariantCultureIgnoreCase));
 
@@ -55,19 +56,21 @@ namespace UKHO.ADDS.Mocks.Api
                     return Results.NotFound($"Service definition with prefix '{servicePrefix}' not found.");
                 }
 
-                var fileResult = fileService.GetFile(definition, filename);
-
-                if (fileResult.IsSuccess(out var file))
+                if (!filename.StartsWith("/"))
                 {
-                    return Results.File(file.Open(), file.MimeType);
+                    filename = "/" + filename; 
                 }
 
-                if (fileResult.IsFailure(out var errorMessage))
+                var fileSystem = fileService.GetFileSystem(definition);
+
+                if (!fileSystem.FileExists(filename))
                 {
-                    return Results.BadRequest(errorMessage);
+                    return Results.NotFound();
                 }
 
-                return Results.Ok();
+                var mimeType = MimeTypeMap.GetMimeType(filename);
+
+                return Results.File(fileSystem.OpenFile(filename, FileMode.Open, FileAccess.Read, FileShare.Read), mimeType);
             });
         }
     }

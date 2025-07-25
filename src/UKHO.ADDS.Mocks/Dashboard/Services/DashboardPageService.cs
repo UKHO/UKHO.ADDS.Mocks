@@ -6,7 +6,7 @@ namespace UKHO.ADDS.Mocks.Dashboard.Services
     {
         private readonly DashboardPage[] _allPages =
         {
-            new DashboardPage { Name = "Services", Path = "/" }, new DashboardPage
+            new DashboardPage { Name = "States", Path = "/" }, new DashboardPage
             {
                 Name = "Explorer",
                 Path = "/_dashboard/explorer",
