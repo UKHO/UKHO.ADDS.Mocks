@@ -50,7 +50,6 @@
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
     <PackageReference Include="System.IO.Abstractions" Version="22.0.14" />
     <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="0.0.50322-alpha.2" />
-    <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="0.0.50322-alpha.2" />
 
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.*-*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.*-*" PrivateAssets="all" />
