@@ -10,7 +10,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
             endpoint.MapGet("/files", (HttpRequest request) =>
                 {
                     var state = GetState(request);
-
+                    var fs = GetFileSystem();
                     switch (state)
                     {
                         case WellKnownState.Default:
@@ -18,17 +18,21 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
                             return Results.Ok("This is a result, just needed this text with the 200 response");
 
                         case "get-file":
-
-                            var pathResult = GetFile("readme.txt");
-
-                            if (pathResult.IsSuccess(out var file))
+                            try
                             {
-                                return Results.File(file.Open(), file.MimeType);
+                                var s = fs.OpenFile("/readme.txt", FileMode.Open, FileAccess.Read);
+                                return Results.File(s, MimeType.Application.Json);
+                            }
+                            catch (Exception)
+                            {
+                                return Results.NotFound("Could not find the path in the /files GET method");
                             }
 
-                            return Results.NotFound("Could not find the path in the /files GET method");
 
                         case "get-jpeg":
+                            //Rhz: incomplete
+                            //var si = fs.OpenFile("/messier-78.jpg", FileMode.Open, FileAccess.Read);
+                            //return Results.File(si, MimeType.Image.Jpeg);
 
                             var jpegPathResult = GetFile("messier-78.jpg");
 
@@ -38,7 +42,7 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
                                 {
                                     CreateFile("new-file.jpg", s);
                                 }
-                                
+
                                 return Results.File(jpegFile.Open(), jpegFile.MimeType);
                             }
 

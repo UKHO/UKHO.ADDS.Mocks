@@ -15,14 +15,17 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
                     {
                         case WellKnownState.Default:
 
-                            var pathResult = GetFile("attributes.json");
-
-                            if (pathResult.IsSuccess(out var file))
+                            try
                             {
-                                return Results.File(file.Open(), file.MimeType);
+                                var fs = GetFileSystem();
+                                var s = fs.OpenFile("/attributes.json", FileMode.Open, FileAccess.Read);
+                                return Results.File(s, MimeType.Application.Json);
+                            }
+                            catch (Exception)
+                            {
+                                return Results.NotFound("Could not find the path in the /files GET method");
                             }
 
-                            return Results.NotFound("Could not find the path in the /files GET method");
 
                         default:
                             // Just send default responses

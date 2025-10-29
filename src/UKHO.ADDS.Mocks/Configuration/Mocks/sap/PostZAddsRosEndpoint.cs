@@ -14,15 +14,17 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sap
                 switch (state)
                 {
                     case WellKnownState.Default:
-
-                        var pathResult = GetFile("response.xml");
-
-                        if (pathResult.IsSuccess(out var file))
+                        try
                         {
-                            return Results.File(file.Open(), file.MimeType);
+                            var fs = GetFileSystem();
+                            var s = fs.OpenFile("/response.xml", FileMode.Open, FileAccess.Read);
+                            return Results.File(s, MimeType.Application.Xml);
                         }
-
-                        return Results.NotFound("Could not find response.xml");
+                        catch (Exception)
+                        {
+                            return Results.NotFound("Could not find response.xml");
+                        }
+                    
 
                     default:
                         // Just send default responses

@@ -14,15 +14,16 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.fssmsi
                     switch (state)
                     {
                         case WellKnownState.Default:
-
-                            var pathResult = GetFile("annualfiles.json");
-
-                            if (pathResult.IsSuccess(out var file))
+                            try
                             {
-                                return Results.File(file.Open(), file.MimeType);
+                                var fs = GetFileSystem();
+                                var s = fs.OpenFile("/annualfiles.json", FileMode.Open, FileAccess.Read);
+                                return Results.File(s, MimeType.Application.Json);
                             }
-
-                            return Results.NotFound("Could not find the path in the /files GET method");
+                            catch (Exception)
+                            {
+                                return Results.NotFound("Could not find the path in the /files GET method");
+                            }
 
                         default:
                             // Just send default responses
