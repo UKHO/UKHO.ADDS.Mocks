@@ -30,10 +30,6 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
 
                         case "get-jpeg":
-                            //Rhz: incomplete
-                            //var si = fs.OpenFile("/messier-78.jpg", FileMode.Open, FileAccess.Read);
-                            //return Results.File(si, MimeType.Image.Jpeg);
-
                             var jpegPathResult = GetFile("messier-78.jpg");
 
                             if (jpegPathResult.IsSuccess(out var jpegFile))
