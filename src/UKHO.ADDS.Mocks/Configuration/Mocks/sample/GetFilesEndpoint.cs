@@ -18,15 +18,16 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.sample
                             return Results.Ok("This is a result");
 
                         case "get-file":
-
-                            var pathResult = GetFile("readme.txt");
-
-                            if (pathResult.IsSuccess(out var file))
+                            try
                             {
-                                return Results.File(file.Open(), file.MimeType);
+                                var fs = GetFileSystem();
+                                var s = fs.OpenFile("/readme.txt", FileMode.Open, FileAccess.Read);
+                                return Results.File(s, MimeType.Application.Json);
                             }
-
-                            return Results.NotFound("Could not find the path in the /files GET method");
+                            catch (Exception)
+                            {
+                                return Results.NotFound("Could not find the path in the /files GET method");
+                            }
 
                         default:
                             // Just send default responses
