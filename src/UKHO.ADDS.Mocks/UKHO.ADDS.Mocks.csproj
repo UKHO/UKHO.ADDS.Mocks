@@ -43,12 +43,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11" />
-    <PackageReference Include="Radzen.Blazor" Version="8.3.2" />
+    <PackageReference Include="Radzen.Blazor" Version="8.3.9" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.11.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.11.2" />
     <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="22.0.16" />
+    <PackageReference Include="System.IO.Abstractions" Version="22.1.0" />
     <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="0.0.50327-alpha.2" />
     <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="0.0.50327-alpha.2" />
 
@@ -60,7 +60,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="6.0.36" />
     <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="9.10.0" />
     <PackageReference Include="MetadataReferenceService.BlazorWasm" Version="*" />
-    <PackageReference Include="Zio" Version="0.21.3" />
+    <PackageReference Include="Zio" Version="0.22.1" />
 
   </ItemGroup>
 
