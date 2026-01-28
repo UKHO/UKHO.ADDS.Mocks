@@ -42,10 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11" />
-    <PackageReference Include="Radzen.Blazor" Version="8.4.3" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.12" />
+    <PackageReference Include="Radzen.Blazor" Version="8.7.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.11.10" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.12.20" />
     <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
     <PackageReference Include="System.IO.Abstractions" Version="22.1.0" />
@@ -58,7 +58,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="6.0.36" />
-    <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="10.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="10.2.0" />
     <PackageReference Include="MetadataReferenceService.BlazorWasm" Version="*" />
     <PackageReference Include="Zio" Version="0.22.1" />
 
