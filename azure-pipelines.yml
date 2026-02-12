@@ -94,6 +94,7 @@ stages:
         command: restore
         projects: |
           **/UKHO.ADDS.Mocks.csproj
+          **/UKHO.ADDS.Mocks.Client.csproj
           **/UKHO.ADDS.Mocks.Tests.csproj
           **/UKHO.ADDS.Mocks.Functional.Tests.csproj
         feedsToUse: config
@@ -123,7 +124,8 @@ stages:
       inputs:
         command: pack
         packagesToPack: >
-          **/UKHO.ADDS.Mocks.csproj
+          **/UKHO.ADDS.Mocks.csproj;
+          **/UKHO.ADDS.Mocks.Client.csproj
         packDirectory: $(Build.ArtifactStagingDirectory)/packages
         arguments:  '--configuration $(BuildConfiguration)'
 
