@@ -16,10 +16,10 @@ $validBuildNumber = $buildNumber -match $buildNumberRegex
 
 if ($validBuildNumber -ne $false) {
     $errorMessage = "Build number passed in must be in the following format: (BuildDefinitionName)_.(date:202yMMdd)(rev:.r)"
-    Write-Error $errorMessage
-    Write-Error "  The date in buildNumberRegex must be incremented at the start of a new decade, along with the minor version number in UKHOAssemblyVersionPrefix"
-    Write-Error "  This is to ensure we don't create packages with lower version numbers than those already published"
-    Write-Error "  For example, using UKHOAssemblyVersionPrefix = '1.2.' would give 1.2.91231.1 on 31/12/2029 and 1.2.00101.1 on 01/01/2030"
+    Write-Host $errorMessage
+    Write-Host "  The date in buildNumberRegex must be incremented at the start of a new decade, along with the minor version number in UKHOAssemblyVersionPrefix"
+    Write-Host "  This is to ensure we don't create packages with lower version numbers than those already published"
+    Write-Host "  For example, using UKHOAssemblyVersionPrefix = '1.2.' would give 1.2.91231.1 on 31/12/2029 and 1.2.00101.1 on 01/01/2030"
     throw $errorMessage
 }
 
