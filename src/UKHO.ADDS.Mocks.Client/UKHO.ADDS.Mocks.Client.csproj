@@ -4,6 +4,13 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/UKHO/UKHO.ADDS.Mocks</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/UKHO/UKHO.ADDS.Mocks</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IsPackable>true</IsPackable>
+    <PackageId>UKHO.ADDS.Mocks.Client</PackageId>
+    <Authors>UKHO</Authors>
   </PropertyGroup>
 
   <ItemGroup>

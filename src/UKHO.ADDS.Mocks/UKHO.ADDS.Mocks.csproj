@@ -12,8 +12,8 @@
     <IsPackable>true</IsPackable>
     <PackageId>UKHO.ADDS.Mocks</PackageId>
     <Authors>UKHO</Authors>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!--<IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
