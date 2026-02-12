@@ -20,6 +20,12 @@ variables:
   value: "release"
 - name: BuildCounter
   value: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
+- name: UKHOAssemblyCompany
+  value: "UK Hydrographic Office"
+- name: UKHOAssemblyVersionPrefix
+  value: "0.0."
+- name: UKHOAssemblyProduct
+  value: "ADDS Mocks"
 - name: WindowPool
   value: "NautilusBuild"
 - name: SdkVersion
@@ -38,6 +44,34 @@ stages:
     workspace:
       clean: all
     steps:
+    - checkout: self
+      clean: true
+
+    - task: PowerShell@2
+      displayName: Output environment variables
+      inputs:
+        targetType: inline
+        script: |
+          gci env:
+          $CurrentYear = Get-Date -Format "yyyy"
+          $AssemblyCopyright = "Copyright © UK Hydrographic Office $CurrentYear"
+          echo "##vso[task.setvariable variable=UKHOAssemblyCopyright]${AssemblyCopyright}"
+
+    - task: PowerShell@2
+      displayName: Set assembly version numbers based on build ID
+      name: SetAssemblyVersion
+      inputs:
+        targetType: filePath
+        filePath: '$(Build.SourcesDirectory)\deployment\Apply-AssemblyVersionAndDefaults.ps1'
+        arguments: >
+          -buildNumber "$(Build.BuildNumber)"
+          -solutionDirectory "$(Build.SourcesDirectory)\"
+          -UKHOAssemblyCompany "$env:UKHOAssemblyCompany"
+          -UKHOAssemblyCopyright "$env:UKHOAssemblyCopyright"
+          -UKHOAssemblyVersionPrefix "$env:UKHOAssemblyVersionPrefix"
+          -UKHOAssemblyProduct "$env:UKHOAssemblyProduct"
+          -SourceRevisionId "$(Build.SourceVersion)"
+
     - task: UseDotNet@2
       displayName: Use .NET SDK $(SdkVersion)
       inputs:
@@ -75,6 +109,24 @@ stages:
           testRunTitle: UnitTests
 
     - task: DotNetCoreCLI@2
+      displayName: Pack libraries
+      inputs:
+        command: pack
+        packagesToPack: >
+          **/UKHO.ADDS.Mocks.csproj
+        packDirectory: $(Build.ArtifactStagingDirectory)/packages
+        arguments:  '--configuration $(BuildConfiguration)'
+
+    - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
+      displayName: List packed NuGet packages
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish NuGet packages
+      inputs:
+        path: $(Build.ArtifactStagingDirectory)/packages
+        artifact: NuGetPackages
+
+    - task: DotNetCoreCLI@2
       displayName: Build - mock
       inputs:
         command: build
@@ -87,7 +139,7 @@ stages:
       name: getUrl
       inputs:
         targetType: filePath
-        filePath: '$(Build.SourcesDirectory)\Pipeline\GetLocalHostUrl.ps1'
+        filePath: '$(Build.SourcesDirectory)\deployment\GetLocalHostUrl.ps1'
 
     # - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
     #   - task: DotNetCoreCLI@2
@@ -113,3 +165,33 @@ stages:
     #       projects: '$(Build.BinariesDirectory)\FunctionalTests\UKHO.ADDS.Mocks.Functional.Tests.dll'
     #       publishTestResults: true
     #       testRunTitle: FunctionalTests
+
+- stage: ProGet
+  #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  variables:
+  - group: nuget-deployment-vars
+  jobs:
+  - deployment: Publish_To_ProGetCloud
+    displayName: Publish To ProGetCloud
+    pool:
+      name: NautilusRelease
+    environment: UKHO-ADDS-Mocks-ProGet
+    workspace:
+      clean: all
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: UseDotNet@2
+            displayName: 'Use .NET $(SdkVersion) sdk'
+            inputs:
+              packageType: sdk
+              version: $(SdkVersion)
+
+          - download: current
+            artifact: NuGetPackages
+
+          - powershell: Get-ChildItem "$(Pipeline.Workspace)/NuGetPackages/*.nupkg" -File | Foreach {dotnet nuget push $_.fullname -k $(progetApiKey) -s https://progetcloud.ukho.gov.uk/nuget/ukho.trusted/v3/index.json }
+            env:
+              progetApiKey : $(progetApiKey)
+            displayName: Publish Package
