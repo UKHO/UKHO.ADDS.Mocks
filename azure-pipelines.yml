@@ -1,6 +1,15 @@
 name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd).$(BuildCounter)
 
 parameters:
+- name: PreReleaseVersion
+  displayName: "Pre-release version"
+  type: string
+  values:
+    - 'alpha'
+    - 'beta'
+    - 'rc'
+    - 'n/a'
+  default: 'alpha'
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
