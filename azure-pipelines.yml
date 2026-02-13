@@ -2,22 +2,22 @@ name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd).$(BuildCounter
 
 parameters:
 - name: PreReleaseVersion
-  displayName: "Pre-release version"
+  displayName: "Pre-release version (use n/a for normal release)"
   type: string
   values:
     - 'alpha'
     - 'beta'
     - 'rc'
     - 'n/a'
-  default: 'alpha'
+  default: 'n/a'
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
-  default: true
-- name: SkipFunctionalTests
-  displayName: "Skip functional tests"
-  type: boolean
   default: false
+# - name: SkipFunctionalTests
+#   displayName: "Skip functional tests"
+#   type: boolean
+#   default: false
 
 trigger:
 - main
@@ -32,7 +32,7 @@ variables:
 - name: UKHOAssemblyCompany
   value: "UK Hydrographic Office"
 - name: UKHOAssemblyVersionPrefix
-  value: "0.0."
+  value: "1.0."
 - name: UKHOAssemblyProduct
   value: "ADDS Mocks"
 - name: WindowPool
@@ -106,18 +106,12 @@ stages:
       - task: DotNetCoreCLI@2
         displayName: Build - unit tests
         inputs:
-          command: build
+          command: test
           projects: |
             **/UKHO.ADDS.Mocks.Tests.csproj
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\UnitTests --no-restore'
-
-      - task: DotNetCoreCLI@2
-        displayName: Run - unit tests
-        inputs:
-          command: test
-          projects: '$(Build.BinariesDirectory)\UnitTests\UKHO.ADDS.Mocks.Tests.dll'
           publishTestResults: true
           testRunTitle: UnitTests
+          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --packages $(Build.SourcesDirectory)\packages --no-restore'
 
     - task: DotNetCoreCLI@2
       displayName: Pack UKHO.ADDS.Mocks
@@ -183,7 +177,7 @@ stages:
     #       testRunTitle: FunctionalTests
 
 - stage: ProGet
-  #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
   - group: nuget-deployment-vars
   jobs:
