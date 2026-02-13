@@ -11,7 +11,12 @@
     <IsPackable>true</IsPackable>
     <PackageId>UKHO.ADDS.Mocks.Client</PackageId>
     <Authors>UKHO</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\UKHO.ADDS.Mocks\Domain\States\WellKnownState.cs" Link="WellKnownState.cs" />
