@@ -123,13 +123,15 @@ stages:
       displayName: Pack UKHO.ADDS.Mocks
       inputs:
         command: custom
-        custom: pack $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+        custom: pack
+        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
 
     - task: DotNetCoreCLI@2
       displayName: Pack UKHO.ADDS.Mocks.Client
       inputs:
         command: custom
-        custom: pack $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+        custom: pack
+        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
 
     - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
       displayName: List packed NuGet packages
