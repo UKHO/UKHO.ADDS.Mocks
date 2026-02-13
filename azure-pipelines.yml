@@ -128,8 +128,7 @@ stages:
           **/UKHO.ADDS.Mocks.Client.csproj
         packDirectory: $(Build.ArtifactStagingDirectory)/packages
         configuration: $(BuildConfiguration)
-        includesymbols: true
-        includesource: true
+        packagesDirectory: '$(Build.SourcesDirectory)\packages'
         arguments:  '--no-restore'
 
     - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
