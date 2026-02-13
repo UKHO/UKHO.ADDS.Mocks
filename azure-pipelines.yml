@@ -102,7 +102,6 @@ stages:
         feedsToUse: config
         noCache: true
         nugetConfigPath: '$(Build.SourcesDirectory)\BuildNuget.config'
-        #packagesDirectory: '$(Build.SourcesDirectory)\packages'
 
     - ${{ if ne(parameters.SkipUnitTests, true) }}:
       - task: DotNetCoreCLI@2
@@ -113,7 +112,6 @@ stages:
             **/UKHO.ADDS.Mocks.Tests.csproj
           publishTestResults: true
           testRunTitle: UnitTests
-          #arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --packages $(Build.SourcesDirectory)\packages --no-restore'
           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
 
     - task: DotNetCoreCLI@2
@@ -121,7 +119,6 @@ stages:
       inputs:
         command: custom
         custom: pack
-        #arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
         arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
 
     - task: DotNetCoreCLI@2
@@ -129,7 +126,6 @@ stages:
       inputs:
         command: custom
         custom: pack
-        #arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
         arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
 
     - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
