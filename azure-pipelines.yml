@@ -1,14 +1,23 @@
 name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd).$(BuildCounter)
 
 parameters:
+- name: PreReleaseVersion
+  displayName: "Pre-release version (use n/a for normal release)"
+  type: string
+  values:
+    - 'alpha'
+    - 'beta'
+    - 'rc'
+    - 'n/a'
+  default: 'rc'
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
   default: false
-- name: SkipFunctionalTests
-  displayName: "Skip functional tests"
-  type: boolean
-  default: false
+# - name: SkipFunctionalTests
+#   displayName: "Skip functional tests"
+#   type: boolean
+#   default: false
 
 trigger:
 - main
@@ -20,10 +29,18 @@ variables:
   value: "release"
 - name: BuildCounter
   value: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
+- name: UKHOAssemblyCompany
+  value: "UK Hydrographic Office"
+- name: UKHOAssemblyVersionPrefix
+  value: "1.0."
+- name: UKHOAssemblyProduct
+  value: "ADDS Mocks"
 - name: WindowPool
   value: "NautilusBuild"
 - name: SdkVersion
   value: "9.x"
+- name: NUGET_PACKAGES
+  value: $(Build.SourcesDirectory)\packages
 
 stages:
 - stage: BuildTest
@@ -38,6 +55,35 @@ stages:
     workspace:
       clean: all
     steps:
+    - checkout: self
+      clean: true
+
+    - task: PowerShell@2
+      displayName: Output environment variables
+      inputs:
+        targetType: inline
+        script: |
+          gci env:
+          $CurrentYear = Get-Date -Format "yyyy"
+          $AssemblyCopyright = "Copyright © UK Hydrographic Office $CurrentYear"
+          echo "##vso[task.setvariable variable=UKHOAssemblyCopyright]${AssemblyCopyright}"
+
+    - task: PowerShell@2
+      displayName: Set assembly version numbers based on build ID
+      name: SetAssemblyVersion
+      inputs:
+        targetType: filePath
+        filePath: '$(Build.SourcesDirectory)\deployment\Apply-AssemblyVersionAndDefaults.ps1'
+        arguments: >
+          -buildNumber "$(Build.BuildNumber)"
+          -solutionDirectory "$(Build.SourcesDirectory)\"
+          -UKHOAssemblyCompany "$env:UKHOAssemblyCompany"
+          -UKHOAssemblyCopyright "$env:UKHOAssemblyCopyright"
+          -UKHOAssemblyVersionPrefix "$env:UKHOAssemblyVersionPrefix"
+          -UKHOAssemblyProduct "$env:UKHOAssemblyProduct"
+          -SourceRevisionId "$(Build.SourceVersion)"
+          -PreReleaseVersion ${{ parameters.PreReleaseVersion }}
+
     - task: UseDotNet@2
       displayName: Use .NET SDK $(SdkVersion)
       inputs:
@@ -50,29 +96,46 @@ stages:
         command: restore
         projects: |
           **/UKHO.ADDS.Mocks.csproj
+          **/UKHO.ADDS.Mocks.Client.csproj
           **/UKHO.ADDS.Mocks.Tests.csproj
           **/UKHO.ADDS.Mocks.Functional.Tests.csproj
         feedsToUse: config
         noCache: true
         nugetConfigPath: '$(Build.SourcesDirectory)\BuildNuget.config'
-        packagesDirectory: '$(Build.SourcesDirectory)\packages'
 
     - ${{ if ne(parameters.SkipUnitTests, true) }}:
       - task: DotNetCoreCLI@2
-        displayName: Build - unit tests
-        inputs:
-          command: build
-          projects: |
-            **/UKHO.ADDS.Mocks.Tests.csproj
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\UnitTests --no-restore'
-
-      - task: DotNetCoreCLI@2
-        displayName: Run - unit tests
+        displayName: Unit test
         inputs:
           command: test
-          projects: '$(Build.BinariesDirectory)\UnitTests\UKHO.ADDS.Mocks.Tests.dll'
+          projects: |
+            **/UKHO.ADDS.Mocks.Tests.csproj
           publishTestResults: true
           testRunTitle: UnitTests
+          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: Pack UKHO.ADDS.Mocks
+      inputs:
+        command: custom
+        custom: pack
+        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+
+    - task: DotNetCoreCLI@2
+      displayName: Pack UKHO.ADDS.Mocks.Client
+      inputs:
+        command: custom
+        custom: pack
+        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+
+    - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
+      displayName: List packed NuGet packages
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish NuGet packages
+      inputs:
+        path: $(Build.ArtifactStagingDirectory)/packages
+        artifact: NuGetPackages
 
     - task: DotNetCoreCLI@2
       displayName: Build - mock
@@ -87,7 +150,7 @@ stages:
       name: getUrl
       inputs:
         targetType: filePath
-        filePath: '$(Build.SourcesDirectory)\Pipeline\GetLocalHostUrl.ps1'
+        filePath: '$(Build.SourcesDirectory)\deployment\GetLocalHostUrl.ps1'
 
     # - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
     #   - task: DotNetCoreCLI@2
@@ -113,3 +176,63 @@ stages:
     #       projects: '$(Build.BinariesDirectory)\FunctionalTests\UKHO.ADDS.Mocks.Functional.Tests.dll'
     #       publishTestResults: true
     #       testRunTitle: FunctionalTests
+
+- stage: ProGet
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  variables:
+  - group: nuget-deployment-vars
+  jobs:
+  - deployment: Publish_To_ProGetCloud
+    displayName: Publish To ProGetCloud
+    pool:
+      name: NautilusRelease
+    environment: UKHO-ADDS-Mocks-ProGet
+    workspace:
+      clean: all
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: UseDotNet@2
+            displayName: 'Use .NET $(SdkVersion) sdk'
+            inputs:
+              packageType: sdk
+              version: $(SdkVersion)
+
+          - download: current
+            artifact: NuGetPackages
+
+          - powershell: Get-ChildItem "$(Pipeline.Workspace)/NuGetPackages/*.nupkg" -File | Foreach {dotnet nuget push $_.fullname -k $(progetApiKey) -s https://progetcloud.ukho.gov.uk/nuget/ukho.trusted/v3/index.json }
+            env:
+              progetApiKey : $(progetApiKey)
+            displayName: Publish Package
+
+- stage: NuGet
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  variables:
+  - group: nuget-deployment-vars
+  jobs:
+  - deployment: Publish_To_NuGet
+    displayName: Publish To NuGet
+    pool:
+      name: NautilusRelease
+    environment: UKHO-ADDS-Mocks-NuGet
+    workspace:
+      clean: all
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: UseDotNet@2
+            displayName: 'Use .NET $(SdkVersion) sdk'
+            inputs:
+              packageType: sdk
+              version: $(SdkVersion)
+
+          - download: current
+            artifact: NuGetPackages
+
+          - powershell: Get-ChildItem "$(Pipeline.Workspace)/NuGetPackages/*.nupkg" -File | Foreach {dotnet nuget push $_.fullname -k $(nugetapikey) -s https://api.nuget.org/v3/index.json --no-symbols}
+            env:
+              nugetApiKey : $(nugetapikey)
+            displayName: Publish Package
