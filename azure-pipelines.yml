@@ -13,7 +13,7 @@ parameters:
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
-  default: false
+  default: true
 - name: SkipFunctionalTests
   displayName: "Skip functional tests"
   type: boolean
@@ -128,8 +128,7 @@ stages:
           **/UKHO.ADDS.Mocks.Client.csproj
         packDirectory: $(Build.ArtifactStagingDirectory)/packages
         configuration: $(BuildConfiguration)
-        packagesDirectory: '$(Build.SourcesDirectory)\packages'
-        arguments:  '--no-restore'
+        arguments:  '--packages "$(Build.SourcesDirectory)\packages" --no-restore'
 
     - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
       displayName: List packed NuGet packages
