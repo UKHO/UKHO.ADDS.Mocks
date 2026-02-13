@@ -12,8 +12,6 @@
     <IsPackable>true</IsPackable>
     <PackageId>UKHO.ADDS.Mocks</PackageId>
     <Authors>UKHO</Authors>
-    <!--<IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -39,12 +37,6 @@
     <Content Remove="Configuration\Files\scs6357\SCSCatalogueResponse.json" />
     <Content Remove="Configuration\Files\scs6357\SCSResponse.json" />
   </ItemGroup>
-
-  <!--<ItemGroup>
-    <Content Update="wwwroot\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>-->
 
   <ItemGroup>
     <None Include="Properties\launchSettings.json" />
