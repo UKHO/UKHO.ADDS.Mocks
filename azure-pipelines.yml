@@ -61,10 +61,11 @@ stages:
       inputs:
         targetType: inline
         script: |
-          gci env:
           $CurrentYear = Get-Date -Format "yyyy"
           $AssemblyCopyright = "Copyright © UK Hydrographic Office $CurrentYear"
           echo "##vso[task.setvariable variable=UKHOAssemblyCopyright]${AssemblyCopyright}"
+          echo "##vso[task.setvariable variable=NUGET_PACKAGES]$(Build.SourcesDirectory)\packages"
+          gci env:
 
     - task: PowerShell@2
       displayName: Set assembly version numbers based on build ID
@@ -100,32 +101,35 @@ stages:
         feedsToUse: config
         noCache: true
         nugetConfigPath: '$(Build.SourcesDirectory)\BuildNuget.config'
-        packagesDirectory: '$(Build.SourcesDirectory)\packages'
+        #packagesDirectory: '$(Build.SourcesDirectory)\packages'
 
     - ${{ if ne(parameters.SkipUnitTests, true) }}:
       - task: DotNetCoreCLI@2
-        displayName: Build - unit tests
+        displayName: Unit test
         inputs:
           command: test
           projects: |
             **/UKHO.ADDS.Mocks.Tests.csproj
           publishTestResults: true
           testRunTitle: UnitTests
-          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --packages $(Build.SourcesDirectory)\packages --no-restore'
+          #arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --packages $(Build.SourcesDirectory)\packages --no-restore'
+          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
 
     - task: DotNetCoreCLI@2
       displayName: Pack UKHO.ADDS.Mocks
       inputs:
         command: custom
         custom: pack
-        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+        #arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks\UKHO.ADDS.Mocks.csproj --configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
 
     - task: DotNetCoreCLI@2
       displayName: Pack UKHO.ADDS.Mocks.Client
       inputs:
         command: custom
         custom: pack
-        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+        #arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --packages $(Build.SourcesDirectory)\packages --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
+        arguments: $(Build.SourcesDirectory)\src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj --configuration $(BuildConfiguration) --no-restore --output $(Build.ArtifactStagingDirectory)\packages --verbosity normal
 
     - powershell: Get-ChildItem "$(Build.ArtifactStagingDirectory)/packages" -Recurse
       displayName: List packed NuGet packages
