@@ -52,13 +52,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.*-*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.*-*" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.13" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="6.0.36" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.*-*" />
-    <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="10.2.0" />
-    <PackageReference Include="Radzen.Blazor" Version="8.7.4" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.12.29" />
+    <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="10.3.0" />
+    <PackageReference Include="Radzen.Blazor" Version="8.7.5" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.12.50" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
