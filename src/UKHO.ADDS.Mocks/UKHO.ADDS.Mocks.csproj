@@ -76,4 +76,8 @@
     <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\Files\ees\" />
+  </ItemGroup>
+
 </Project>
