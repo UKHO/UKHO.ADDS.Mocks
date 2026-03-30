@@ -25,7 +25,8 @@ namespace UKHO.ADDS.Mocks.EES.Override.Mocks.ees
                             return Results.BadRequest("Invalid schema");
 
                         default:
-                            return WellKnownStateHandler.HandleWellKnownState(state);                    }
+                            return WellKnownStateHandler.HandleWellKnownState(state);
+                    }
                 })
                 .Produces<string>()
                 .WithEndpointMetadata(endpoint, d =>
