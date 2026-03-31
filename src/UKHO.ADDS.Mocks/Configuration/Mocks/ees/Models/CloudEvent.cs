@@ -1,6 +1,6 @@
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
 {
-    public class MockCloudEvent
+    public class CloudEvent
     {
         public bool IsValid { get; set; }
         public string? Type { get; set; }
