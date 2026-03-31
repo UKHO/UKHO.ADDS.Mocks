@@ -4,7 +4,7 @@ namespace UKHO.ADDS.Mocks.EES.Configuration.Mocks.ees.ResponseGenerator
 {
     public static class CloudEventValidator
     {
-        public static bool Validate(CloudEventExtension model)
+        public static bool ValidateCloudEvent (CloudEventExtension model)
         {
             if (model == null)
             {
@@ -58,7 +58,20 @@ namespace UKHO.ADDS.Mocks.EES.Configuration.Mocks.ees.ResponseGenerator
 
             return SchemaStore.AllowedSchemas.Contains(type, StringComparer.OrdinalIgnoreCase);
         }
+        public static bool ValidateCloudEventContents(string? eventName, object? data)
+        {
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                return false;
+            }
 
+            if (data == null)
+            {
+                return false;
+            }
+
+            return SchemaStore.AllowedSchemas.Contains(eventName, StringComparer.OrdinalIgnoreCase);
+        }
         private static bool ValidateDataContentType(string? dataContentType)
         {
             return string.Equals(dataContentType, "application/json", StringComparison.OrdinalIgnoreCase);

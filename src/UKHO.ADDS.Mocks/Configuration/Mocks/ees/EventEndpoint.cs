@@ -11,7 +11,8 @@ namespace UKHO.ADDS.Mocks.EES.Override.Mocks.ees
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint)
         {
-            endpoint.MapPost("/api/event", (HttpRequest request, [FromBody] CloudEventExtension model) =>
+            endpoint.MapPost("/api/event", (HttpRequest request, ILogger<EventEndpoint> logger,
+                    [FromBody] CloudEventExtension model) =>
                 {
                     var state = GetState(request);
 
@@ -19,9 +20,20 @@ namespace UKHO.ADDS.Mocks.EES.Override.Mocks.ees
                     {
                         case WellKnownState.Default:
                         case "post-valid-event":
-                            return CloudEventValidator.Validate(model)
-                                ? Results.Ok()
-                                : Results.BadRequest();
+                            if (!CloudEventValidator.ValidateCloudEvent(model))
+                            {
+                                logger.LogWarning("Cloud event is not valid");
+                                return Results.BadRequest();
+                            }
+
+                            if (!CloudEventValidator.ValidateCloudEventContents(model.Type, model.Data))
+                            {
+                                logger.LogWarning("Schema validation failed for type {Type}", model.Type);
+                                return Results.BadRequest();
+                            }
+
+                            logger.LogInformation("Cloud Event passed schema validation for type {Type}", model.Type);
+                            return Results.Ok();
 
                         case "post-invalid-event":
                             return Results.BadRequest();
