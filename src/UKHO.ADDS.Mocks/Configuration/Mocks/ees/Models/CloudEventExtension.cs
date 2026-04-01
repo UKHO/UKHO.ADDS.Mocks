@@ -29,7 +29,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
             this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)
             {
                 Data = data,
-                DataContentType = dataContentType,
+                DataContentType = datacontenttype,
                 Id = id,
                 Subject = subject,
                 Time = time,
