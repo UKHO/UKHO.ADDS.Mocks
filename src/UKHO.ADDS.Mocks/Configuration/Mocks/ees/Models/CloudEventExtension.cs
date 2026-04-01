@@ -5,7 +5,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
 {
     public class CloudEventExtension
     {
-        public CloudEvent cloudEvent;    
+        public CloudEvent cloudEvent { get; set; }
         public string specVersion { get; set; } = string.Empty;
         public string type { get; set; } = string.Empty;
         public Uri? source { get; set; }
@@ -16,7 +16,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
         public Data? data { get; set; }
 
         [JsonConstructor]
-        public CloudEventExtension(
+        public CloudEventExtension(          
             string specversion,
             string type,
             Uri source,
@@ -24,18 +24,26 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
             DateTime time,
             string subject,
             string datacontenttype,
-            object data)
+            Data? data)
         {
-            cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)
+            this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)
             {
                 Data = data,
-                DataContentType = datacontenttype,
+                DataContentType = dataContentType,
                 Id = id,
                 Subject = subject,
                 Time = time,
                 Type = type,
                 Source = source
-            };            
+            };
+            this.specVersion = specVersion;
+            this.type = type;
+            this.source = source;
+            this.id = id;
+            this.time = time;
+            this.subject = subject;
+            this.dataContentType = dataContentType;
+            this.data = data;
         }
     }
 
