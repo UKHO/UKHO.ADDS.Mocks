@@ -9,7 +9,7 @@ parameters:
     - 'beta'
     - 'rc'
     - 'n/a'
-  default: 'rc'
+  default: 'alpha'
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
@@ -178,7 +178,7 @@ stages:
     #       testRunTitle: FunctionalTests
 
 - stage: ProGet
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded())
   variables:
   - group: nuget-deployment-vars
   jobs:

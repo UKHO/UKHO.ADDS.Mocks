@@ -32,9 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Configuration\Files\ees\**" />
     <Compile Remove="Domain\Admin\**" />
+    <Content Remove="Configuration\Files\ees\**" />
     <Content Remove="Domain\Admin\**" />
+    <EmbeddedResource Remove="Configuration\Files\ees\**" />
     <EmbeddedResource Remove="Domain\Admin\**" />
+    <None Remove="Configuration\Files\ees\**" />
     <None Remove="Domain\Admin\**" />
   </ItemGroup>
 
@@ -75,10 +79,6 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="UKHO.ADDS.Mocks.Tests" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Configuration\Files\ees\" />
   </ItemGroup>
 
 </Project>
