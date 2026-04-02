@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models;
-using UKHO.ADDS.Mocks.EES.Override.Mocks.ees;
 
 namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
 {
@@ -11,7 +10,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
             if (!model.cloudEvent.IsValid)
             {
                 logger.LogWarning("{cloudEvent} is not valid", model.cloudEvent);
-                return Task.FromResult(Results.BadRequest());
+                return Task.FromResult(Results.BadRequest("{cloudEvent} is not valid"));
             }
             logger.LogInformation("Event received for {cloudEvent}", model.cloudEvent);
 
@@ -19,14 +18,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
             if (!ValidateCloudEventContents(model.cloudEvent.Type, model.cloudEvent.Data, state, logger))
             {
                 logger.LogWarning("{cloudEvent} is not valid", model.cloudEvent);
-                return Task.FromResult(Results.BadRequest());
+                return Task.FromResult(Results.BadRequest("{cloudEvent} is not valid"));
             }
 
             logger.LogInformation("Cloud Event passed schema validation {cloudEvent}", model.cloudEvent);
 
             if (state == "eventgrid-failure")
             {
-                logger.LogError("Simulated Event Grid failure for {cloudEvent}", model.cloudEvent);
+                logger.LogError("An error occurred publishing to Event Grid. Service returned status code:{eventGridResponseStatusCode}", (int)HttpStatusCode.InternalServerError);
                 return Task.FromResult(
                     Results.Problem("Simulated Event Grid failure", statusCode: (int)HttpStatusCode.InternalServerError)
                 );
@@ -35,7 +34,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
             Task.Delay(50);
             logger.LogInformation("Event sent successfully {cloudEvent}", model.cloudEvent);
 
-            return Task.FromResult(Results.Ok());
+            return Task.FromResult(Results.Ok("Event sent successfully"));
         }
         bool ValidateCloudEventContents(string eventName, object data, string state, ILogger<EventEndpoint> logger)
         {

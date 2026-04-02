@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using UKHO.ADDS.Mocks.Markdown;
+﻿using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.States;
 
-namespace UKHO.ADDS.Mocks.EES.Override.Mocks.ees
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees
 {
     public class HealthEndpoint : ServiceEndpointMock
     {

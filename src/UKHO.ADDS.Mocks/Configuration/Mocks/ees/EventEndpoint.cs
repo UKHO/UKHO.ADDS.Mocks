@@ -5,12 +5,10 @@ using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.States;
 
 
-namespace UKHO.ADDS.Mocks.EES.Override.Mocks.ees
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees
 {
     public class EventEndpoint : ServiceEndpointMock
     {
-        public ILogger<EventEndpoint> _logger;
-
         public override void RegisterSingleEndpoint(IEndpointMock endpoint)
         {
             endpoint.MapPost("/api/event", async ([FromBody] CloudEventExtension model, HttpRequest request, EESResponseGenerator responseGenerator, ILogger < EventEndpoint> logger
@@ -20,6 +18,7 @@ namespace UKHO.ADDS.Mocks.EES.Override.Mocks.ees
                     switch (state)
                     {
                         case WellKnownState.Default:
+                        case "publish-valid-event":
                         case "eventgrid-failure":
                         case "invalid-schema":
                             return await responseGenerator.HandlePostAsync(model, state, logger);
