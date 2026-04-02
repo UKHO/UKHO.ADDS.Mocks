@@ -178,7 +178,6 @@ stages:
     #       testRunTitle: FunctionalTests
 
 - stage: ProGet
-  condition: and(succeeded())
   variables:
   - group: nuget-deployment-vars
   jobs:
