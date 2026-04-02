@@ -178,7 +178,7 @@ stages:
     #       testRunTitle: FunctionalTests
 
 - stage: ProGet
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(parameters.PreReleaseVersion, 'n/a')))
   variables:
   - group: nuget-deployment-vars
   jobs:
@@ -208,7 +208,7 @@ stages:
             displayName: Publish Package
 
 - stage: NuGet
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(parameters.PreReleaseVersion, 'n/a')))
   variables:
   - group: nuget-deployment-vars
   jobs:
