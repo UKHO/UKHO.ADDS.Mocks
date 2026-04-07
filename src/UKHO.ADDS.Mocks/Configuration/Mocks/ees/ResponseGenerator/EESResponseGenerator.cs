@@ -9,10 +9,10 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
         {
             if (!model.cloudEvent.IsValid)
             {
-                logger.LogWarning("{cloudEvent} is not valid", model.cloudEvent);
-                return Task.FromResult(Results.BadRequest("{cloudEvent} is not valid"));
+                logger.LogWarning("cloudEvent is not valid");
+                return Task.FromResult(Results.BadRequest("cloudEvent is not valid"));
             }
-            logger.LogInformation("Event received for {cloudEvent}", model.cloudEvent);
+            logger.LogInformation("Event received for cloudEvent");
 
 
             if (!ValidateCloudEventContents(model.cloudEvent.Type, model.cloudEvent.Data, state, logger))
@@ -21,7 +21,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
                 return Task.FromResult(Results.BadRequest("{cloudEvent} is not valid"));
             }
 
-            logger.LogInformation("Cloud Event passed schema validation {cloudEvent}", model.cloudEvent);
+            logger.LogInformation("Cloud Event passed schema validation cloudEvent");
 
             if (state == "eventgrid-failure")
             {
@@ -32,7 +32,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
             }
             //Simulate success
             Task.Delay(50);
-            logger.LogInformation("Event sent successfully {cloudEvent}", model.cloudEvent);
+            logger.LogInformation("Event sent successfully cloudEvent");
 
             return Task.FromResult(Results.Ok("Event sent successfully"));
         }
