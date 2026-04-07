@@ -9,7 +9,7 @@ parameters:
     - 'beta'
     - 'rc'
     - 'n/a'
-  default: 'alpha'
+  default: 'rc'
 - name: SkipUnitTests
   displayName: "Skip unit tests"
   type: boolean
