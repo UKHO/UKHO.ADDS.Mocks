@@ -38,7 +38,7 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Services
         }
         bool ValidateCloudEventContents(string eventName, object data, string state, ILogger<EventEndpoint> logger)
         {
-
+            eventName = SanitizeForLogging(eventName);
             var schema = SchemaStore.AllowedSchemas.FirstOrDefault(s => string.Equals(s, eventName, StringComparison.OrdinalIgnoreCase));
 
             if (schema == null)
@@ -57,6 +57,14 @@ namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Services
             }
 
             return true;
+        }
+        private static string SanitizeForLogging(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return input;
+
+            return input
+                .Replace("\r", "\\r")
+                .Replace("\n", "\\n");
         }
     }
 }
