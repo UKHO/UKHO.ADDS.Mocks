@@ -32,9 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Configuration\Files\ees\**" />
     <Compile Remove="Domain\Admin\**" />
+    <Content Remove="Configuration\Files\ees\**" />
     <Content Remove="Domain\Admin\**" />
+    <EmbeddedResource Remove="Configuration\Files\ees\**" />
     <EmbeddedResource Remove="Domain\Admin\**" />
+    <None Remove="Configuration\Files\ees\**" />
     <None Remove="Domain\Admin\**" />
   </ItemGroup>
 
@@ -48,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudNative.CloudEvents" Version="2.8.0" />
     <PackageReference Include="MetadataReferenceService.BlazorWasm" Version="*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.*-*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.*-*" PrivateAssets="all" />

@@ -8,6 +8,7 @@ using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
 using UKHO.ADDS.Mocks.Api;
+using UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Services;
 using UKHO.ADDS.Mocks.Dashboard;
 using UKHO.ADDS.Mocks.Dashboard.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;
@@ -124,6 +125,7 @@ namespace UKHO.ADDS.Mocks
             builder.Services.AddSingleton<FileService>();
 
             builder.Services.AddSingleton<FileSystemService>();
+            builder.Services.AddSingleton<EESResponseGenerator>();
         }
 
         private static void ConfigureOpenApi(WebApplicationBuilder builder) =>

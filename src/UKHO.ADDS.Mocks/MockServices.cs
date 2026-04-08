@@ -9,7 +9,11 @@ namespace UKHO.ADDS.Mocks
         public static void AddServices()
         {
             ServiceRegistry.AddDefinition(new ServiceDefinition("sample", "Sample Service", [new StateDefinition("get-file", "Gets a plain text file")]));
-
+            ServiceRegistry.AddDefinition(new ServiceDefinition("ees", "Enterprise Event Service", [
+                new StateDefinition("publish-valid-event", "Publish a valid event"),
+                new StateDefinition("invalid-schema", "Publish an event with invalid schema"),
+                new StateDefinition("eventgrid-failure", "Publish an event with invalid data"),
+                ]));
         }
     }
 }
