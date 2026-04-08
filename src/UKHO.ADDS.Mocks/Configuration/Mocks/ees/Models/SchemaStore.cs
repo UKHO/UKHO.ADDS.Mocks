@@ -1,4 +1,4 @@
-﻿namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
+﻿namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Models
 {
     public static class SchemaStore
     {

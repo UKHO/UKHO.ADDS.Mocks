@@ -1,7 +1,7 @@
 ﻿using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.States;
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees
 {
     public class HealthEndpoint : ServiceEndpointMock
     {

@@ -8,7 +8,7 @@ using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
 using UKHO.ADDS.Mocks.Api;
-using UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services;
+using UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Services;
 using UKHO.ADDS.Mocks.Dashboard;
 using UKHO.ADDS.Mocks.Dashboard.Services;
 using UKHO.ADDS.Mocks.Domain.Internal.Mocks;

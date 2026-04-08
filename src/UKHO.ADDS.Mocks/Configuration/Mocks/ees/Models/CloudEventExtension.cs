@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using CloudNative.CloudEvents;
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Models
 {
     public class CloudEventExtension
     {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models;
-using UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services;
+using UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Models;
+using UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Services;
 using UKHO.ADDS.Mocks.Markdown;
 using UKHO.ADDS.Mocks.States;
 
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees
 {
     public class EventEndpoint : ServiceEndpointMock
     {

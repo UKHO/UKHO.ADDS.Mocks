@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using UKHO.ADDS.Mocks.Configuration.Mocks.ees.Models;
+using UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Models;
 
-namespace UKHO.ADDS.Mocks.Configuration.Mocks.ees.Services
+namespace UKHO.ADDS.Mocks.Configuration.Mocks.Ees.Services
 {
     public class EESResponseGenerator 
     {
