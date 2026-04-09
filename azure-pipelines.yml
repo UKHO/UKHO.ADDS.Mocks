@@ -137,21 +137,6 @@ stages:
         path: $(Build.ArtifactStagingDirectory)/packages
         artifact: NuGetPackages
 
-    - task: DotNetCoreCLI@2
-      displayName: Build - mock
-      inputs:
-        command: build
-        projects: |
-          **/UKHO.ADDS.Mocks.csproj
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\Mock --no-restore'
-
-    - task: PowerShell@2
-      displayName: Get a url for testing
-      name: getUrl
-      inputs:
-        targetType: filePath
-        filePath: '$(Build.SourcesDirectory)\deployment\GetLocalHostUrl.ps1'
-
     - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
       - task: DotNetCoreCLI@2
         displayName: Run - functional tests
@@ -160,7 +145,7 @@ stages:
           projects: |
             **/UKHO.ADDS.Mocks.Functional.Tests.csproj
           publishTestResults: true
-          testRunTitle: UnitTests
+          testRunTitle: FunctionalTests
           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
 
 - stage: ProGet
