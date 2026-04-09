@@ -14,10 +14,10 @@ parameters:
   displayName: "Skip unit tests"
   type: boolean
   default: false
-# - name: SkipFunctionalTests
-#   displayName: "Skip functional tests"
-#   type: boolean
-#   default: false
+- name: SkipFunctionalTests
+  displayName: "Skip functional tests"
+  type: boolean
+  default: false
 
 trigger:
 - main
@@ -152,30 +152,16 @@ stages:
         targetType: filePath
         filePath: '$(Build.SourcesDirectory)\deployment\GetLocalHostUrl.ps1'
 
-    # - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
-    #   - task: DotNetCoreCLI@2
-    #     displayName: Build - functional tests
-    #     inputs:
-    #       command: build
-    #       projects: |
-    #         **/UKHO.ADDS.Mocks.Functional.Tests.csproj
-    #       arguments: '--configuration $(BuildConfiguration) --output $(Build.BinariesDirectory)\FunctionalTests --no-restore'
-
-    #   - task: FileTransform@2
-    #     displayName: File transform - functional test settings
-    #     inputs:
-    #       folderPath: '$(Build.BinariesDirectory)\FunctionalTests'
-    #       xmlTransformationRules: ''
-    #       enableXmlTransform: false
-    #       jsonTargetFiles: '**\appsettings.json'
-
-    #   - task: DotNetCoreCLI@2
-    #     displayName: Run - functional tests
-    #     inputs:
-    #       command: test
-    #       projects: '$(Build.BinariesDirectory)\FunctionalTests\UKHO.ADDS.Mocks.Functional.Tests.dll'
-    #       publishTestResults: true
-    #       testRunTitle: FunctionalTests
+    - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: Run - functional tests
+        inputs:
+          command: test
+          projects: |
+            **/UKHO.ADDS.Mocks.Functional.Tests.csproj
+          publishTestResults: true
+          testRunTitle: UnitTests
+          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
 
 - stage: ProGet
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), ${{ ne(parameters.PreReleaseVersion, 'n/a') }}))
