@@ -25,8 +25,11 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
             using var response = await _fixture.Client.GetAsync("/sample/files");
             var body = await response.Content.ReadAsStringAsync();
 
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(body, Does.Contain("This is a result"));
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(body, Does.Contain("This is a result"));
+            }
         }
 
         [Test]
@@ -37,8 +40,11 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
             using var response = await _fixture.Client.SendAsync(request);
 
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(response.Content.Headers.ContentType?.MediaType, Is.EqualTo("image/jpeg"));
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(response.Content.Headers.ContentType?.MediaType, Is.EqualTo("image/jpeg"));
+            }
         }
     }
 }
