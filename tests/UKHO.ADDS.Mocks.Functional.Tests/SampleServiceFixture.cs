@@ -11,7 +11,7 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
         public int Port { get; } = GetFreeTcpPort();
 
-        public Uri BaseAddress => new($"http://127.0.0.1:{Port}");
+        public Uri BaseAddress => new($"http://{IPAddress.Loopback}:{Port}");
 
         public HttpClient Client { get; private set; } = null!;
 
@@ -41,7 +41,7 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
             startInfo.Environment["ASPNETCORE_URLS"] = BaseAddress.ToString();
             startInfo.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
             startInfo.Environment["DOTNET_ENVIRONMENT"] = "Development";
-            startInfo.Environment["OTEL_EXPORTER_OTLP_ENDPOINT"] = "http://127.0.0.1:4317";
+            startInfo.Environment["OTEL_EXPORTER_OTLP_ENDPOINT"] = $"http://{IPAddress.Loopback}:4317";
 
             _process = Process.Start(startInfo)
                 ?? throw new InvalidOperationException("Failed to start UKHO.ADDS.Mocks.SampleService.");
