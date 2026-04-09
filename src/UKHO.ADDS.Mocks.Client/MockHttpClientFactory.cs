@@ -1,18 +1,49 @@
 ﻿namespace UKHO.ADDS.Mocks.Client
 {
-    public class MockHttpClientFactory : IHttpClientFactory
+    public sealed class MockHttpClientFactory : IHttpClientFactory, IDisposable
     {
         private const string StateHeader = "x-addsmockstate";
         private const string DefaultState = "default";
 
-        private string _state;
+        private readonly AsyncLocal<string?> _state;
+        private readonly HttpMessageHandler _innerHandler;
 
-        public MockHttpClientFactory() => _state = DefaultState;
+        private bool _disposed;
 
-        public HttpClient CreateClient(string name) => new(new HeaderInjectingHandler(StateHeader, () => _state) { InnerHandler = new HttpClientHandler() });
+        public MockHttpClientFactory()
+        {
+            _state = new AsyncLocal<string?>();
+            _innerHandler = new HttpClientHandler();
+        }
 
-        public void SetPerRequestState(string state) => _state = state;
+        public HttpClient CreateClient(string name = "")
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
 
-        public void ResetState() => _state = DefaultState;
+            var handler = new HeaderInjectingHandler(StateHeader, GetCurrentState) { InnerHandler = _innerHandler };
+
+            return new HttpClient(handler, false);
+        }
+
+        public void SetPerRequestState(string state)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(state);
+            _state.Value = state;
+        }
+
+        public void ResetState() => _state.Value = null;
+
+        private string GetCurrentState() => _state.Value ?? DefaultState;
+
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _innerHandler.Dispose();
+            _disposed = true;
+        }
     }
 }

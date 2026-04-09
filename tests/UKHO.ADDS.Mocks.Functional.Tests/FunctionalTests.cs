@@ -20,6 +20,7 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
         public async Task OneTimeTearDown()
         {
             await _fixture.StopAsync();
+            _factory.Dispose();
         }
 
         private async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string path, string? state = null)
