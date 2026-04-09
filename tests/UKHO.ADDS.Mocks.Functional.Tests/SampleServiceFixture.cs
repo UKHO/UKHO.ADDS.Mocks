@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using UKHO.ADDS.Mocks.Client;
 
 namespace UKHO.ADDS.Mocks.Functional.Tests
 {
@@ -13,7 +14,7 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
         public Uri BaseAddress => new($"http://{IPAddress.Loopback}:{Port}");
 
-        public HttpClient Client { get; private set; } = null!;
+        public MockHttpClientFactory Factory { get; private set; } = null!;
 
         public async Task StartAsync()
         {
@@ -49,19 +50,13 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
             _ = Task.Run(() => DrainAsync(_process.StandardOutput));
             _ = Task.Run(() => DrainAsync(_process.StandardError));
 
-            Client = new HttpClient
-            {
-                BaseAddress = BaseAddress,
-                Timeout = TimeSpan.FromSeconds(10)
-            };
+            Factory = new MockHttpClientFactory();
 
             await WaitUntilReadyAsync();
         }
 
         public async Task StopAsync()
         {
-            Client.Dispose();
-
             if (_process is null)
             {
                 return;
@@ -83,8 +78,9 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
         private async Task WaitUntilReadyAsync()
         {
-            var timeoutAt = DateTime.UtcNow.AddSeconds(120);
+            var timeoutAt = DateTime.UtcNow.AddSeconds(30);
             Exception? lastException = null;
+            using var client = new HttpClient { BaseAddress = BaseAddress, Timeout = TimeSpan.FromSeconds(5) };
 
             while (DateTime.UtcNow < timeoutAt)
             {
@@ -101,7 +97,8 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
                 try
                 {
-                    using var response = await Client.GetAsync("/sample/files");
+                    using var response = await client.GetAsync("/sample/files");
+
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return;

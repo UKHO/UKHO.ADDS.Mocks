@@ -22,7 +22,11 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
         [Test]
         public async Task GetFiles_Returns_Default_Response()
         {
-            using var response = await _fixture.Client.GetAsync("/sample/files");
+            var client = _fixture.Factory.CreateClient();
+            var uri = new Uri(_fixture.BaseAddress, "/sample/files");
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            using var response = await client.SendAsync(request);
             var body = await response.Content.ReadAsStringAsync();
 
             using (Assert.EnterMultipleScope())
@@ -35,10 +39,12 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
         [Test]
         public async Task GetFiles_With_PerRequest_State_Returns_Jpeg()
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, "/sample/files");
+            var client = _fixture.Factory.CreateClient();
+            var uri = new Uri(_fixture.BaseAddress, "/sample/files");
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Add("x-addsmockstate", "get-jpeg");
 
-            using var response = await _fixture.Client.SendAsync(request);
+            using var response = await client.SendAsync(request);
 
             using (Assert.EnterMultipleScope())
             {
