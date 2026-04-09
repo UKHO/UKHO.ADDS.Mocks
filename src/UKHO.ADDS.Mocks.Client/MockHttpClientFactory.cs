@@ -9,7 +9,7 @@
 
         public MockHttpClientFactory() => _state = DefaultState;
 
-        public HttpClient CreateClient(string name) => new(new HeaderInjectingHandler(StateHeader, () => _state));
+        public HttpClient CreateClient(string name) => new(new HeaderInjectingHandler(StateHeader, () => _state) { InnerHandler = new HttpClientHandler() });
 
         public void SetPerRequestState(string state) => _state = state;
 

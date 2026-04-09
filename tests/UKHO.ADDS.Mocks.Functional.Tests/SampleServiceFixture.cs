@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using UKHO.ADDS.Mocks.Client;
 
 namespace UKHO.ADDS.Mocks.Functional.Tests
 {
@@ -13,8 +12,6 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
         public int Port { get; } = GetFreeTcpPort();
 
         public Uri BaseAddress => new($"http://{IPAddress.Loopback}:{Port}");
-
-        public MockHttpClientFactory Factory { get; private set; } = null!;
 
         public async Task StartAsync()
         {
@@ -49,8 +46,6 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
             _ = Task.Run(() => DrainAsync(_process.StandardOutput));
             _ = Task.Run(() => DrainAsync(_process.StandardError));
-
-            Factory = new MockHttpClientFactory();
 
             await WaitUntilReadyAsync();
         }

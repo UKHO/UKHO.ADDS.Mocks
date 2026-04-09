@@ -1,15 +1,18 @@
 using System.Net;
+using UKHO.ADDS.Mocks.Client;
 
 namespace UKHO.ADDS.Mocks.Functional.Tests
 {
     public class FunctionalTests
     {
         private SampleServiceFixture _fixture = null!;
+        private MockHttpClientFactory _factory = null!;
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
         {
             _fixture = new SampleServiceFixture();
+            _factory = new MockHttpClientFactory();
             await _fixture.StartAsync();
         }
 
@@ -19,14 +22,31 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
             await _fixture.StopAsync();
         }
 
+        private async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string path, string? state = null)
+        {
+            if (state is not null)
+            {
+                _factory.SetPerRequestState(state);
+            }
+
+            var client = _factory.CreateClient();
+            var uri = new Uri(_fixture.BaseAddress, path);
+            var request = new HttpRequestMessage(method, uri);
+
+            var response = await client.SendAsync(request);
+
+            if (state is not null)
+            {
+                _factory.ResetState();
+            }
+
+            return response;
+        }
+
         [Test]
         public async Task GetFiles_Returns_Default_Response()
         {
-            var client = _fixture.Factory.CreateClient();
-            var uri = new Uri(_fixture.BaseAddress, "/sample/files");
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-
-            using var response = await client.SendAsync(request);
+            using var response = await SendRequestAsync(HttpMethod.Get, "/sample/files");
             var body = await response.Content.ReadAsStringAsync();
 
             using (Assert.EnterMultipleScope())
@@ -39,12 +59,7 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
         [Test]
         public async Task GetFiles_With_PerRequest_State_Returns_Jpeg()
         {
-            var client = _fixture.Factory.CreateClient();
-            var uri = new Uri(_fixture.BaseAddress, "/sample/files");
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            request.Headers.Add("x-addsmockstate", "get-jpeg");
-
-            using var response = await client.SendAsync(request);
+            using var response = await SendRequestAsync(HttpMethod.Get, "/sample/files", "get-jpeg");
 
             using (Assert.EnterMultipleScope())
             {
