@@ -2,6 +2,7 @@
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using UKHO.ADDS.Mocks.LocalHost.Constants;
 
 namespace UKHO.ADDS.Mocks.Functional.Tests
 {
@@ -22,8 +23,8 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
             var resourceNotificationService = _app.Services.GetRequiredService<ResourceNotificationService>();
             await _app.StartAsync();
-            await resourceNotificationService.WaitForResourceAsync("adds-mocks-sample", KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));
-            BaseAddress = _app.GetEndpoint("adds-mocks-sample");
+            await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));
+            BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);
         }
 
         public async Task StopAsync()

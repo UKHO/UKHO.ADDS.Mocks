@@ -114,6 +114,17 @@ stages:
           testRunTitle: UnitTests
           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
 
+    - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: Run - functional tests
+        inputs:
+          command: test
+          projects: |
+            **/UKHO.ADDS.Mocks.Functional.Tests.csproj
+          publishTestResults: true
+          testRunTitle: FunctionalTests
+          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
+
     - task: DotNetCoreCLI@2
       displayName: Pack UKHO.ADDS.Mocks
       inputs:
@@ -136,17 +147,6 @@ stages:
       inputs:
         path: $(Build.ArtifactStagingDirectory)/packages
         artifact: NuGetPackages
-
-    - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
-      - task: DotNetCoreCLI@2
-        displayName: Run - functional tests
-        inputs:
-          command: test
-          projects: |
-            **/UKHO.ADDS.Mocks.Functional.Tests.csproj
-          publishTestResults: true
-          testRunTitle: FunctionalTests
-          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
 
 - stage: ProGet
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), ${{ ne(parameters.PreReleaseVersion, 'n/a') }}))
