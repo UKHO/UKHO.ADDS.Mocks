@@ -1,5 +1,6 @@
 using Projects;
 using Serilog;
+using UKHO.ADDS.Mocks.LocalHost.Constants;
 using UKHO.ADDS.Mocks.LocalHost.Extensions;
 
 namespace UKHO.ADDS.Mocks.LocalHost
@@ -16,7 +17,7 @@ namespace UKHO.ADDS.Mocks.LocalHost
 
             var builder = DistributedApplication.CreateBuilder(args);
 
-            var mockService = builder.AddProject<UKHO_ADDS_Mocks_SampleService>("adds-mocks-sample")
+            builder.AddProject<UKHO_ADDS_Mocks_SampleService>(ProcessNames.SampleService)
                 .WithDashboard("Dashboard");
 
             await builder.Build().RunAsync();

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35327.3
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11626.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@test", "@test", "{5C8941A8-1C91-424E-A4D0-5ACBEFE88950}"
 EndProject
@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.SampleServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.Tests", "tests\UKHO.ADDS.Mocks.Tests\UKHO.ADDS.Mocks.Tests.csproj", "{B7115F2E-8E67-4ECE-A0B0-DDFF01E71883}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.Functional.Tests", "tests\UKHO.ADDS.Mocks.Functional.Tests\UKHO.ADDS.Mocks.Functional.Tests.csproj", "{D739A45C-CFDF-417E-8863-6F208F87D6E7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@local", "@local", "{FD089B09-7246-4E24-838E-EAC344D6A2E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.LocalHost", "src\UKHO.ADDS.Mocks.LocalHost\UKHO.ADDS.Mocks.LocalHost.csproj", "{2FD384B3-15AD-4D42-9876-6022C9647E1F}"
@@ -20,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.Client", "src\UKHO.ADDS.Mocks.Client\UKHO.ADDS.Mocks.Client.csproj", "{FF2A4219-2D7C-43B5-93F2-11804064C2BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestExamples", "src\UnitTestExamples\UnitTestExamples.csproj", "{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UKHO.ADDS.Mocks.Functional.Tests", "tests\UKHO.ADDS.Mocks.Functional.Tests\UKHO.ADDS.Mocks.Functional.Tests.csproj", "{23F53C0F-F8D0-4899-9352-1C45E9688837}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +39,6 @@ Global
 		{B7115F2E-8E67-4ECE-A0B0-DDFF01E71883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7115F2E-8E67-4ECE-A0B0-DDFF01E71883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7115F2E-8E67-4ECE-A0B0-DDFF01E71883}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D739A45C-CFDF-417E-8863-6F208F87D6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D739A45C-CFDF-417E-8863-6F208F87D6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D739A45C-CFDF-417E-8863-6F208F87D6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D739A45C-CFDF-417E-8863-6F208F87D6E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,14 +51,18 @@ Global
 		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC4E3B8B-1D5C-410C-A934-C52A888A8ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F53C0F-F8D0-4899-9352-1C45E9688837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F53C0F-F8D0-4899-9352-1C45E9688837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F53C0F-F8D0-4899-9352-1C45E9688837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F53C0F-F8D0-4899-9352-1C45E9688837}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B7115F2E-8E67-4ECE-A0B0-DDFF01E71883} = {5C8941A8-1C91-424E-A4D0-5ACBEFE88950}
-		{D739A45C-CFDF-417E-8863-6F208F87D6E7} = {5C8941A8-1C91-424E-A4D0-5ACBEFE88950}
 		{2FD384B3-15AD-4D42-9876-6022C9647E1F} = {FD089B09-7246-4E24-838E-EAC344D6A2E2}
+		{23F53C0F-F8D0-4899-9352-1C45E9688837} = {5C8941A8-1C91-424E-A4D0-5ACBEFE88950}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {074C008F-E60F-4977-901D-F16BB2C72863}
