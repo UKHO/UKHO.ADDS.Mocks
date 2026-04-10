@@ -105,7 +105,7 @@ stages:
 
     - ${{ if ne(parameters.SkipUnitTests, true) }}:
       - task: DotNetCoreCLI@2
-        displayName: Unit test
+        displayName: Unit tests
         inputs:
           command: test
           projects: |
@@ -116,7 +116,7 @@ stages:
 
     - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
       - task: DotNetCoreCLI@2
-        displayName: Run - functional tests
+        displayName: Functional tests
         inputs:
           command: test
           projects: |
