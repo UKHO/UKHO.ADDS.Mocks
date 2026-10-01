@@ -1,0 +1,2654 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-10-01T12:04:37.8388346Z",
+  "analysisEndTime": "2026-10-01T12:04:43.8866136Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 7,
+      "issues": 6,
+      "incidents": 90,
+      "effort": 90
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 9,
+        "Optional": 4,
+        "Potential": 77,
+        "Information": 0
+      },
+      "category": {
+        "NuGet": 15,
+        "Project": 7,
+        "Api": 68
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "src\\UKHO.ADDS.Mocks.Client\\UKHO.ADDS.Mocks.Client.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 2,
+      "properties": {
+        "appName": "UKHO.ADDS.Mocks.Client",
+        "projectKind": "ClassLibrary",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 4,
+        "numberOfCodeFiles": 4,
+        "linesTotal": 157,
+        "linesOfCode": 157,
+        "totalApiScanned": 169,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "9e959082-c551-420c-af03-54d56c88e931",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.Client\\UKHO.ADDS.Mocks.Client.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Http, 10.0.11\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12",
+              "protected": "Microsoft.Extensions.Http, 10.0.11\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.Client\\UKHO.ADDS.Mocks.Client.csproj",
+            "snippet": "Microsoft.Extensions.Http, 10.0.11\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12",
+            "protectedSnippet": "Microsoft.Extensions.Http, 10.0.11\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12",
+            "label": "Microsoft.Extensions.Http 10.0.11",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Http",
+              "PackageVersion": "10.0.11",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "adc55198-8e83-4cf3-934a-f794452cad55",
+          "ruleId": "Project.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.Client\\UKHO.ADDS.Mocks.Client.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.Client\\UKHO.ADDS.Mocks.Client.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+      "startingProject": true,
+      "issues": 5,
+      "storyPoints": 49,
+      "properties": {
+        "appName": "UKHO.ADDS.Mocks",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 151,
+        "numberOfCodeFiles": 117,
+        "linesTotal": 67556,
+        "linesOfCode": 14629,
+        "totalApiScanned": 12472,
+        "minLinesOfCodeToChange": 42,
+        "maxLinesOfCodeToChange": 42
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "a108eb6c-630b-4c9a-9ede-b0889de28afc",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.Components.WebAssembly, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly, and replace with new package Microsoft.AspNetCore.Components.WebAssembly 10.0.12",
+              "protected": "Microsoft.AspNetCore.Components.WebAssembly, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly, and replace with new package Microsoft.AspNetCore.Components.WebAssembly 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Microsoft.AspNetCore.Components.WebAssembly, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly, and replace with new package Microsoft.AspNetCore.Components.WebAssembly 10.0.12",
+            "protectedSnippet": "Microsoft.AspNetCore.Components.WebAssembly, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly, and replace with new package Microsoft.AspNetCore.Components.WebAssembly 10.0.12",
+            "label": "Microsoft.AspNetCore.Components.WebAssembly 9.*-*",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Components.WebAssembly",
+              "PackageVersion": "9.*-*",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "e2286a02-6c44-4784-b96a-f6c2f5befb86",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.Components.WebAssembly.DevServer, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly.DevServer, and replace with new package Microsoft.AspNetCore.Components.WebAssembly.DevServer 10.0.12",
+              "protected": "Microsoft.AspNetCore.Components.WebAssembly.DevServer, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly.DevServer, and replace with new package Microsoft.AspNetCore.Components.WebAssembly.DevServer 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Microsoft.AspNetCore.Components.WebAssembly.DevServer, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly.DevServer, and replace with new package Microsoft.AspNetCore.Components.WebAssembly.DevServer 10.0.12",
+            "protectedSnippet": "Microsoft.AspNetCore.Components.WebAssembly.DevServer, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.Components.WebAssembly.DevServer, and replace with new package Microsoft.AspNetCore.Components.WebAssembly.DevServer 10.0.12",
+            "label": "Microsoft.AspNetCore.Components.WebAssembly.DevServer 9.*-*",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Components.WebAssembly.DevServer",
+              "PackageVersion": "9.*-*",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "7ba676ab-d27b-4b58-bbee-1db7a2488a64",
+          "ruleId": "NuGet.0003",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.Mvc.Razor.Extensions, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNetCore.Mvc.Razor.Extensions, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Microsoft.AspNetCore.Mvc.Razor.Extensions, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNetCore.Mvc.Razor.Extensions, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNetCore.Mvc.Razor.Extensions 6.0.36",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.Mvc.Razor.Extensions",
+              "PackageVersion": "6.0.36",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "8f71e68f-7de1-43c8-a7be-9886e7c2cf18",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12",
+              "protected": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12",
+            "protectedSnippet": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12",
+            "label": "Microsoft.AspNetCore.OpenApi 9.0.19",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.OpenApi",
+              "PackageVersion": "9.0.19",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "654a3d33-e046-4e36-8a15-c1be767fefc8",
+          "ruleId": "NuGet.0003",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.CodeAnalysis.Razor, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.CodeAnalysis.Razor, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Microsoft.CodeAnalysis.Razor, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.CodeAnalysis.Razor, 6.0.36\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.CodeAnalysis.Razor 6.0.36",
+            "properties": {
+              "PackageId": "Microsoft.CodeAnalysis.Razor",
+              "PackageVersion": "6.0.36",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "456f45bd-7b3e-4433-aa68-49a5f4c94d58",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.EntityFrameworkCore.InMemory, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.12",
+              "protected": "Microsoft.EntityFrameworkCore.InMemory, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Microsoft.EntityFrameworkCore.InMemory, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.12",
+            "protectedSnippet": "Microsoft.EntityFrameworkCore.InMemory, 9.*-*\n\nRecommendation:\n\nRemove Microsoft.EntityFrameworkCore.InMemory, and replace with new package Microsoft.EntityFrameworkCore.InMemory 10.0.12",
+            "label": "Microsoft.EntityFrameworkCore.InMemory 9.*-*",
+            "properties": {
+              "PackageId": "Microsoft.EntityFrameworkCore.InMemory",
+              "PackageVersion": "9.*-*",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "b2f16089-144b-4e6f-9ab3-813b62cdd3ac",
+          "ruleId": "Project.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "826d3ceb-f7d0-4bfe-b032-54c90fa3d906",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "[JsonConstructor]\r\n        public CloudEventExtension(          \r\n            string specversion,\r\n            string type,\r\n            Uri source,\r\n            string id,\r\n            DateTime time,\r\n            string subject,\r\n            string datacontenttype,\r\n            Data? data)\r\n        {\r\n            this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };\r\n            this.specVersion = specVersion;\r\n            this.type = type;\r\n            this.source = source;\r\n            this.id = id;\r\n            this.time = time;\r\n            this.subject = subject;\r\n            this.dataContentType = dataContentType;\r\n            this.data = data;\r\n        }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "[JsonConstructor]\r\n        public CloudEventExtension(          \r\n            string specversion,\r\n            string type,\r\n            Uri source,\r\n            string id,\r\n            DateTime time,\r\n            string subject,\r\n            string datacontenttype,\r\n            Data? data)\r\n        {\r\n            this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };\r\n            this.specVersion = specVersion;\r\n            this.type = type;\r\n            this.source = source;\r\n            this.id = id;\r\n            this.time = time;\r\n            this.subject = subject;\r\n            this.dataContentType = dataContentType;\r\n            this.data = data;\r\n        }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "83a54f5f-a790-4bab-aa30-12d044293cd3",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.source = source;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "this.source = source;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 40,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "ac51fcd3-7685-44c0-b62b-35785913bb29",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 28,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "0c38ffc3-0294-428f-a072-78f7a4287ea2",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "set;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "set;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 10,
+            "column": 34
+          }
+        },
+        {
+          "incidentId": "dc923f60-6a53-4a80-93c0-823ecb9b7938",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "get;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "get;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 10,
+            "column": 29
+          }
+        },
+        {
+          "incidentId": "1d609952-36da-4043-9649-a4bf2a0e43a5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "public Uri? source",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "public Uri? source",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 10,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "510d870d-b646-4772-9678-12f7a785cd67",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "[JsonConstructor]\r\n        public CloudEventExtension(          \r\n            string specversion,\r\n            string type,\r\n            Uri source,\r\n            string id,\r\n            DateTime time,\r\n            string subject,\r\n            string datacontenttype,\r\n            Data? data)\r\n        {\r\n            this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };\r\n            this.specVersion = specVersion;\r\n            this.type = type;\r\n            this.source = source;\r\n            this.id = id;\r\n            this.time = time;\r\n            this.subject = subject;\r\n            this.dataContentType = dataContentType;\r\n            this.data = data;\r\n        }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "[JsonConstructor]\r\n        public CloudEventExtension(          \r\n            string specversion,\r\n            string type,\r\n            Uri source,\r\n            string id,\r\n            DateTime time,\r\n            string subject,\r\n            string datacontenttype,\r\n            Data? data)\r\n        {\r\n            this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };\r\n            this.specVersion = specVersion;\r\n            this.type = type;\r\n            this.source = source;\r\n            this.id = id;\r\n            this.time = time;\r\n            this.subject = subject;\r\n            this.dataContentType = dataContentType;\r\n            this.data = data;\r\n        }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 17,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "9c9df8b1-8a0e-44da-b031-627ca605b80b",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.source = source;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "this.source = source;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 40,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "32a5c164-a391-4c1a-9678-4f176ccc66a4",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Configuration\\Mocks\\ees\\Models\\CloudEventExtension.cs",
+            "snippet": "this.cloudEvent = new CloudEvent(CloudEventsSpecVersion.V1_0)\r\n            {\r\n                Data = data,\r\n                DataContentType = datacontenttype,\r\n                Id = id,\r\n                Subject = subject,\r\n                Time = time,\r\n                Type = type,\r\n                Source = source\r\n            };",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 28,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "b370591e-765d-4c69-bf0a-80e496e7dd66",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 213,
+            "column": 20
+          }
+        },
+        {
+          "incidentId": "7c932890-4c88-40cf-8d85-86583b6fed51",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (!argument.Value.IsAbsoluteUri || argument.Value.Scheme != HttpsUriScheme)\r\n                {\r\n                    var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (!argument.Value.IsAbsoluteUri || argument.Value.Scheme != HttpsUriScheme)\r\n                {\r\n                    var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 211,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "d74838df-80a6-4b9c-80e9-23b3d26d0e69",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (!argument.Value.IsAbsoluteUri || argument.Value.Scheme != HttpsUriScheme)\r\n                {\r\n                    var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (!argument.Value.IsAbsoluteUri || argument.Value.Scheme != HttpsUriScheme)\r\n                {\r\n                    var m = message?.Invoke(argument.Value) ?? Messages.UriHttps(argument);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 211,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "c2dfd2a5-2802-406b-bbe3-cecdeb881cdd",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var m = message?.Invoke(argument.Value) ?? Messages.UriHttp(argument);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "var m = message?.Invoke(argument.Value) ?? Messages.UriHttp(argument);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 189,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "f9c841b0-d0a5-488c-b253-7bf1d6e560c4",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (allowHttps \u0026\u0026 argument.Value.Scheme == HttpsUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (allowHttps \u0026\u0026 argument.Value.Scheme == HttpsUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 183,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "e69928fb-2c5f-4d13-a665-808d42b58c4c",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (argument.Value.Scheme == HttpUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (argument.Value.Scheme == HttpUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 178,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "70bf7997-4cf2-4347-8abd-394a9cee5a6c",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (argument.Value.IsAbsoluteUri)\r\n            {\r\n                if (argument.Value.Scheme == HttpUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }\r\n\r\n                if (allowHttps \u0026\u0026 argument.Value.Scheme == HttpsUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }\r\n            }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (argument.Value.IsAbsoluteUri)\r\n            {\r\n                if (argument.Value.Scheme == HttpUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }\r\n\r\n                if (allowHttps \u0026\u0026 argument.Value.Scheme == HttpsUriScheme)\r\n                {\r\n                    return ref argument;\r\n                }\r\n            }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 176,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "523ba7f5-09eb-493c-bd44-0895109aac8e",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriNotScheme(argument, scheme);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriNotScheme(argument, scheme);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 120,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "8f0411c1-04af-4ba3-9032-742b956ab863",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (argument.HasValue() \u0026\u0026\r\n                argument.Value.IsAbsoluteUri \u0026\u0026\r\n                argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n            {\r\n                var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriNotScheme(argument, scheme);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (argument.HasValue() \u0026\u0026\r\n                argument.Value.IsAbsoluteUri \u0026\u0026\r\n                argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n            {\r\n                var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriNotScheme(argument, scheme);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 116,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "f8d2f378-a759-4c5c-bc55-63db5fe739f1",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (argument.HasValue() \u0026\u0026\r\n                argument.Value.IsAbsoluteUri \u0026\u0026\r\n                argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n            {\r\n                var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriNotScheme(argument, scheme);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (argument.HasValue() \u0026\u0026\r\n                argument.Value.IsAbsoluteUri \u0026\u0026\r\n                argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n            {\r\n                var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriNotScheme(argument, scheme);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 116,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "9c4cf2f9-8783-4288-9d41-3ba585140b2d",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriScheme(argument, scheme);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriScheme(argument, scheme);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 91,
+            "column": 20
+          }
+        },
+        {
+          "incidentId": "7e545a26-fa45-41ae-a911-26fa20fb60f2",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (!argument.Value.IsAbsoluteUri ||\r\n                    !argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n                {\r\n                    var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriScheme(argument, scheme);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (!argument.Value.IsAbsoluteUri ||\r\n                    !argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n                {\r\n                    var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriScheme(argument, scheme);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 88,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "96cb1f4d-d299-45e4-be8f-8a04bed32600",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (!argument.Value.IsAbsoluteUri ||\r\n                    !argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n                {\r\n                    var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriScheme(argument, scheme);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (!argument.Value.IsAbsoluteUri ||\r\n                    !argument.Value.Scheme.Equals(scheme, StringComparison.OrdinalIgnoreCase))\r\n                {\r\n                    var m = message?.Invoke(argument.Value, scheme) ?? Messages.UriScheme(argument, scheme);\r\n                    throw Fail(new ArgumentException(m, argument.Name));\r\n                }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 88,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "c1b17563-8869-4883-ab0e-8736eaadbcef",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var m = message?.Invoke(argument.Value) ?? Messages.UriRelative(argument);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "var m = message?.Invoke(argument.Value) ?? Messages.UriRelative(argument);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 59,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "263f8564-48e0-47a8-9563-9ca463197d83",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (argument.HasValue() \u0026\u0026 argument.Value.IsAbsoluteUri)\r\n            {\r\n                var m = message?.Invoke(argument.Value) ?? Messages.UriRelative(argument);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (argument.HasValue() \u0026\u0026 argument.Value.IsAbsoluteUri)\r\n            {\r\n                var m = message?.Invoke(argument.Value) ?? Messages.UriRelative(argument);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 57,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "66408675-8769-45f4-a073-61c7e11ee3a7",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var m = message?.Invoke(argument.Value) ?? Messages.UriAbsolute(argument);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "var m = message?.Invoke(argument.Value) ?? Messages.UriAbsolute(argument);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 34,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "a848192d-e371-4f54-9c08-e78622ba6ed2",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "if (argument.HasValue() \u0026\u0026 !argument.Value.IsAbsoluteUri)\r\n            {\r\n                var m = message?.Invoke(argument.Value) ?? Messages.UriAbsolute(argument);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Guard\\Guard.Uri.cs",
+            "snippet": "if (argument.HasValue() \u0026\u0026 !argument.Value.IsAbsoluteUri)\r\n            {\r\n                var m = message?.Invoke(argument.Value) ?? Messages.UriAbsolute(argument);\r\n                throw Fail(new ArgumentException(m, argument.Name));\r\n            }",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 32,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "3dd771b1-06ff-4780-be56-3a5f14dcfc6a",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: Ambiguous overload resolution affecting StringValues implicit operators ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "string.Join(Environment.NewLine,\r\n                $\u0022\u0060\u0060\u0060{Language}\u0022,\r\n                Text,\r\n                $\u0022\u0060\u0060\u0060{Environment.NewLine}\u0022)",
+              "protected": "M:System.String.Join(System.String,System.ReadOnlySpan{System.String})"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Markdown\\MarkdownCode.cs",
+            "snippet": "string.Join(Environment.NewLine,\r\n                $\u0022\u0060\u0060\u0060{Language}\u0022,\r\n                Text,\r\n                $\u0022\u0060\u0060\u0060{Environment.NewLine}\u0022)",
+            "protectedSnippet": "M:System.String.Join(System.String,System.ReadOnlySpan{System.String})",
+            "label": "M:System.String.Join(System.String,System.ReadOnlySpan{System.String})",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/ambiguous-overload.md",
+                "isCustom": false
+              }
+            ],
+            "line": 34,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "16d53e2b-ce93-4185-ac90-45edee150f91",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: C# overload resolution prefers \u0060params\u0060 span-type overloads ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "string.Concat(Char, Char, Char, Environment.NewLine)",
+              "protected": "M:System.String.Concat(System.ReadOnlySpan{System.Object})"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Domain\\Markdown\\MarkdownHorizontalRule.cs",
+            "snippet": "string.Concat(Char, Char, Char, Environment.NewLine)",
+            "protectedSnippet": "M:System.String.Concat(System.ReadOnlySpan{System.Object})",
+            "label": "M:System.String.Concat(System.ReadOnlySpan{System.Object})",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/params-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 42,
+            "column": 45
+          }
+        },
+        {
+          "incidentId": "3fd32a61-843a-4ce0-91d8-264db6abb3fb",
+          "ruleId": "Api.0003",
+          "description": "Nullable JsonDocument properties deserialize to JsonValueKind.Null ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var parsed = JsonDocument.Parse(text);",
+              "protected": "T:System.Text.Json.JsonDocument"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Pages/TrafficPage_razor.g.cs",
+            "snippet": "var parsed = JsonDocument.Parse(text);",
+            "protectedSnippet": "T:System.Text.Json.JsonDocument",
+            "label": "T:System.Text.Json.JsonDocument",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/serialization/9.0/jsondocument-props.md",
+                "isCustom": false
+              }
+            ],
+            "line": 1200,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "a71efaf1-d918-4cda-a254-6066223c2f2f",
+          "ruleId": "Api.0003",
+          "description": "Nullable JsonDocument properties deserialize to JsonValueKind.Null ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var parsed = JsonDocument.Parse(text);",
+              "protected": "T:System.Text.Json.JsonDocument"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Pages/TrafficPage_razor.g.cs",
+            "snippet": "var parsed = JsonDocument.Parse(text);",
+            "protectedSnippet": "T:System.Text.Json.JsonDocument",
+            "label": "T:System.Text.Json.JsonDocument",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/serialization/9.0/jsondocument-props.md",
+                "isCustom": false
+              }
+            ],
+            "line": 1200,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "8d375c41-9ecf-4f4d-ae0e-d415f4338702",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var currentExample = DashboardPageService.FindCurrent(new Uri(args.Location));",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Shared/DashboardLayout_razor.g.cs",
+            "snippet": "var currentExample = DashboardPageService.FindCurrent(new Uri(args.Location));",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 837,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "a212e3fa-0994-4c45-a0e2-150e70240b01",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var currentExample = DashboardPageService.FindCurrent(new Uri(args.Location));",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Shared/DashboardLayout_razor.g.cs",
+            "snippet": "var currentExample = DashboardPageService.FindCurrent(new Uri(args.Location));",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 837,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "7b2c88b7-7ef3-475f-bca2-590b7624f215",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "_page = DashboardPageService.FindCurrent(new Uri(UriHelper.Uri));",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Shared/DashboardLayout_razor.g.cs",
+            "snippet": "_page = DashboardPageService.FindCurrent(new Uri(UriHelper.Uri));",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 830,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "7e2ed49a-eecc-46c7-b9d3-0e6dc0c16fe5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "_page = DashboardPageService.FindCurrent(new Uri(UriHelper.Uri));",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Shared/DashboardLayout_razor.g.cs",
+            "snippet": "_page = DashboardPageService.FindCurrent(new Uri(UriHelper.Uri));",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 830,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "12857a5b-10b5-455f-ba50-36e067eec134",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return Page.Path == null ? Page.Path : $\u0022{Page.Path}{new Uri(navigationManager.Uri).Query}\u0022;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Shared/NavigationItem_razor.g.cs",
+            "snippet": "return Page.Path == null ? Page.Path : $\u0022{Page.Path}{new Uri(navigationManager.Uri).Query}\u0022;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 456,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "e27fc4a2-d03c-4403-a587-c4f0d8cd69fe",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return Page.Path == null ? Page.Path : $\u0022{Page.Path}{new Uri(navigationManager.Uri).Query}\u0022;",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\obj\\Debug\\net9.0\\Microsoft.CodeAnalysis.Razor.Compiler\\Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator\\Dashboard/Shared/NavigationItem_razor.g.cs",
+            "snippet": "return Page.Path == null ? Page.Path : $\u0022{Page.Path}{new Uri(navigationManager.Uri).Query}\u0022;",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 456,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "6632d550-40cc-48f0-9c23-d79a78633bd3",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "public DashboardPage FindCurrent(Uri uri)",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Dashboard\\Services\\DashboardPageService.cs",
+            "snippet": "public DashboardPage FindCurrent(Uri uri)",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 33,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "0724be0c-6a94-4438-9d78-82af893e07f0",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return Flatten(Pages)\r\n                .FirstOrDefault(example =\u003E example.Path == uri.AbsolutePath || $\u0022/{example.Path}\u0022 == uri.AbsolutePath);",
+              "protected": "P:System.Uri.AbsolutePath"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Dashboard\\Services\\DashboardPageService.cs",
+            "snippet": "return Flatten(Pages)\r\n                .FirstOrDefault(example =\u003E example.Path == uri.AbsolutePath || $\u0022/{example.Path}\u0022 == uri.AbsolutePath);",
+            "protectedSnippet": "P:System.Uri.AbsolutePath",
+            "label": "P:System.Uri.AbsolutePath",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 40,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "ed7275c0-2dc6-490d-869d-98a81be76e78",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return Flatten(Pages)\r\n                .FirstOrDefault(example =\u003E example.Path == uri.AbsolutePath || $\u0022/{example.Path}\u0022 == uri.AbsolutePath);",
+              "protected": "P:System.Uri.AbsolutePath"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\Dashboard\\Services\\DashboardPageService.cs",
+            "snippet": "return Flatten(Pages)\r\n                .FirstOrDefault(example =\u003E example.Path == uri.AbsolutePath || $\u0022/{example.Path}\u0022 == uri.AbsolutePath);",
+            "protectedSnippet": "P:System.Uri.AbsolutePath",
+            "label": "P:System.Uri.AbsolutePath",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 40,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "1f8c1932-f8dc-4525-8ed7-8f603772b8de",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return new HttpClient { BaseAddress = new Uri(baseAddress) };",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\MockServer.cs",
+            "snippet": "return new HttpClient { BaseAddress = new Uri(baseAddress) };",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 65,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "30c9e4ee-403c-4a8a-a8f3-2fcc993977cb",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return new HttpClient { BaseAddress = new Uri(baseAddress) };",
+              "protected": "M:System.Uri.#ctor(System.String)"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\MockServer.cs",
+            "snippet": "return new HttpClient { BaseAddress = new Uri(baseAddress) };",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String)",
+            "label": "M:System.Uri.#ctor(System.String)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 65,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "a8629031-d7d7-4261-895f-550c3bb80095",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks\\UKHO.ADDS.Mocks.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "return new HttpClient { BaseAddress = new Uri(baseAddress) };",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks\\MockServer.cs",
+            "snippet": "return new HttpClient { BaseAddress = new Uri(baseAddress) };",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 65,
+            "column": 16
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+      "startingProject": true,
+      "issues": 5,
+      "storyPoints": 14,
+      "properties": {
+        "appName": "UKHO.ADDS.Mocks.Functional.Tests",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 4,
+        "numberOfCodeFiles": 2,
+        "linesTotal": 2757,
+        "linesOfCode": 111,
+        "totalApiScanned": 144,
+        "minLinesOfCodeToChange": 11,
+        "maxLinesOfCodeToChange": 11
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "680ef8d5-7578-46dc-86a9-ba018a42d412",
+          "ruleId": "NuGet.0002",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing 13.6.0",
+              "protected": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing 13.6.0"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+            "snippet": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing 13.6.0",
+            "protectedSnippet": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing 13.6.0",
+            "label": "Aspire.Hosting.Testing 9.5.2",
+            "properties": {
+              "PackageId": "Aspire.Hosting.Testing",
+              "PackageVersion": "9.5.2",
+              "PackageNewVersion": "13.6.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "402b8313-a045-422c-a8c7-c9312b87399f",
+          "ruleId": "NuGet.0005",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing, 13.6.0",
+              "protected": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing, 13.6.0"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+            "snippet": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing, 13.6.0",
+            "protectedSnippet": "Aspire.Hosting.Testing, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.Testing, and replace with new package Aspire.Hosting.Testing, 13.6.0",
+            "label": "Aspire.Hosting.Testing 9.5.2",
+            "properties": {
+              "PackageId": "Aspire.Hosting.Testing",
+              "PackageVersion": "9.5.2",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "a92e7c98-77ae-4de6-9c37-84ae516201c0",
+          "ruleId": "Project.0002",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "19e2cd35-de92-4311-b103-d4cdbcc9390c",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\SampleServiceFixture.cs",
+            "snippet": "BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 26,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "1d011c92-0a65-48cd-b5b2-17c79320df3a",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\SampleServiceFixture.cs",
+            "snippet": "BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 26,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "97685015-b904-4261-920c-fc8e25ab74da",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: New TimeSpan.From*() overloads that take integers ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));",
+              "protected": "M:System.TimeSpan.FromSeconds(System.Int64)"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\SampleServiceFixture.cs",
+            "snippet": "await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));",
+            "protectedSnippet": "M:System.TimeSpan.FromSeconds(System.Int64)",
+            "label": "M:System.TimeSpan.FromSeconds(System.Int64)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/timespan-from-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 25,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "36c9f6cc-194d-49ce-bc22-d300d9dec1ea",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "private set;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\SampleServiceFixture.cs",
+            "snippet": "private set;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 10,
+            "column": 38
+          }
+        },
+        {
+          "incidentId": "0c310128-d893-4b0b-b489-9702977072d0",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "get;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\SampleServiceFixture.cs",
+            "snippet": "get;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 10,
+            "column": 33
+          }
+        },
+        {
+          "incidentId": "e9d190da-4c3c-404f-b41b-78b573f81cf9",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "public Uri BaseAddress",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\SampleServiceFixture.cs",
+            "snippet": "public Uri BaseAddress",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 10,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "fc5c7f37-78a1-4580-beec-a3acbeb27026",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Assert.That(response.Content.Headers.ContentType?.MediaType, Is.EqualTo(\u0022image/jpeg\u0022));",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\FunctionalTests.cs",
+            "snippet": "Assert.That(response.Content.Headers.ContentType?.MediaType, Is.EqualTo(\u0022image/jpeg\u0022));",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 67,
+            "column": 16
+          }
+        },
+        {
+          "incidentId": "3ce83dbf-a557-40f6-80f5-823499491a02",
+          "ruleId": "Api.0003",
+          "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var body = await response.Content.ReadAsStringAsync();",
+              "protected": "T:System.Net.Http.HttpContent"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\FunctionalTests.cs",
+            "snippet": "var body = await response.Content.ReadAsStringAsync();",
+            "protectedSnippet": "T:System.Net.Http.HttpContent",
+            "label": "T:System.Net.Http.HttpContent",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/default-http-streaming.md",
+                "isCustom": false
+              }
+            ],
+            "line": 50,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "2f59d21e-8588-4b32-b557-8a9cd2506b62",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var uri = new Uri(_fixture.BaseAddress, path);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\FunctionalTests.cs",
+            "snippet": "var uri = new Uri(_fixture.BaseAddress, path);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 33,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "487a5965-2a65-4166-9608-606964f20ca5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var uri = new Uri(_fixture.BaseAddress, path);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\FunctionalTests.cs",
+            "snippet": "var uri = new Uri(_fixture.BaseAddress, path);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 33,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "23cb0cab-8775-4e62-b660-b1d011164b61",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\UKHO.ADDS.Mocks.Functional.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var uri = new Uri(_fixture.BaseAddress, path);",
+              "protected": "M:System.Uri.#ctor(System.Uri,System.String)"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Functional.Tests\\FunctionalTests.cs",
+            "snippet": "var uri = new Uri(_fixture.BaseAddress, path);",
+            "protectedSnippet": "M:System.Uri.#ctor(System.Uri,System.String)",
+            "label": "M:System.Uri.#ctor(System.Uri,System.String)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 33,
+            "column": 12
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+      "startingProject": true,
+      "issues": 3,
+      "storyPoints": 4,
+      "properties": {
+        "appName": "UKHO.ADDS.Mocks.LocalHost",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 3,
+        "numberOfCodeFiles": 3,
+        "linesTotal": 68,
+        "linesOfCode": 68,
+        "totalApiScanned": 102,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "3888b410-6147-4a21-a98e-e16f10229cc1",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost 13.6.0",
+              "protected": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost 13.6.0"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+            "snippet": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost 13.6.0",
+            "protectedSnippet": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost 13.6.0",
+            "label": "Aspire.Hosting.AppHost 9.5.2",
+            "properties": {
+              "PackageId": "Aspire.Hosting.AppHost",
+              "PackageVersion": "9.5.2",
+              "PackageNewVersion": "13.6.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "837855d8-10f5-491b-8343-9443fb79b649",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Extensions.Http, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12",
+              "protected": "Microsoft.Extensions.Http, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+            "snippet": "Microsoft.Extensions.Http, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12",
+            "protectedSnippet": "Microsoft.Extensions.Http, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.12",
+            "label": "Microsoft.Extensions.Http 9.0.19",
+            "properties": {
+              "PackageId": "Microsoft.Extensions.Http",
+              "PackageVersion": "9.0.19",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "9ebc69ef-4cd0-4794-aeab-a381d0e401dd",
+          "ruleId": "NuGet.0005",
+          "projectPath": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost, 13.6.0",
+              "protected": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost, 13.6.0"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+            "snippet": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost, 13.6.0",
+            "protectedSnippet": "Aspire.Hosting.AppHost, 9.5.2\n\nRecommendation:\n\nThis version is out of support and is no longer maintained. Please upgrade to the latest version. See our support policy for details: https://aka.ms/dotnet/aspire/support\nRemove Aspire.Hosting.AppHost, and replace with new package Aspire.Hosting.AppHost, 13.6.0",
+            "label": "Aspire.Hosting.AppHost 9.5.2",
+            "properties": {
+              "PackageId": "Aspire.Hosting.AppHost",
+              "PackageVersion": "9.5.2",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d705b0ef-4dce-4cc8-b4c8-19b1b3d7e21c",
+          "ruleId": "Project.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.LocalHost\\UKHO.ADDS.Mocks.LocalHost.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "src\\UKHO.ADDS.Mocks.SampleService\\UKHO.ADDS.Mocks.SampleService.csproj",
+      "startingProject": true,
+      "issues": 3,
+      "storyPoints": 3,
+      "properties": {
+        "appName": "UKHO.ADDS.Mocks.SampleService",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 13,
+        "numberOfCodeFiles": 11,
+        "linesTotal": 500,
+        "linesOfCode": 483,
+        "totalApiScanned": 468,
+        "minLinesOfCodeToChange": 1,
+        "maxLinesOfCodeToChange": 1
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "db1d2b47-02fd-4e26-8047-23eef63dff41",
+          "ruleId": "NuGet.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.SampleService\\UKHO.ADDS.Mocks.SampleService.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12",
+              "protected": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.SampleService\\UKHO.ADDS.Mocks.SampleService.csproj",
+            "snippet": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12",
+            "protectedSnippet": "Microsoft.AspNetCore.OpenApi, 9.0.19\n\nRecommendation:\n\nRemove Microsoft.AspNetCore.OpenApi, and replace with new package Microsoft.AspNetCore.OpenApi 10.0.12",
+            "label": "Microsoft.AspNetCore.OpenApi 9.0.19",
+            "properties": {
+              "PackageId": "Microsoft.AspNetCore.OpenApi",
+              "PackageVersion": "9.0.19",
+              "PackageNewVersion": "10.0.12",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "68ef5da7-f3da-47bc-a7b3-cefbd7d62d27",
+          "ruleId": "Project.0002",
+          "projectPath": "src\\UKHO.ADDS.Mocks.SampleService\\UKHO.ADDS.Mocks.SampleService.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.SampleService\\UKHO.ADDS.Mocks.SampleService.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "67772b02-478e-472d-bacd-5c2ccf786c37",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "src\\UKHO.ADDS.Mocks.SampleService\\UKHO.ADDS.Mocks.SampleService.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var encodedFilterUrl = $\u0022/batch?limit=10\u0026start=0\u0026$filter={Uri.EscapeDataString(filterValue)}\u0022;",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "src\\UKHO.ADDS.Mocks.SampleService\\Override\\Mocks\\fss\\ResponseGenerator\\FssResponseGenerator.cs",
+            "snippet": "var encodedFilterUrl = $\u0022/batch?limit=10\u0026start=0\u0026$filter={Uri.EscapeDataString(filterValue)}\u0022;",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 93,
+            "column": 12
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+      "startingProject": true,
+      "issues": 4,
+      "storyPoints": 16,
+      "properties": {
+        "appName": "UKHO.ADDS.Mocks.Tests",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 46,
+        "numberOfCodeFiles": 44,
+        "linesTotal": 9110,
+        "linesOfCode": 6464,
+        "totalApiScanned": 5085,
+        "minLinesOfCodeToChange": 14,
+        "maxLinesOfCodeToChange": 14
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "ccb5470a-7845-423c-9f7d-6f0bc679223f",
+          "ruleId": "NuGet.0005",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+              "protected": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+            "snippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "protectedSnippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "label": "xunit 2.9.3",
+            "properties": {
+              "PackageId": "xunit",
+              "PackageVersion": "2.9.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "5f31e7c0-fad3-4e3f-828a-f815c127beed",
+          "ruleId": "Project.0002",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "23878b88-6e05-46f9-bf23-f92780efc805",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "private static Uri GetUri(string uriString)",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "private static Uri GetUri(string uriString)",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 190,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "46cb4c81-bc80-4a6d-9de7-41216759b015",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "new Uri(uriString, UriKind.RelativeOrAbsolute)",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "new Uri(uriString, UriKind.RelativeOrAbsolute)",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 191,
+            "column": 35
+          }
+        },
+        {
+          "incidentId": "abd9520a-a7de-40ff-b0a3-ce65457de6af",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "new Uri(uriString, UriKind.RelativeOrAbsolute)",
+              "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "new Uri(uriString, UriKind.RelativeOrAbsolute)",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
+            "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 191,
+            "column": 35
+          }
+        },
+        {
+          "incidentId": "01856894-5cc7-49e2-b899-340eb395dbf2",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var invalidUri = GetUri(invalidUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var invalidUri = GetUri(invalidUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 171,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "8b3c1d6f-9e09-4e2e-a316-18c666cb1921",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var validUri = GetUri(validUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var validUri = GetUri(validUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 168,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "19a64d65-87c7-4a5b-a8f9-e82fdc4be617",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var invalidUri = GetUri(invalidUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var invalidUri = GetUri(invalidUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 133,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "0073445c-97b2-41d7-9383-bf72804eba65",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var validUri = GetUri(validUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var validUri = GetUri(validUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 130,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "404206f2-2dbc-4085-a9ea-706fad1c99c7",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var invalidUri = GetUri(invalidUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var invalidUri = GetUri(invalidUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 105,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "948ba09a-79f2-4fcd-8977-71d0fee52dbb",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var validUri = GetUri(validUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var validUri = GetUri(validUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 102,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "22b78aa3-6483-4152-9f4c-23803e1ee644",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var invalidUri = GetUri(invalidUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var invalidUri = GetUri(invalidUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 65,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "adcc958a-2b2a-4e51-a3e6-c8f59b421343",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var validUri = GetUri(validUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var validUri = GetUri(validUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 62,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "53a20167-0682-47da-88d7-0bbdacfb1c89",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var relativeUri = GetUri(relativeUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var relativeUri = GetUri(relativeUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 25,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "526ed000-fdca-4ef4-8a9c-1e740e65cfb5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "var absoluteUri = GetUri(absoluteUriString);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\UriTests.cs",
+            "snippet": "var absoluteUri = GetUri(absoluteUriString);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 22,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "3fb5afec-0d9a-4605-b1c8-e13afdbb102c",
+          "ruleId": "Api.0002",
+          "description": "Breaking change: C# overload resolution prefers \u0060params\u0060 span-type overloads ",
+          "projectPath": "tests\\UKHO.ADDS.Mocks.Tests\\UKHO.ADDS.Mocks.Tests.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Task.WaitAll(\r\n                Task.Run(Async()),\r\n                Task.Run(Async()));",
+              "protected": "M:System.Threading.Tasks.Task.WaitAll(System.ReadOnlySpan{System.Threading.Tasks.Task})"
+            },
+            "kind": "File",
+            "path": "tests\\UKHO.ADDS.Mocks.Tests\\Domain\\Guard\\ScopeTests.cs",
+            "snippet": "Task.WaitAll(\r\n                Task.Run(Async()),\r\n                Task.Run(Async()));",
+            "protectedSnippet": "M:System.Threading.Tasks.Task.WaitAll(System.ReadOnlySpan{System.Threading.Tasks.Task})",
+            "label": "M:System.Threading.Tasks.Task.WaitAll(System.ReadOnlySpan{System.Threading.Tasks.Task})",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/core-libraries/9.0/params-overloads.md",
+                "isCustom": false
+              }
+            ],
+            "line": 20,
+            "column": 12
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "src\\UnitTestExamples\\UnitTestExamples.csproj",
+      "startingProject": true,
+      "issues": 2,
+      "storyPoints": 2,
+      "properties": {
+        "appName": "UnitTestExamples",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net9.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 3,
+        "numberOfCodeFiles": 1,
+        "linesTotal": 2719,
+        "linesOfCode": 73,
+        "totalApiScanned": 87,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "7c63ced1-9fa2-4972-868a-78b143b5b61a",
+          "ruleId": "NuGet.0005",
+          "projectPath": "src\\UnitTestExamples\\UnitTestExamples.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+              "protected": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3"
+            },
+            "kind": "File",
+            "path": "src\\UnitTestExamples\\UnitTestExamples.csproj",
+            "snippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "protectedSnippet": "xunit, 2.9.3\n\nRecommendation:\n\nThis package will only be updated for security issues. All future feature work has moved onto v3.\n\nGuide for migrating from xUnit.net v2 to v3: https://xunit.net/docs/getting-started/v3/migration\nRemove xunit, and replace with new package xunit, 2.9.3",
+            "label": "xunit 2.9.3",
+            "properties": {
+              "PackageId": "xunit",
+              "PackageVersion": "2.9.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0ba5e74e-cf70-4ccb-801d-f57291acc65a",
+          "ruleId": "Project.0002",
+          "projectPath": "src\\UnitTestExamples\\UnitTestExamples.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net9.0\nRecommended target framework: net10.0",
+              "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "src\\UnitTestExamples\\UnitTestExamples.csproj",
+            "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": "net9.0",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "NuGet package upgrade is recommended for selected target framework.\n\nStandard .NET packages are recommended to have versions matching version of .NET that project targets.\n\nSome other packages also are known to work better for selected target frameworks.",
+      "label": "NuGet package upgrade is recommended",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0003": {
+      "id": "NuGet.0003",
+      "isFeature": false,
+      "description": "NuGet package functionality is included with framework reference.\n\nPackage needs to be removed.",
+      "label": "NuGet package functionality is included with framework reference",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262609",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0003": {
+      "id": "Api.0003",
+      "isFeature": false,
+      "description": "API has a behavioral change in selected .NET version: code and binaries may behave differently at runtime without needing recompilation, but the new behavior might be undesirable and require updates.",
+      "label": "Behavioral change in selected .NET version",
+      "severity": "Potential",
+      "effort": 1
+    },
+    "Api.0002": {
+      "id": "Api.0002",
+      "isFeature": false,
+      "description": "API is source incompatible for selected .NET version: requires code changes to compile successfully when targeting a new version, such as removing obsolete APIs or changing method signatures.",
+      "label": "Source incompatible for selected .NET version",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0005": {
+      "id": "NuGet.0005",
+      "isFeature": false,
+      "description": "NuGet package is deprecated.\n\nGo to its documentation and if there is a guidance for replacement of functionality provided by this package.",
+      "label": "NuGet package is deprecated",
+      "severity": "Optional",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262531",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}

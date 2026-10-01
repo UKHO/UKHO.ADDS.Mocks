@@ -72,8 +72,8 @@
     <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
     <PackageReference Include="System.IO.Abstractions" Version="22.2.0" />
-    <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="0.0.60217-alpha.1" />
-    <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="0.0.60217-alpha.1" />
+    <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="0.0.60930-alpha.7" />
+    <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="0.0.60930-alpha.7" />
     <PackageReference Include="Zio" Version="0.24.0" />
   </ItemGroup>
 
