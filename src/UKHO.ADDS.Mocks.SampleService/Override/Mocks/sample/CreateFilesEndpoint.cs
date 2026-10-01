@@ -6,10 +6,13 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
     public class CreateFilesEndpoint : ServiceEndpointMock
     {
         public override void RegisterSingleEndpoint(IEndpointMock endpoint) =>
-            endpoint.MapPost("/files", (HttpRequest request) =>
+            endpoint.MapPost("/files", async (HttpRequest request) =>
                 {
-                    var newFileName = $"new-file-{Guid.NewGuid():N}.jpg";
-                    CreateFile(newFileName, request.Body);
+                    var newFileName = $"/new-file-{Guid.NewGuid():N}.jpg";
+                    using (var destination = GetFileSystem().OpenFile(newFileName, FileMode.CreateNew, FileAccess.Write))
+                    {
+                        await request.Body.CopyToAsync(destination, request.HttpContext.RequestAborted);
+                    }
 
                     var state = GetState(request);
 

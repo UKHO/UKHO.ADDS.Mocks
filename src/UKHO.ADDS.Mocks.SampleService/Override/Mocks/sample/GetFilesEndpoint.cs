@@ -30,16 +30,16 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
 
                         case "get-jpeg":
-                            var jpegPathResult = GetFile("messier-78.jpg");
-
-                            if (jpegPathResult.IsSuccess(out var jpegFile))
+                            if (fs.FileExists("/subpath/messier-78.jpg"))
                             {
-                                using (var s = jpegFile.Open())
+                                if (!fs.FileExists("/new-file.jpg"))
                                 {
-                                    CreateFile("new-file.jpg", s);
+                                    using var source = fs.OpenFile("/subpath/messier-78.jpg", FileMode.Open, FileAccess.Read);
+                                    using var destination = fs.OpenFile("/new-file.jpg", FileMode.CreateNew, FileAccess.Write);
+                                    source.CopyTo(destination);
                                 }
 
-                                return Results.File(jpegFile.Open(), jpegFile.MimeType);
+                                return Results.File(fs.OpenFile("/subpath/messier-78.jpg", FileMode.Open, FileAccess.Read), "image/jpeg");
                             }
 
                             return Results.NotFound("Could not find the JPEG path in the /files GET method");

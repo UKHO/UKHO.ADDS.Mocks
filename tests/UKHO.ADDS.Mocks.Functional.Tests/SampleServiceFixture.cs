@@ -14,16 +14,18 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
         public async Task StartAsync()
         {
-            var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.UKHO_ADDS_Mocks_LocalHost>();
+            using var startupTimeout = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+            var cancellationToken = startupTimeout.Token;
+            var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.UKHO_ADDS_Mocks_LocalHost>(cancellationToken);
             appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
             {
                 clientBuilder.AddStandardResilienceHandler();
             });
-            _app = await appHost.BuildAsync();
+            _app = await appHost.BuildAsync(cancellationToken);
 
             var resourceNotificationService = _app.Services.GetRequiredService<ResourceNotificationService>();
-            await _app.StartAsync();
-            await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));
+            await _app.StartAsync(cancellationToken);
+            await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running, cancellationToken);
             BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);
         }
 
@@ -31,8 +33,15 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
         {
             if (_app != null)
             {
-                await _app.StopAsync();
-                await _app.DisposeAsync();
+                using var shutdownTimeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                try
+                {
+                    await _app.StopAsync(shutdownTimeout.Token);
+                }
+                finally
+                {
+                    await _app.DisposeAsync();
+                }
             }
         }
     }

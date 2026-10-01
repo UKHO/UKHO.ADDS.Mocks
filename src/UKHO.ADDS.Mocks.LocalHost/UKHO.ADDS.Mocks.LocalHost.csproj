@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.5.2" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>6e7f579b-1a17-44ed-989f-34e2c64bd752</UserSecretsId>
@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.2" />
+    <!-- Pin Aspire's transitive dependency to the patched 2.x release. -->
+    <PackageReference Include="MessagePack" Version="2.5.305" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.19" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
   </ItemGroup>

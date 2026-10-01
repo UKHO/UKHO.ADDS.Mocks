@@ -18,37 +18,26 @@ namespace UKHO.ADDS.Mocks.SampleService.Override.Mocks.sample
 
                         case "get-jpeg":
 
-                            var jpegPathResult = GetFile("messier-78.jpg");
-
-                            if (jpegPathResult.IsSuccess(out var jpegFile))
+                            var fs = GetFileSystem();
+                            if (fs.FileExists("/subpath/messier-78.jpg"))
                             {
-                                var newFileName = $"new-file-{Guid.NewGuid():N}.jpg";
+                                var newFileName = $"/new-file-{Guid.NewGuid():N}.jpg";
 
-                                using (var s = jpegFile.Open())
+                                using (var s = fs.OpenFile("/subpath/messier-78.jpg", FileMode.Open, FileAccess.Read))
+                                using (var destination = fs.OpenFile(newFileName, FileMode.CreateNew, FileAccess.Write))
                                 {
-                                    CreateFile(newFileName);
-
-                                    var content = Array.Empty<byte>();
-
-                                    do
+                                    while (true)
                                     {
                                         var chunk = ReadNextChunk(s, 8192);
                                         if (chunk.Length == 0)
                                         {
                                             break;
                                         }
-                                        content = content.Concat(chunk).ToArray();
-                                        AppendFile(newFileName, chunk);
-
-                                    } while (content.Length > 0);
+                                        destination.Write(chunk, 0, chunk.Length);
+                                    }
                                 }
 
-                                var newFileResult = GetFile(newFileName);
-
-                                if (newFileResult.IsSuccess(out var newFile))
-                                {
-                                    return Results.File(newFile.Open(), newFile.MimeType);
-                                }
+                                return Results.File(fs.OpenFile(newFileName, FileMode.Open, FileAccess.Read), "image/jpeg");
                             }
 
                             return Results.NotFound("Could not find the JPEG path in the /files GET method");

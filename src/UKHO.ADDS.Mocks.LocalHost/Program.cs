@@ -17,7 +17,15 @@ namespace UKHO.ADDS.Mocks.LocalHost
 
             var builder = DistributedApplication.CreateBuilder(args);
 
+#if NET10_0_OR_GREATER
+            const string targetFramework = "net10.0";
+#else
+            const string targetFramework = "net9.0";
+#endif
+
+            // Aspire 9 launches projects with dotnet run, which requires a framework for multi-targeted projects.
             builder.AddProject<UKHO_ADDS_Mocks_SampleService>(ProcessNames.SampleService)
+                .WithArgs("--framework", targetFramework)
                 .WithDashboard("Dashboard");
 
             await builder.Build().RunAsync();
