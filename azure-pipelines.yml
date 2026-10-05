@@ -38,7 +38,7 @@ variables:
 - name: WindowPool
   value: "NautilusBuild"
 - name: SdkVersion
-  value: "9.x"
+  value: "10.x"
 - name: NUGET_PACKAGES
   value: $(Build.SourcesDirectory)\packages
 
