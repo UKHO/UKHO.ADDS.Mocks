@@ -55,7 +55,7 @@ namespace UKHO.ADDS.Mocks
             builder.WebHost.UseStaticWebAssets();
 
             builder.Services.AddRazorPages();
-            builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+            builder.Services.AddRazorComponents();
 
             builder.Services.AddSingleton(sp =>
             {
@@ -90,7 +90,7 @@ namespace UKHO.ADDS.Mocks
             app.UseAntiforgery();
 
             app.MapRazorPages();
-            app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+            app.MapRazorComponents<App>();
 
             app.UseMiddleware<MockTrafficCaptureMiddleware>();
 
