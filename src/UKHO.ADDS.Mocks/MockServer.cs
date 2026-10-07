@@ -28,8 +28,9 @@ namespace UKHO.ADDS.Mocks
             MockServices.AddServices();
 
             var appContextBase = AppContext.BaseDirectory;
+            var applicationName = typeof(MockServer).Assembly.GetName().Name;
 
-            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { Args = args, ContentRootPath = appContextBase });
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { Args = args, ContentRootPath = appContextBase, ApplicationName = applicationName });
 
             var oltpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]!;
 
