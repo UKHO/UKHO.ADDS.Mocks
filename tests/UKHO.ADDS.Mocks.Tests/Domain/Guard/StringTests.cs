@@ -424,8 +424,8 @@ namespace UKHO.ADDS.Mocks.Tests.Domain.Guard
 
         [Theory(DisplayName = "String: Matches/DoesNotMatch")]
         [InlineData(null, null, null, null, null, false)]
-        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "0123456789", "ABC", "[", "([A-Z]+)*!", false)]
-        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "0123456789", "ABC", "[", "([A-Z]+)*!", true)]
+        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", "01234567890123456789", "ABC", "[", "([A-Z]+)*!", false)]
+        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", "01234567890123456789", "ABC", "[", "([A-Z]+)*!", true)]
         public void Matches(
             string withMatch,
             string withoutMatch,
