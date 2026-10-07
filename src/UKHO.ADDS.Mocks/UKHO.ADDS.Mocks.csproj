@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -45,6 +45,7 @@
   <ItemGroup>
     <Content Remove="Configuration\Files\scs6357\SCSCatalogueResponse.json" />
     <Content Remove="Configuration\Files\scs6357\SCSResponse.json" />
+    <Content Update="wwwroot\js\blazor.server.js" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
