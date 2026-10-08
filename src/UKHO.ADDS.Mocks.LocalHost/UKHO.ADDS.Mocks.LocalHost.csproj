@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.2" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="13.6.1" />
     <!-- Pin Aspire's transitive dependency to the patched 2.x release. -->
-    <PackageReference Include="MessagePack" Version="2.5.305" />
+    <PackageReference Include="MessagePack" Version="3.1.11" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
   </ItemGroup>
