@@ -85,7 +85,7 @@ namespace UKHO.ADDS.Mocks
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            app.UseStaticFiles();
+            app.MapStaticAssets();
             app.UseRouting();
             app.UseAntiforgery();
 
