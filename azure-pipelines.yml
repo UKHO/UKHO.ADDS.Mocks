@@ -97,6 +97,8 @@ stages:
         projects: |
           **/UKHO.ADDS.Mocks.csproj
           **/UKHO.ADDS.Mocks.Client.csproj
+          **/UKHO.ADDS.Mocks.LocalHost.csproj
+          **/UKHO.ADDS.Mocks.SampleService.csproj
           **/UKHO.ADDS.Mocks.Tests.csproj
           **/UKHO.ADDS.Mocks.Functional.Tests.csproj
         feedsToUse: config
