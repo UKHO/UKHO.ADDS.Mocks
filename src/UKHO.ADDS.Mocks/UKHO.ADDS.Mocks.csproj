@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
+    <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -45,20 +46,28 @@
   <ItemGroup>
     <Content Remove="Configuration\Files\scs6357\SCSCatalogueResponse.json" />
     <Content Remove="Configuration\Files\scs6357\SCSResponse.json" />
-    <Content Update="wwwroot\js\blazor.server.js" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Properties\launchSettings.json" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.12" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.12" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="CloudNative.CloudEvents" Version="2.9.0" />
     <PackageReference Include="MetadataReferenceService.BlazorWasm" Version="*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.*-*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.*-*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.36" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.19" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.19" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -66,15 +75,15 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="6.0.36" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.*-*" />
-    <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="10.9.0" />
+    <PackageReference Include="Microsoft.Extensions.Telemetry.Abstractions" Version="10.10.0" />
     <PackageReference Include="Radzen.Blazor" Version="8.7.5" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.17.2" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.17.12" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Expressions" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="22.2.0" />
-    <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="0.0.60217-alpha.1" />
-    <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="0.0.60217-alpha.1" />
+    <PackageReference Include="System.IO.Abstractions" Version="22.3.0" />
+    <PackageReference Include="UKHO.ADDS.Infrastructure.Results" Version="1.0.61006" />
+    <PackageReference Include="UKHO.ADDS.Infrastructure.Serialization" Version="1.0.61006" />
     <PackageReference Include="Zio" Version="0.24.0" />
   </ItemGroup>
 

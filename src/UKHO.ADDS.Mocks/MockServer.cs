@@ -1,8 +1,13 @@
 ﻿using System.IO.Abstractions;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+#if NET10_0
+using Microsoft.OpenApi;
+using System.Text.Json.Nodes;
+#else
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+#endif
 using Radzen;
 using Scalar.AspNetCore;
 using Serilog;
@@ -129,36 +134,43 @@ namespace UKHO.ADDS.Mocks
         }
 
         private static void ConfigureOpenApi(WebApplicationBuilder builder) =>
-            builder.Services.AddOpenApi(options =>
+    builder.Services.AddOpenApi(options =>
+    {
+        options.AddOperationTransformer((operation, context, cancellationToken) =>
+        {
+            var headers = context.Description.ActionDescriptor.EndpointMetadata
+                .OfType<OpenApiHeaderParameter>();
+
+            foreach (var header in headers)
             {
-                options.AddOperationTransformer((operation, context, cancellationToken) =>
+                operation.Parameters ??= [];
+
+                operation.Parameters.Add(new OpenApiParameter
                 {
-                    var headers = context.Description.ActionDescriptor.EndpointMetadata
-                        .OfType<OpenApiHeaderParameter>();
-
-                    foreach (var header in headers)
+                    Name = header.Name,
+                    In = ParameterLocation.Header,
+                    Required = header.Required,
+                    Description = header.Description,
+                    Schema = new OpenApiSchema
                     {
-                        operation.Parameters ??= new List<OpenApiParameter>();
-
-                        operation.Parameters.Add(new OpenApiParameter
-                        {
-                            Name = header.Name,
-                            In = ParameterLocation.Header,
-                            Required = header.Required,
-                            Description = header.Description,
-                            Schema = new OpenApiSchema
-                            {
-                                Type = "string",
-                                Enum = header.ExpectedValues?
-                                    .Select(v => new OpenApiString(v))
-                                    .Cast<IOpenApiAny>()
-                                    .ToList()
-                            }
-                        });
+#if NET10_0
+                        Type = JsonSchemaType.String,
+                        Enum = header.ExpectedValues?
+                            .Select(v => (JsonNode)JsonValue.Create(v)!)
+                            .ToList()
+#else
+                        Type = "string",
+                        Enum = header.ExpectedValues?
+                            .Select(v => new OpenApiString(v))
+                            .Cast<IOpenApiAny>()
+                            .ToList()
+#endif
                     }
-
-                    return Task.CompletedTask;
                 });
-            });
+            }
+
+            return Task.CompletedTask;
+        });
+    });
     }
 }
