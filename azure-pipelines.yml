@@ -112,7 +112,7 @@ stages:
             **/UKHO.ADDS.Mocks.Tests.csproj
           publishTestResults: true
           testRunTitle: UnitTests
-          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
+           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:TestingPlatformDotnetTestSupport=false /p:IsTestingPlatformApplication=false --no-restore'
 
     - ${{ if ne(parameters.SkipFunctionalTests, true) }}:
       - task: DotNetCoreCLI@2
@@ -123,7 +123,7 @@ stages:
             **/UKHO.ADDS.Mocks.Functional.Tests.csproj
           publishTestResults: true
           testRunTitle: FunctionalTests
-          arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
+           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:TestingPlatformDotnetTestSupport=false /p:IsTestingPlatformApplication=false --no-restore'
 
     - task: DotNetCoreCLI@2
       displayName: Pack UKHO.ADDS.Mocks
