@@ -37,8 +37,6 @@ variables:
   value: "ADDS Mocks"
 - name: WindowPool
   value: "NautilusBuild"
-- name: SdkVersion
-  value: "10.x"
 - name: NUGET_PACKAGES
   value: $(Build.SourcesDirectory)\packages
 
@@ -85,10 +83,10 @@ stages:
           -PreReleaseVersion ${{ parameters.PreReleaseVersion }}
 
     - task: UseDotNet@2
-      displayName: Use .NET SDK $(SdkVersion)
+      displayName: Use .NET SDK from global.json
       inputs:
         packageType: sdk
-        version: $(SdkVersion)
+        useGlobalJson: true
             
     - task: DotNetCoreCLI@2
       displayName: .NET - NuGet restore
@@ -167,10 +165,10 @@ stages:
         deploy:
           steps:
           - task: UseDotNet@2
-            displayName: 'Use .NET $(SdkVersion) sdk'
+            displayName: Use .NET SDK from global.json
             inputs:
               packageType: sdk
-              version: $(SdkVersion)
+              useGlobalJson: true
 
           - download: current
             artifact: NuGetPackages
@@ -197,10 +195,10 @@ stages:
         deploy:
           steps:
           - task: UseDotNet@2
-            displayName: 'Use .NET $(SdkVersion) sdk'
+            displayName: Use .NET SDK from global.json
             inputs:
               packageType: sdk
-              version: $(SdkVersion)
+              useGlobalJson: true
 
           - download: current
             artifact: NuGetPackages
