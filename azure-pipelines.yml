@@ -119,8 +119,7 @@ stages:
         displayName: Functional tests
         inputs:
           command: test
-          projects: |
-            **/UKHO.ADDS.Mocks.Functional.Tests.csproj
+          projects: '$(Build.SourcesDirectory)\tests\UKHO.ADDS.Mocks.Functional.Tests\UKHO.ADDS.Mocks.Functional.Tests.csproj'
           publishTestResults: true
           testRunTitle: FunctionalTests
           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
