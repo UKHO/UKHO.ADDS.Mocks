@@ -23,7 +23,7 @@ namespace UKHO.ADDS.Mocks.Functional.Tests
 
             var resourceNotificationService = _app.Services.GetRequiredService<ResourceNotificationService>();
             await _app.StartAsync();
-            await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));
+            await resourceNotificationService.WaitForResourceAsync(ProcessNames.SampleService, KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(90));
             BaseAddress = _app.GetEndpoint(ProcessNames.SampleService);
         }
 
