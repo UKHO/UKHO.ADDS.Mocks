@@ -163,6 +163,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self
+
           - task: UseDotNet@2
             displayName: Use .NET SDK from global.json
             inputs:
@@ -193,6 +195,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self
+
           - task: UseDotNet@2
             displayName: Use .NET SDK from global.json
             inputs:
