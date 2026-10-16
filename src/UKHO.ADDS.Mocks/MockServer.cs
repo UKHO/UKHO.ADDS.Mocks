@@ -3,6 +3,10 @@ using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.OpenApi;
+#if !NET10_0_OR_GREATER
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+#endif
 using Radzen;
 using Scalar.AspNetCore;
 using Serilog;
@@ -140,6 +144,7 @@ namespace UKHO.ADDS.Mocks
                     {
                         operation.Parameters ??= [];
 
+#if NET10_0_OR_GREATER
                         operation.Parameters.Add(new OpenApiParameter
                         {
                             Name = header.Name,
@@ -154,6 +159,22 @@ namespace UKHO.ADDS.Mocks
                                 .ToList()
                             }
                         });
+#else
+                        operation.Parameters.Add(new OpenApiParameter
+                        {
+                            Name = header.Name,
+                            In = ParameterLocation.Header,
+                            Required = header.Required,
+                            Description = header.Description,
+                            Schema = new OpenApiSchema
+                            {
+                                Type = "string",
+                                Enum = header.ExpectedValues?
+                                .Select(v => (IOpenApiAny)new OpenApiString(v))
+                                .ToList()
+                            }
+                        });
+#endif
                     }
 
                     return Task.CompletedTask;
