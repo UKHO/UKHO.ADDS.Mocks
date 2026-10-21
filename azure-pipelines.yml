@@ -37,8 +37,6 @@ variables:
   value: "ADDS Mocks"
 - name: WindowPool
   value: "NautilusBuild"
-- name: SdkVersion
-  value: "9.x"
 - name: NUGET_PACKAGES
   value: $(Build.SourcesDirectory)\packages
 
@@ -85,23 +83,25 @@ stages:
           -PreReleaseVersion ${{ parameters.PreReleaseVersion }}
 
     - task: UseDotNet@2
-      displayName: Use .NET SDK $(SdkVersion)
+      displayName: Use .NET SDK from global.json
       inputs:
         packageType: sdk
-        version: $(SdkVersion)
+        useGlobalJson: true
+
+    - task: NuGetToolInstaller@1
+      displayName: Use NuGet 6.x
+      inputs:
+        versionSpec: '6.x'
             
     - task: DotNetCoreCLI@2
       displayName: .NET - NuGet restore
       inputs:
         command: restore
-        projects: |
-          **/UKHO.ADDS.Mocks.csproj
-          **/UKHO.ADDS.Mocks.Client.csproj
-          **/UKHO.ADDS.Mocks.Tests.csproj
-          **/UKHO.ADDS.Mocks.Functional.Tests.csproj
+        projects: '$(Build.SourcesDirectory)\ADDS-Mock.sln'
         feedsToUse: config
         noCache: true
         nugetConfigPath: '$(Build.SourcesDirectory)\BuildNuget.config'
+        restoreArguments: '--ignore-failed-sources'
 
     - ${{ if ne(parameters.SkipUnitTests, true) }}:
       - task: DotNetCoreCLI@2
@@ -119,8 +119,7 @@ stages:
         displayName: Functional tests
         inputs:
           command: test
-          projects: |
-            **/UKHO.ADDS.Mocks.Functional.Tests.csproj
+          projects: '$(Build.SourcesDirectory)\tests\UKHO.ADDS.Mocks.Functional.Tests\UKHO.ADDS.Mocks.Functional.Tests.csproj'
           publishTestResults: true
           testRunTitle: FunctionalTests
           arguments: '--configuration $(BuildConfiguration) --settings "$(Build.SourcesDirectory)\test.runsettings" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --no-restore'
@@ -164,11 +163,13 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self
+
           - task: UseDotNet@2
-            displayName: 'Use .NET $(SdkVersion) sdk'
+            displayName: Use .NET SDK from global.json
             inputs:
               packageType: sdk
-              version: $(SdkVersion)
+              useGlobalJson: true
 
           - download: current
             artifact: NuGetPackages
@@ -194,11 +195,13 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self
+
           - task: UseDotNet@2
-            displayName: 'Use .NET $(SdkVersion) sdk'
+            displayName: Use .NET SDK from global.json
             inputs:
               packageType: sdk
-              version: $(SdkVersion)
+              useGlobalJson: true
 
           - download: current
             artifact: NuGetPackages

@@ -1,8 +1,8 @@
 ﻿using System.IO.Abstractions;
+using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Radzen;
 using Scalar.AspNetCore;
 using Serilog;
@@ -85,12 +85,12 @@ namespace UKHO.ADDS.Mocks
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            app.UseStaticFiles();
+            app.MapStaticAssets();
             app.UseRouting();
             app.UseAntiforgery();
 
             app.MapRazorPages();
-            app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+            app.MapRazorComponents<App>().WithStaticAssets().AddInteractiveServerRenderMode();
 
             app.UseMiddleware<MockTrafficCaptureMiddleware>();
 
@@ -129,16 +129,16 @@ namespace UKHO.ADDS.Mocks
         }
 
         private static void ConfigureOpenApi(WebApplicationBuilder builder) =>
-            builder.Services.AddOpenApi(options =>
+            builder.Services.AddOpenApi(static options =>
             {
-                options.AddOperationTransformer((operation, context, cancellationToken) =>
+                options.AddOperationTransformer(static (operation, context, cancellationToken) =>
                 {
                     var headers = context.Description.ActionDescriptor.EndpointMetadata
                         .OfType<OpenApiHeaderParameter>();
 
                     foreach (var header in headers)
                     {
-                        operation.Parameters ??= new List<OpenApiParameter>();
+                        operation.Parameters ??= [];
 
                         operation.Parameters.Add(new OpenApiParameter
                         {
@@ -148,11 +148,10 @@ namespace UKHO.ADDS.Mocks
                             Description = header.Description,
                             Schema = new OpenApiSchema
                             {
-                                Type = "string",
+                                Type = JsonSchemaType.String,
                                 Enum = header.ExpectedValues?
-                                    .Select(v => new OpenApiString(v))
-                                    .Cast<IOpenApiAny>()
-                                    .ToList()
+                                .Select(v => (JsonNode)JsonValue.Create(v)!)
+                                .ToList()
                             }
                         });
                     }
